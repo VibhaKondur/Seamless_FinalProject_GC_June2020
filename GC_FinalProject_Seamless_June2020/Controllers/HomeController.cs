@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GC_FinalProject_Seamless_June2020.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace GC_FinalProject_Seamless_June2020.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly SeamedInDal _seamedInDal = new SeamedInDal();
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IConfiguration configuration;
+
+        public HomeController(IConfiguration configuration)
         {
-            _logger = logger;
+            this.configuration = configuration;
+
+            this._seamedInDal = new SeamedInDal(configuration);
         }
 
         public IActionResult Index()
         {
-            return View();
+            var s = _seamedInDal.GetAPIString();
+            return View(s);
         }
 
         public IActionResult Privacy()
