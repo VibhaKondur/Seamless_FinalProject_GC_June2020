@@ -1,37 +1,45 @@
 ﻿@model GC_FinalProject_Seamless_June2020.Models.Startups
 
-<h1>@Model.records[0].fields.CompanyName</h1>
 
 <table>
     <tr>
-        <td>
-            Scout
-            <ul>
-                <li>Mark <input type="checkbox" value="IPE"></li>
-                <li>Matt <input type="checkbox" value="IPE"></li>
-                <li>Ryan <input type="checkbox" value="IPE"></li>
-                <li>John <input type="checkbox" value="IPE"></li>
-            </ul>
-        </td>
-        <td>
-            Source
-            <ul>
-                <li>Source 1 <input type="checkbox" value="IPE"></li>
-                <li>Source 2<input type="checkbox" value="IPE"></li>
-                <li>Source 3<input type="checkbox" value="IPE"></li>
-                <li>Source 4<input type="checkbox" value="IPE"></li>
-                <li>Source 5<input type="checkbox" value="IPE"></li>
-                <li>Source 6<input type="checkbox" value="IPE"></li>
-                <li>Source 7<input type="checkbox" value="IPE"></li>
-            </ul>
-        </td>
-        <td><input type="checkbox" value="DCCN-I">Country</td>
-        <td><input type="checkbox" value="ELS-I">State</td>
+        <th>Sources</th>
+        <th>Scouts</th>
+        @*<th>Alignment</th>
+        <th>Theme</th>*@
     </tr>
     <tr>
-        <td><input type="checkbox" value="ST-I">Alignment</td>
-        <td><input type="checkbox" value="ITA">Theme</td>
-        <td><input type="checkbox" value="FCS">Technology Areas</td>
-        <td><input type="checkbox" value="DBMS-I">Landscapes</td>
+        <td>
+            <select name="source" id="testing" form="searchForm" multiple>
+                @foreach(Record testing in Model.records)
+                {
+                    <option name="source" value="{Source} = 'Source 1'">Source1</option>
+                }
+
+                <option name="source" value="{Source} = 'Source 1'">Source1</option>
+                <option name="source" value="{Source} = 'Source 2'">Source2</option>
+                <option name="source" value="{Source} = 'Source 3'">Source3</option>
+                <option name="source" value="{Source} = 'Source 4'">Source4</option>
+                <option name="source" value="{Source} = 'Source 5'">Source5</option>
+                <option name="source" value="{Source} = 'Source 6'">Source6</option>
+                <option name="source" value="{Source} = 'Source 7'">source7</option>
+            </select>
+        </td>
+
+        <td>
+            <select name="scout" id="scout_id" form="searchForm" multiple>
+                <option name="scout" value="{Scout} = 'John'">John</option>
+                <option name="scout" value="{Scout} = 'Mark'">Mark</option>
+                <option name="scout" value="{Scout} = 'Matt'">Matt</option>
+                <option name="scout" value="{Scout} = 'Ryan'">Ryan</option>
+            </select>
+        </td>
     </tr>
 </table>
+
+<form action="/SeamedInDB/GetStartupsFromSelections" id="searchForm">
+    <input type="submit" />
+</form>
+
+
+

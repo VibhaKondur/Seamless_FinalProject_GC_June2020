@@ -1,0 +1,21 @@
+﻿@model IEnumerable<StartupRank>
+
+<h1>Search Results</h1>
+
+<table>
+    <tr>
+        <th>Startup</th>
+        <th>Theme(s)</th>
+        <th>Tech</th>
+        <th>Country</th>
+    </tr>
+    @foreach(StartupRank s in Model)
+    {
+        <tr>
+            <td><a href="/Home/StartupProfile?name=@s.Startup.fields.CompanyName">@s.Startup.fields.CompanyName</a></td>
+            <td>@s.Startup.fields.Themes</td>
+            <td>@s.Startup.fields.TechnologyAreas</td>
+            <td>@s.Startup.fields.Country</td>
+        </tr>
+    }
+</table>
