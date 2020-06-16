@@ -1,0 +1,25 @@
+﻿@model Record
+
+<h1>@Model.fields.CompanyName</h1>
+
+<h2>@Model.fields.Country</h2>
+
+<div>
+    @if (Model.fields.Themes != null)
+    {
+        <h4>Theme(s): @Model.fields.Themes</h4>
+    }
+    @if (Model.fields.TechnologyAreas != null)
+    {
+        <h4>Tech: @Model.fields.TechnologyAreas</h4>
+    }
+    @if (Model.fields.Landscape != null)
+    {
+        <h4>Landscape: @Model.fields.Landscape</h4>
+    }
+</div>
+
+<div>
+    <h6>Startup Summary</h6>
+    <p>@Model.fields.TwoLineCompanySummary</p>
+</div>
