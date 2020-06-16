@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GC_FinalProject_Seamless_June2020.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -19,7 +22,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         private readonly SeamedInDBContext _context;
         private readonly string _apiKey;
 
-        public SeamedInDBController (SeamedInDBContext context, IConfiguration configuration)
+        public SeamedInDBController(SeamedInDBContext context, IConfiguration configuration)
         {
             _context = context;
             _seamedInDal = new SeamedInDal(configuration);
@@ -31,13 +34,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Testing()
+        public IActionResult Testing()
         {
-            List<string> filterSelectionList = new List<string>() { "{Scout} = 'Mark'", "{Country} = 'China'" };
-
-            Startups passedIn = await _seamedInDal.GetFilteredStartUps(filterSelectionList);
-            return View(passedIn);
+            return View();
         }
+
         #endregion
 
 
@@ -53,25 +54,37 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View(usersFavoritesStartUps);
         }
 
-       
+
 
         //Adds a new favorite StartUp to the user's list of favorite StartUps
         [Authorize]
         public IActionResult AddAFavoriteStartUpToList(int id)
         {
+
             Favorites favorite = new Favorites
             {
                 ApiId = id,
                 UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
             };
+
+
             if (_context.Favorites.Where(x => (x.ApiId == id) && (x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList().Count > 0)
             {
                 return RedirectToAction("Favorites");
             }
-            if (ModelState.IsValid)
+
+            try
             {
-                _context.Favorites.Add(favorite);
-                _context.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    _context.Favorites.Add(favorite);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
             return RedirectToAction("Favorites");
         }
@@ -84,8 +97,18 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
             if (found != null)
             {
-                _context.Favorites.Remove(found);
-                _context.SaveChanges();
+                try
+                {
+                    _context.Favorites.Remove(found);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (DataException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                }
+
+
             }
             return RedirectToAction("Favorites");
         }
@@ -107,7 +130,24 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         }
         #endregion
 
+        #region Search Result Methods
+        public async Task<Startups> GetStartupsFromSelections(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
+            List<string> landscape, List<string> country, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
+        {
+            List<List<string>> listOfLists = new List<List<string>>();
+            listOfLists.Add(source);
+            listOfLists.Add(scout);
+            listOfLists.Add(alignment);
+            listOfLists.Add(theme);
+            listOfLists.Add(technologyArea);
+            listOfLists.Add(landscape);
+            listOfLists.Add(country);
 
+            List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
+            Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
+            return foundStartups;
+        }
 
+        #endregion
     }
 }
