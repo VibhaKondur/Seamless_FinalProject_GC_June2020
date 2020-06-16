@@ -12,6 +12,7 @@ using GC_FinalProject_Seamless_June2020.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using GC_FinalProject_Seamless_June2020.Models;
 
 namespace GC_FinalProject_Seamless_June2020
 {
@@ -26,7 +27,9 @@ namespace GC_FinalProject_Seamless_June2020
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
+        {
+            var connection = Configuration.GetConnectionString("DBContext");
+            services.AddDbContext<SeamedInDBContext>(options => options.UseSqlServer(connection));
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DBContext")));
