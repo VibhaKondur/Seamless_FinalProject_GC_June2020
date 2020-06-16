@@ -12,21 +12,19 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly SeamedInDal _seamedInDal = new SeamedInDal();
+        private readonly SeamedInDal _seamedInDal;
 
-        private readonly IConfiguration configuration;
 
         public HomeController(IConfiguration configuration)
         {
-            this.configuration = configuration;
 
-            this._seamedInDal = new SeamedInDal(configuration);
+            _seamedInDal = new SeamedInDal(configuration);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var s = _seamedInDal.GetAPIString();
-            return View(s);
+            var startUp = await _seamedInDal.GetStartups();
+            return View(startUp);
         }
 
         public IActionResult Privacy()
