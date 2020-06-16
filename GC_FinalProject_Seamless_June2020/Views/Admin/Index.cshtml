@@ -1,0 +1,23 @@
+﻿@model List<AspNetUsers>
+
+<table class="table table-bordered">
+    <thead><tr><td>User email</td><td>Current User Role</td><td>Change User Role</td></tr></thead>
+            @foreach (AspNetUsers user in Model)
+            {
+    <tr>
+    <td>
+        <p>@user.Email</p>
+    </td>
+    <td></td>
+    <td><form action="/Admin/AddRole" method="post">
+        <input type="hidden" name="email" value="@user.Email" />
+        <select name="usertype">
+            <option value="Admin">Admin</option>
+            <option value="Startup">Startup</option>
+        </select>
+        <input type="submit" />
+        </form></td>
+    </tr>
+            }
+        
+</table>

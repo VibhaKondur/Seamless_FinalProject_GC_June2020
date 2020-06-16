@@ -38,6 +38,9 @@ namespace GC_FinalProject_Seamless_June2020
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.Configure<SecurityStampValidatorOptions>(options =>
+                    options.ValidationInterval = TimeSpan.Zero
+                    );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
