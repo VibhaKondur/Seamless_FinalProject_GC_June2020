@@ -16,3 +16,4 @@ obj/
 appsettings.json
 appsettings.development
 appsettings.development.json
+.csproj

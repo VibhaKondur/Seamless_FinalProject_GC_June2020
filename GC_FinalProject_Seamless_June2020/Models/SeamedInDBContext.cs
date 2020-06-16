@@ -7,16 +7,16 @@ namespace GC_FinalProject_Seamless_June2020.Models
 {
     public partial class SeamedInDBContext : DbContext
     {
-        private readonly IConfiguration _configuration;
         public SeamedInDBContext()
         {
         }
 
-        public SeamedInDBContext(IConfiguration configuration, DbContextOptions<SeamedInDBContext> options)
+        public SeamedInDBContext(DbContextOptions<SeamedInDBContext> options)
             : base(options)
         {
-            _configuration = configuration;
         }
+
+        public IConfiguration Configuration { get; }
 
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
@@ -32,8 +32,8 @@ namespace GC_FinalProject_Seamless_June2020.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DBContext"));
+
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DBContext"));
             }
         }
 
@@ -134,6 +134,8 @@ namespace GC_FinalProject_Seamless_June2020.Models
 
                 entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
 
+                entity.Property(e => e.Roles).HasMaxLength(50);
+
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
@@ -177,6 +179,10 @@ namespace GC_FinalProject_Seamless_June2020.Models
 
                 entity.Property(e => e.ProfilePicture).HasMaxLength(100);
 
+                entity.Property(e => e.Roles)
+                    .HasMaxLength(40)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.StateProvince)
                     .HasColumnName("State/Province")
                     .HasMaxLength(40)
@@ -192,6 +198,8 @@ namespace GC_FinalProject_Seamless_June2020.Models
                     .HasMaxLength(40)
                     .IsUnicode(false);
 
+                entity.Property(e => e.UserId).HasMaxLength(450);
+
                 entity.Property(e => e.UserType)
                     .HasMaxLength(40)
                     .IsUnicode(false);
@@ -199,6 +207,11 @@ namespace GC_FinalProject_Seamless_June2020.Models
                 entity.Property(e => e.Website)
                     .HasMaxLength(30)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__Users__UserId__76969D2E");
             });
 
             OnModelCreatingPartial(modelBuilder);
