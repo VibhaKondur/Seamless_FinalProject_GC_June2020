@@ -50,7 +50,18 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             {
                 if (user.EmailAddress == email)
                 {
-                    
+                    user.UserType = newtype;
+                    user.Theme = newtheme;
+                    user.Name = newname;
+                    user.Technology = newtech;
+                    user.Landscape = newlandscape;
+                    user.Industry = newindustry;
+                    user.PhoneNumber = newphone;
+                    user.EmailAddress = newemail;
+                    user.Website = newwebsite;
+                    user.City = newcity;
+                    user.StateProvince = newstate;
+                    user.Country = newcountry;
                 }
             }
             return RedirectToAction("Index");
