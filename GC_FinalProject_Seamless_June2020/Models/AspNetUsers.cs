@@ -12,6 +12,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
             Favorites = new HashSet<Favorites>();
+            Users = new HashSet<Users>();
         }
 
         public string Id { get; set; }
@@ -29,11 +30,13 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
+        public string Roles { get; set; }
 
         public virtual ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual ICollection<Favorites> Favorites { get; set; }
+        public virtual ICollection<Users> Users { get; set; }
     }
 }

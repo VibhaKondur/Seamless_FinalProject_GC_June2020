@@ -20,5 +20,9 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public string City { get; set; }
         public string StateProvince { get; set; }
         public string Country { get; set; }
+        public string UserId { get; set; }
+        public string Roles { get; set; }
+
+        public virtual AspNetUsers User { get; set; }
     }
 }
