@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GC_FinalProject_Seamless_June2020.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 
 namespace GC_FinalProject_Seamless_June2020.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly SeamedInDal _seamedInDal = new SeamedInDal();
@@ -22,13 +26,13 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
             this._seamedInDal = new SeamedInDal(configuration);
         }
+        
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var s = _seamedInDal.GetAPIString();
             return View(s);
         }
-
         public IActionResult Privacy()
         {
             return View();
