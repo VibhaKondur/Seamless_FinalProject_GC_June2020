@@ -7,6 +7,7 @@ using GC_FinalProject_Seamless_June2020.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -14,20 +15,33 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 {
     public class SeamedInDBController : Controller
     {
-        private readonly SeamedInDal _seamedInDal = new SeamedInDal();
+        private readonly SeamedInDal _seamedInDal;
         private readonly SeamedInDBContext _context;
         private readonly string _apiKey;
 
-        public SeamedInDBController (SeamedInDBContext context)
+        public SeamedInDBController (SeamedInDBContext context, IConfiguration configuration)
         {
             _context = context;
+            _seamedInDal = new SeamedInDal(configuration);
         }
 
+        #region Views
         public IActionResult Index()
         {
             return View();
         }
 
+        public async Task<IActionResult> Testing()
+        {
+            List<string> filterSelectionList = new List<string>() { "{Scout} = 'Mark'", "{Country} = 'China'" };
+
+            Startups passedIn = await _seamedInDal.GetFilteredStartUps(filterSelectionList);
+            return View(passedIn);
+        }
+        #endregion
+
+
+        #region CRUD Functions
         //Displays list of User's favorite StartUps
         [Authorize]
         public async Task<IActionResult> DisplayListOfFavoriteStartUps()
@@ -38,6 +52,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             usersFavoritesStartUps = await _seamedInDal.GetFavoriteStartUpsList(favoritesOfUser);
             return View(usersFavoritesStartUps);
         }
+
+       
 
         //Adds a new favorite StartUp to the user's list of favorite StartUps
         [Authorize]
@@ -89,6 +105,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 return NoContent();
             }
         }
+        #endregion
 
 
 
