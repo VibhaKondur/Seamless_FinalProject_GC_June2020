@@ -141,6 +141,34 @@ namespace GC_FinalProject_Seamless_June2020.Models
             finalParameter = finalParameter.Append(searchParameters);
             return finalParameter.ToString();
         }
+
+        public List<string> ConvertsListsOfFormSelection(List<List<string>> ListOfLists)
+        {
+            List<string> finalSelectionList = new List<string>();
+
+            foreach (List<string> listToBeConverted in ListOfLists)
+            {
+                if (listToBeConverted.Any())
+                {
+                    StringBuilder innerString = new StringBuilder();
+                    int loopCount = 0;
+
+                    foreach (string parameter in listToBeConverted)
+                    {
+                        loopCount++;
+                        innerString.Append(parameter);
+                        if (listToBeConverted.Count != loopCount)
+                        {
+                            innerString = innerString.Append(",");
+                        }
+                    }
+                    string convertedString = $"OR({innerString})";
+
+                    finalSelectionList.Add(convertedString);
+                }
+            }
+            return finalSelectionList;
+        }
         #endregion
 
         public async Task<List<Users>> GetFavoriteStartUpsList(List<Favorites> favoritesList)

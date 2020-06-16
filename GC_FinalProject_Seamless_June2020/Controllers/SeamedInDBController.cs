@@ -31,13 +31,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Testing()
+        public IActionResult Testing()
         {
-            List<string> filterSelectionList = new List<string>() { "{Scout} = 'Mark'", "{Country} = 'China'" };
-
-            Startups passedIn = await _seamedInDal.GetFilteredStartUps(filterSelectionList);
-            return View(passedIn);
+            return View();
         }
+
         #endregion
 
 
@@ -107,7 +105,25 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         }
         #endregion
 
+        #region Search Result Methods
+        public async Task<Startups> GetStartupsFromSelections(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
+            List<string> landscape, List<string> country, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
+        {
+            List<List<string>> listOfLists = new List<List<string>>();
+            listOfLists.Add(source);
+            listOfLists.Add(scout);
+            listOfLists.Add(alignment);
+            listOfLists.Add(theme);
+            listOfLists.Add(technologyArea);
+            listOfLists.Add(landscape);
+            listOfLists.Add(country);
 
+            List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
+            Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
+            return foundStartups;
+        }
+
+        #endregion
 
     }
 }
