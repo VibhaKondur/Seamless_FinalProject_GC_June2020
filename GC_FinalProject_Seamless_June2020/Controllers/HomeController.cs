@@ -36,24 +36,49 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View(startUp);
         }
 
-        /*public async Task<IActionResult> SearchResults()
+        public async Task<IActionResult> SearchResults()
         {
             var s = await _seamedInDal.GetStartups();
 
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var thisUser = _context.Users.Where(x => x.UserId == id);
+            Users thisUser = _context.Users.Where(x => x.UserId == id).First();
 
             var rankedStartups = Ranking(s, thisUser);
 
-			return rankedStartups;
-        }*/
+			return View(rankedStartups);
+        }
 
 		public async Task<IActionResult> StartupProfile(string name)
 		{
 			Record s = await _seamedInDal.GetStartUpByName(name);
 
 			return View(s);
+		}
+
+		public IActionResult RegisterUser()
+		{
+			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			AspNetUsers thisUser = _context.AspNetUsers.Where(x => x.Id == id).First();
+
+			return View(thisUser);
+		}
+
+		public async Task<IActionResult> AddUser(Users u)
+		{
+			if (ModelState.IsValid)
+			{
+				_context.Users.Add(u);
+				_context.SaveChanges();
+				return RedirectToAction("SearchResults");
+			}
+			else
+			{
+				return View();
+			}
+
+			
 		}
 
         public IActionResult Privacy()
@@ -76,28 +101,29 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			foreach (Record startup in startups.records)
 			{
 				int rank = 0;
-		        //if statements
-				if (startup.fields.Country == user.Country)
+				//if statements
+				
+				if (startup.fields.Country != null && user.Country != null && (startup.fields.Country == user.Country))
 				{
 					rank += 1;
 				}
 
-				if (startup.fields.Alignment.Contains(user.Name))
+				if (startup.fields.Alignment != null && user.Name != null && startup.fields.Alignment.Contains(user.Name))
 				{
 					rank += 5;
 				}
 
-				if (startup.fields.Themes.Contains(user.Theme))
+				if (startup.fields.Themes != null && user.Theme != null && startup.fields.Themes.Contains(user.Theme))
 				{
 					rank += 3;
 				}
 
-				if (startup.fields.TechnologyAreas.Contains(user.Technology))
+				if (startup.fields.TechnologyAreas != null && user.Technology != null && startup.fields.TechnologyAreas.Contains(user.Technology) )
 				{
 					rank += 3;
 				}
 
-				if (startup.fields.Landscape == user.Landscape)
+				if (startup.fields.Landscape != null && user.Landscape != null && startup.fields.Landscape == user.Landscape)
 				{
 					rank += 4;
 				}
