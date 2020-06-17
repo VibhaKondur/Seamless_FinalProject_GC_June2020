@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GC_FinalProject_Seamless_June2020.Models;
@@ -49,11 +50,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         [Authorize]
         public async Task<IActionResult> DisplayListOfFavoriteStartUps()
         {
-            List<Users> usersFavoritesStartUps = new List<Users>();
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var favoritesOfUser = _context.Favorites.Where(x => x.UserId == id).ToList();
-            usersFavoritesStartUps = await _seamedInDal.GetFavoriteStartUpsList(favoritesOfUser);
-            return View(usersFavoritesStartUps);
+            var favoritesOfUser = await _context.Favorites.Where(x => x.UserId == id).ToListAsync();
+            return View(favoritesOfUser);
         }
 
 
@@ -75,19 +74,14 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 return RedirectToAction("Favorites");
             }
 
-            try
-            {
-                if (ModelState.IsValid)
+
+            if (ModelState.IsValid)
                 {
                     _context.Favorites.Add(favorite);
                     _context.SaveChanges();
-                    return RedirectToAction("Index");
+                    
                 }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-            }
+
             return RedirectToAction("Favorites");
         }
 
@@ -99,18 +93,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
             if (found != null)
             {
-                try
-                {
                     _context.Favorites.Remove(found);
                     _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                catch (DataException)
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
-
-
+           
             }
             return RedirectToAction("Favorites");
         }
@@ -154,83 +139,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
             return foundStartups;
         }
-        #endregion
-
-        /*public async Task<SearchPageVM> GetStartUpPossibleValues()
-        {
-            SearchPageVM working = new SearchPageVM();
-
-            Startups currentApiData = await _seamedInDal.GetStartups();
-
-
-            foreach (Record startUp in currentApiData.records)
-            {
-                if (startUp.fields.Source.Any() && working.sourcesList.Any(a => a != startUp.fields.Source))
-                {
-                    working.sourcesList.Add(startUp.fields.Source);
-                }
-                if (startUp.fields.Scout.Any() && working.scoutsList.Any(a => a != startUp.fields.Scout))
-                {
-                    working.scoutsList.Add(startUp.fields.Scout);
-                }
-                if (startUp.fields.Alignment.Any() && working.alignmentsList.Any(a => a != startUp.fields.Alignment)) //---------------------------------------------------
-                {
-                    if (startUp.fields.Alignment.Contains(","))
-                    {
-                        List<String> splitStringList = startUp.fields.Alignment.Split(",").ToList(); 
-                        if(splitStringList.Any(a => a != startUp.fields.Alignment))
-                        {
-                            working.alignmentsList.Add(startUp.fields.Alignment);
-                        }
-                    }
-                   else
-                    {
-                        working.alignmentsList.Add(startUp.fields.Alignment);
-                    }
-                }
-                if (startUp.fields.Themes.Any() && working.themesList.Any(a => a != startUp.fields.Themes)) //---------------------------------------------------------------------------------
-                {
-                    if (startUp.fields.Themes.Contains(","))
-                    {
-                        List<String> splitStringList = startUp.fields.Themes.Split(",").ToList();
-                        if (splitStringList.Any(a => a != startUp.fields.Themes))
-                        {
-                            working.themesList.Add(startUp.fields.Themes);
-                        }
-                    }
-                    else
-                    {
-                        working.themesList.Add(startUp.fields.Themes);
-                    }
-                }
-                if (startUp.fields.TechnologyAreas.Any()) //------------------------------------------------------
-                {
-                    working.technologyAreasList.Add(startUp.fields.TechnologyAreas);
-                }
-                if (startUp.fields.Landscape.Any() && working.landscapesList.Any(a => a != startUp.fields.Landscape))
-                {
-                    working.landscapesList.Add(startUp.fields.Landscape);
-                }
-                if (startUp.fields.Country.Any() && working.countriesList.Any(a => a != startUp.fields.Country))
-                {
-                    working.countriesList.Add(startUp.fields.Country);
-                }
-                if (startUp.fields.StateProvince.Any() && working.statesList.Any(a => a != startUp.fields.StateProvince))
-                {
-                    working.statesList.Add(startUp.fields.StateProvince);
-                }
-                if (startUp.fields.City.Any() && working.citiesList.Any(a => a != startUp.fields.City))
-                {
-                    working.citiesList.Add(startUp.fields.City);
-                }
-                if (startUp.fields.Stage.Any() && working.stagesList.Any(a => a != startUp.fields.Stage))
-                {
-                    working.stagesList.Add(startUp.fields.Stage);
-                }
-
-            }
-        }*/
-
 
         public async Task<SearchPageVM> GetStartUpColumnCategoryValues()
         {
@@ -285,5 +193,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 }
             }
         }
+        #endregion
     }
+
+
 }
