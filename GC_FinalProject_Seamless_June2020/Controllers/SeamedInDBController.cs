@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GC_FinalProject_Seamless_June2020.Models;
@@ -34,9 +35,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View();
         }
 
-        public IActionResult Testing()
+        public async Task<IActionResult> SearchPage()
         {
-            return View();
+            SearchPageVM searchPageVM = await GetStartUpColumnCategoryValues();
+
+            return View(searchPageVM);
         }
 
         #endregion
@@ -47,11 +50,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         [Authorize]
         public async Task<IActionResult> DisplayListOfFavoriteStartUps()
         {
-            List<Users> usersFavoritesStartUps = new List<Users>();
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var favoritesOfUser = _context.Favorites.Where(x => x.UserId == id).ToList();
-            usersFavoritesStartUps = await _seamedInDal.GetFavoriteStartUpsList(favoritesOfUser);
-            return View(usersFavoritesStartUps);
+            var favoritesOfUser = await _context.Favorites.Where(x => x.UserId == id).ToListAsync();
+            return View(favoritesOfUser);
         }
 
 
@@ -73,19 +74,14 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 return RedirectToAction("Favorites");
             }
 
-            try
-            {
-                if (ModelState.IsValid)
+
+            if (ModelState.IsValid)
                 {
                     _context.Favorites.Add(favorite);
                     _context.SaveChanges();
-                    return RedirectToAction("Index");
+                    
                 }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-            }
+
             return RedirectToAction("Favorites");
         }
 
@@ -97,18 +93,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
             if (found != null)
             {
-                try
-                {
                     _context.Favorites.Remove(found);
                     _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                catch (DataException)
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
-
-
+           
             }
             return RedirectToAction("Favorites");
         }
@@ -132,9 +119,10 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
         #region Search Result Methods
         public async Task<Startups> GetStartupsFromSelections(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
-            List<string> landscape, List<string> country, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
+            List<string> landscape, List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
         {
             List<List<string>> listOfLists = new List<List<string>>();
+
             listOfLists.Add(source);
             listOfLists.Add(scout);
             listOfLists.Add(alignment);
@@ -142,12 +130,71 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             listOfLists.Add(technologyArea);
             listOfLists.Add(landscape);
             listOfLists.Add(country);
+            listOfLists.Add(state);
+            listOfLists.Add(city);
+            listOfLists.Add(stage);
 
             List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
             Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
+
             return foundStartups;
         }
 
+        public async Task<SearchPageVM> GetStartUpColumnCategoryValues()
+        {
+            SearchPageVM searchPageVM = new SearchPageVM();
+            Startups currentApiData = await _seamedInDal.GetStartups();
+
+            foreach (Record startUp in currentApiData.records)
+            {
+                AddToRespectiveList(startUp.fields.Source, searchPageVM.sourcesList);
+                AddToRespectiveList(startUp.fields.Scout, searchPageVM.scoutsList);
+                AddToRespectiveList(startUp.fields.Landscape, searchPageVM.landscapesList);
+                AddToRespectiveList(startUp.fields.Country, searchPageVM.countriesList);
+                AddToRespectiveList(startUp.fields.StateProvince, searchPageVM.statesList);
+                AddToRespectiveList(startUp.fields.City, searchPageVM.citiesList);
+                AddToRespectiveList(startUp.fields.Stage, searchPageVM.stagesList);
+
+                AddToRespectiveListMultiValue(startUp.fields.Alignment, searchPageVM.alignmentsList);
+                AddToRespectiveListMultiValue(startUp.fields.Themes, searchPageVM.themesList);
+                AddToRespectiveListMultiValue(startUp.fields.TechnologyAreas, searchPageVM.technologyAreasList);
+            }
+            return searchPageVM;
+        }
+
+        public void AddToRespectiveList(string checkedColumnValue, List<string> respectiveColumnList)
+        {
+            if (!(string.IsNullOrEmpty(checkedColumnValue)) && (!respectiveColumnList.Contains(checkedColumnValue)))
+            {
+                respectiveColumnList.Add(checkedColumnValue);
+            }
+
+        }
+
+        public void AddToRespectiveListMultiValue(string checkedColumnValue, List<string> respectiveColumnList)
+        {
+            if (!(string.IsNullOrEmpty(checkedColumnValue)) && (!respectiveColumnList.Contains(checkedColumnValue)))
+            {
+                if (checkedColumnValue.Contains(","))
+                {
+                    List<String> splitStringList = checkedColumnValue.Split(",").ToList();
+                    foreach(string splitString in splitStringList)
+                    {
+                        if(respectiveColumnList.Any(a => a != splitString))
+                        {
+                            respectiveColumnList.Add(splitString);
+                        }
+              
+                    }
+                }
+                else
+                {
+                    respectiveColumnList.Add(checkedColumnValue);
+                }
+            }
+        }
         #endregion
     }
+
+
 }

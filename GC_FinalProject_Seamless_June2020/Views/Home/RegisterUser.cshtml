@@ -1,6 +1,8 @@
-﻿<h1>Register User</h1>
+﻿@model AspNetUsers
 
-<form action="Home/AddUser" method="post">
+<h1>Register User</h1>
+
+<form action="/Home/AddUser" method="post">
     <label for="UserType">User Type</label>
     <select id="UserType" name="UserType">
         <option value="Startup">Startup</option>
@@ -35,7 +37,7 @@
         <option value="Automation and robotics">Automation and Robotics</option>
         <option value="Safe shared spaces">Safe Shared Spaces</option>
         <option value="Clinic in a box">Clinic in a Box</option>
-        
+
     </select>
 
     <input type="text" name="Summary" placeholder="Summary(400 Characters)" />
@@ -48,8 +50,17 @@
 
     <input type="text" name="Website" placeholder="Website" />
 
+    <input type="text" name="City" placeholder="City" />
 
+    <input type="text" name="[State/Province]" placeholder="State/Province" />
 
+    <input type="text" name="Country" placeholder="Country" />
+
+    <input type="hidden" name="UserId" value="@Model.Id" />
+
+    <input type="submit" value="Submit" />
 
 
 </form>
+
+@Html.ValidationSummary()

@@ -1,0 +1,116 @@
+﻿@model SearchPageVM
+
+
+<h1>Search Page</h1>
+
+
+<table>
+    <tr>
+        <th>Themes</th>
+        <th>Alignments</th>
+        <th>Technology Areas</th>
+        <th>Sources</th>
+        <th>Scouts</th>
+    </tr>
+    <tr>
+        <td>
+            <select name="theme" id="theme" form="searchForm" multiple>
+                @foreach (string optionValue in Model.themesList)
+                {
+                    <option name="theme" value="{Theme(s)} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="alignment" id="alignment_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.alignmentsList)
+                {
+                    <option name="alignment" value="{Alignment} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="technologyArea" id="technologyArea_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.technologyAreasList)
+                {
+                    <option name="technologyArea" value="{Technology Areas} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="source" id="source" form="searchForm" multiple>
+                @foreach (string optionValue in Model.sourcesList)
+                {
+                    <option name="source" value="{Source} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="scout" id="scout" form="searchForm" multiple>
+                @foreach (string optionValue in Model.scoutsList)
+                {
+                    <option name="scout" value="{Scout} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <th>Landscapes</th>
+        <th>Countries</th>
+        <th>State/Province</th>
+        <th>Cities</th>
+        <th>Stages</th>
+    </tr>
+    <tr>
+
+        <td>
+            <select name="landscape" id="landscape_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.landscapesList)
+                {
+                    <option name="landscape" value="{Landscape} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="country" id="country_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.countriesList)
+                {
+                    <option name="country" value="{Country} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="state" id="state_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.statesList)
+                {
+                    <option name="state" value="{State/Province} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="city" id="city_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.citiesList)
+                {
+                    <option name="city" value="{City} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+        <td>
+            <select name="stage" id="stage_id" form="searchForm" multiple>
+                @foreach (string optionValue in Model.stagesList)
+                {
+                    <option name="stage" value="{Stage} = '@optionValue'">@optionValue</option>
+                }
+            </select>
+        </td>
+    </tr>
+
+</table>
+
+<form action="/SeamedInDB/GetStartupsFromSelections" id="searchForm">
+    <input type="submit" />
+</form>
+
+
+

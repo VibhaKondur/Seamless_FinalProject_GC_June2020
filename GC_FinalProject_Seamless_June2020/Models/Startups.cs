@@ -61,7 +61,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public string Landscape { get; set; }
         public string Stage { get; set; }
 
-        [JsonProperty(PropertyName = "State//Province")]
+        [JsonProperty(PropertyName = "State/Province")]
         public string StateProvince { get; set; }
     }
 
