@@ -3,4 +3,12 @@
 @foreach(Users user in Model)
 {
     <p>@user.Name</p>
+<form action="/Admin/UpdateForm" method="post">
+    <input type="hidden" name="id" value="@user.UserId" />
+    <input type="submit" value="Update Values" />
+</form>
+<form action="/Admin/Delete" method="post">
+    <input type="hidden" name="id" value="@user.UserId" />
+    <input type="submit" value="Delete" />
+</form>
 }

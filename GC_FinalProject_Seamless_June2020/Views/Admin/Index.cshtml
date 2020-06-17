@@ -8,15 +8,21 @@
     <td>
         <p>@user.Email</p>
     </td>
-    <td></td>
+    <td>@user.Roles</td>
     <td><form action="/Admin/AddRole" method="post">
-        <input type="hidden" name="email" value="@user.Email" />
+        <input type="hidden" name="id" value="@user.Id" />
         <select name="usertype">
             <option value="Admin">Admin</option>
             <option value="Startup">Startup</option>
+            <option value="Partner">Partner</option>
         </select>
         <input type="submit" />
-        </form></td>
+        </form>
+        <form asp-controller="Admin" asp-action="DeleteAccount" method="post">
+            <input type="hidden" name="id" value="@user.Id" />
+            <input type="submit" value="Delete Account" />
+        </form>        
+        </td>
     </tr>
             }
         

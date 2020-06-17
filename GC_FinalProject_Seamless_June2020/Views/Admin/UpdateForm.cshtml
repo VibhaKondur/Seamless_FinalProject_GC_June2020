@@ -1,0 +1,22 @@
+﻿@model Users
+
+    <form action="Update" method="post" class="form-group">
+        <input type="hidden" name="id" value="@Model.UserId" />
+        <input type="text" name="newname" value="@Model.Name" placeholder="Name" />
+        <input type="text" name="newemail" value="@Model.EmailAddress" placeholder="Email" />
+        <input type="text" name="newindustry" value="@Model.Industry" placeholder="Industry" />
+        <input type="text" name="newtech" value="@Model.Technology" placeholder="Technology" />
+        <input type="text" name="newlandscape" value="@Model.Landscape" placeholder="Landscape" />
+        <input type="text" name="newtheme" value="@Model.Theme" placeholder="Theme" />
+        <input type="text" name="newphone" value="@Model.PhoneNumber" placeholder="Phone Number" />
+        <input type="text" name="newwebsite" value="@Model.Website" placeholder="Website" />
+        <input type="text" name="newcity" value="@Model.City" placeholder="City" />
+        <input type="text" name="newstate" value="@Model.StateProvince" placeholder="State/Province" />
+        <input type="text" name="newcountry" value="@Model.Country" placeholder="Country" />
+        <input type="submit" />
+    </form>
+
+
+
+
+
