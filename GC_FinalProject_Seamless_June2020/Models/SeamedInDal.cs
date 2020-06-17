@@ -171,19 +171,5 @@ namespace GC_FinalProject_Seamless_June2020.Models
         }
         #endregion
 
-        public async Task<List<Users>> GetFavoriteStartUpsList(List<Favorites> favoritesList)
-        {
-            List<Users> usersFavoriteStartUps = new List<Users>();
-            var client = GetClient();
-            foreach (Favorites f in favoritesList)
-            {
-                var response = await client.GetAsync($"/v0/appFo187B73tuYhyg/Master%20List?api_key={_apiKey}");
-                var favoriteJson = await response.Content.ReadAsStringAsync();
-                JObject json = JObject.Parse(favoriteJson);
-                Users favorite = JsonConvert.DeserializeObject<Users>(json.ToString());
-                usersFavoriteStartUps.Add(favorite);
-            }
-            return usersFavoriteStartUps;
-        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using GC_FinalProject_Seamless_June2020.Models;
@@ -47,11 +48,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         [Authorize]
         public async Task<IActionResult> DisplayListOfFavoriteStartUps()
         {
-            List<Users> usersFavoritesStartUps = new List<Users>();
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var favoritesOfUser = _context.Favorites.Where(x => x.UserId == id).ToList();
-            usersFavoritesStartUps = await _seamedInDal.GetFavoriteStartUpsList(favoritesOfUser);
-            return View(usersFavoritesStartUps);
+            var favoritesOfUser = await _context.Favorites.Where(x => x.UserId == id).ToListAsync();
+            return View(favoritesOfUser);
         }
 
 
@@ -73,19 +72,14 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 return RedirectToAction("Favorites");
             }
 
-            try
-            {
-                if (ModelState.IsValid)
+
+            if (ModelState.IsValid)
                 {
                     _context.Favorites.Add(favorite);
                     _context.SaveChanges();
-                    return RedirectToAction("Index");
+                    
                 }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-            }
+
             return RedirectToAction("Favorites");
         }
 
@@ -97,18 +91,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
             if (found != null)
             {
-                try
-                {
                     _context.Favorites.Remove(found);
                     _context.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-                catch (DataException)
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
-
-
+           
             }
             return RedirectToAction("Favorites");
         }
@@ -148,6 +133,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return foundStartups;
         }
 
+
+
         #endregion
+
     }
+
+
 }
