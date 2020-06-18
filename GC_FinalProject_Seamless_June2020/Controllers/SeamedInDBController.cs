@@ -50,9 +50,29 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         [Authorize]
         public async Task<IActionResult> DisplayListOfFavoriteStartUps()
         {
+            var model = new FavoritesListVM();
+
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var favoritesOfUser = await _context.Favorites.Where(x => x.UserId == id).ToListAsync();
-            return View(favoritesOfUser);
+
+            foreach (Favorites favorites in favoritesOfUser)
+            {
+                var favorite = await _seamedInDal.GetStartUpById(favorites.ApiId.ToString());
+
+                FavoritesModel favoriteModel = new FavoritesModel();
+                favoriteModel.ApiId = int.Parse(favorite.id);
+                favoriteModel.CompanyName = favorite.fields.CompanyName;
+                favoriteModel.City = favorite.fields.City;
+                favoriteModel.Country = favorite.fields.Country;
+                favoriteModel.Themes = favorite.fields.Themes;
+                favoriteModel.TechnologyAreas = favorite.fields.TechnologyAreas;
+                favoriteModel.Landscape = favorite.fields.Landscape;
+                favoriteModel.StateProvince = favorite.fields.StateProvince;
+
+                model.ListOfFavoriteStartUps.Add(favoriteModel);
+            }
+
+            return View(model);
         }
 
 
@@ -76,11 +96,10 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
 
             if (ModelState.IsValid)
-                {
-                    _context.Favorites.Add(favorite);
-                    _context.SaveChanges();
-                    
-                }
+            {
+                _context.Favorites.Add(favorite);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Favorites");
         }
@@ -93,9 +112,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
             if (found != null)
             {
-                    _context.Favorites.Remove(found);
-                    _context.SaveChanges();
-           
+                _context.Favorites.Remove(found);
+                _context.SaveChanges();
+
             }
             return RedirectToAction("Favorites");
         }
@@ -178,13 +197,13 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 if (checkedColumnValue.Contains(","))
                 {
                     List<String> splitStringList = checkedColumnValue.Split(",").ToList();
-                    foreach(string splitString in splitStringList)
+                    foreach (string splitString in splitStringList)
                     {
-                        if(respectiveColumnList.Any(a => a != splitString))
+                        if (respectiveColumnList.Any(a => a != splitString))
                         {
                             respectiveColumnList.Add(splitString);
                         }
-              
+
                     }
                 }
                 else
