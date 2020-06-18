@@ -80,71 +80,74 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
-            var user = _context.Users.Where(x => x.UserId == id).First();
-           
-                    _context.Users.Remove(user);
-                
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (id != "76b4ba6b-8a94-4fe9-9f64-6b2d386d50fd")
+            {
+                var user = _context.Users.Where(x => x.UserId == id).First();
+
+                _context.Users.Remove(user);
+
+
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("AdminView");
         }
 
         public async Task<IActionResult> DeleteAccount(string id)
         {
-            var user = _context.AspNetUsers.Where(x => x.Id == id).First();
-           
-                
-                    _context.AspNetUsers.Remove(user);
-                
-            
-            await _context.SaveChangesAsync();
+            if (id != "76b4ba6b-8a94-4fe9-9f64-6b2d386d50fd")
+            {
+                var user = _context.AspNetUsers.Where(x => x.Id == id).First();
+
+                _context.AspNetUsers.Remove(user);
+
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction("Index");
         }
 
         private async Task CreateRoles(string id, string usertype)
         {
+            if (id != "76b4ba6b-8a94-4fe9-9f64-6b2d386d50fd")
+            {
+                var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+             
+                var roleCheck = await RoleManager.RoleExistsAsync(usertype);
+                if (!roleCheck)
+                {
+                    await RoleManager.CreateAsync(new IdentityRole(usertype));
+                }
+                
+                IdentityUser user = await UserManager.FindByIdAsync(id);
+                await UserManager.AddToRoleAsync(user, usertype);
+                if (usertype == "Admin")
+                {
+                    var user1 = _context.AspNetUsers.Find(id);
+                    user1.Roles = "Admin";
+                    await _context.SaveChangesAsync();
+                    await UserManager.RemoveFromRoleAsync(user, "Startup");
+                    await UserManager.RemoveFromRoleAsync(user, "Partner");
+                }
+                else if (usertype == "Startup")
+                {
+                    var user1 = _context.AspNetUsers.Find(id);
+                    user1.Roles = "Startup";
+                    await _context.SaveChangesAsync();
+                    await UserManager.RemoveFromRoleAsync(user, "Admin");
+                    await UserManager.RemoveFromRoleAsync(user, "Partner");
+                    _ = await UserManager.UpdateSecurityStampAsync(user);
 
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            //here in this line we are adding Admin Role
-            var roleCheck = await RoleManager.RoleExistsAsync(usertype);
-            if (!roleCheck)
-            {
-                //here in this line we are creating admin role and seed it to the database
-                await RoleManager.CreateAsync(new IdentityRole(usertype));
-            }
-            //here we are assigning the Admin role to the User that we have registered above 
-            //Now, we are assinging admin role to this user("Ali@gmail.com"). When will we run this project then it will
-            //be assigned to that user.
-            IdentityUser user = await UserManager.FindByIdAsync(id);
-            await UserManager.AddToRoleAsync(user, usertype);
-            if (usertype == "Admin")
-            {
-                var user1 = _context.AspNetUsers.Find(id);
-                user1.Roles = "Admin";
-                await _context.SaveChangesAsync();
-                await UserManager.RemoveFromRoleAsync(user, "Startup");
-                await UserManager.RemoveFromRoleAsync(user, "Partner");
-            }
-            else if (usertype == "Startup")
-            {
-                var user1 = _context.AspNetUsers.Find(id);
-                user1.Roles = "Startup";
-                await _context.SaveChangesAsync();
-                await UserManager.RemoveFromRoleAsync(user, "Admin");
-                await UserManager.RemoveFromRoleAsync(user, "Partner");
-                _ = await UserManager.UpdateSecurityStampAsync(user);
+                }
+                else if (usertype == "Partner")
+                {
+                    var user1 = _context.AspNetUsers.Find(id);
+                    user1.Roles = "Partner";
+                    await _context.SaveChangesAsync();
+                    await UserManager.RemoveFromRoleAsync(user, "Admin");
+                    await UserManager.RemoveFromRoleAsync(user, "Startup");
+                    _ = await UserManager.UpdateSecurityStampAsync(user);
 
-            }
-            else if (usertype == "Partner")
-            {
-                var user1 = _context.AspNetUsers.Find(id);
-                user1.Roles = "Partner";
-                await _context.SaveChangesAsync();
-                await UserManager.RemoveFromRoleAsync(user, "Admin");
-                await UserManager.RemoveFromRoleAsync(user, "Startup");
-                _ = await UserManager.UpdateSecurityStampAsync(user);
-
+                }
             }
         }
 
