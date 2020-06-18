@@ -30,11 +30,22 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             _context = context;
         }
         
-
+		[Authorize]
         public async Task<IActionResult> Index()
         {
-            var startUp = await _seamedInDal.GetStartups();
-            return View(startUp);
+			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			try
+			{
+				Users thisUser = _context.Users.Where(x => x.UserId == id).First();
+			}
+			catch
+			{
+				return RedirectToAction("RegisterUser");
+			}
+
+			
+
+            return RedirectToAction("SearchPage", "SeamedInDB");
         }
 
         public async Task<IActionResult> SearchResults(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
@@ -87,7 +98,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			{
 				_context.Users.Add(u);
 				_context.SaveChanges();
-				return RedirectToAction("SearchResults");
+				return RedirectToAction("Index");
 			}
 			else
 			{

@@ -1,4 +1,4 @@
-﻿@model FavoritesListVM
+﻿@model List<Record>
 @{
     ViewData["Title"] = "Favorites";
 }
@@ -20,70 +20,70 @@
         }
         else
         {
-            @foreach (FavoritesModel favoriteStartUp in Model.ListOfFavoriteStartUps)
+            @foreach (Record favoriteStartUp in Model)
             {
                 //Otherwise, displays list of User's Favorite StartUps
                 <br>
                 @*error handling for displaying properties (if null)*@
-                @if (favoriteStartUp.CompanyName == null)
+                @if (favoriteStartUp.fields.CompanyName == null)
                 {
                     <h5>Company Name not available</h5>
                 }
                 else
                 {
-                    <h5>Company Name: @favoriteStartUp.CompanyName</h5>
+                    <h5>Company Name: @favoriteStartUp.fields.CompanyName</h5>
                 }
-                @if (favoriteStartUp.City == null)
+                @if (favoriteStartUp.fields.City == null)
                 {
                     <h5>City not available</h5>
                 }
                 else
                 {
-                    <h5>City: @favoriteStartUp.City</h5>
+                    <h5>City: @favoriteStartUp.fields.City</h5>
                 }
-                @if (favoriteStartUp.StateProvince == null)
+                @if (favoriteStartUp.fields.StateProvince == null)
                 {
                     <h5>State and/or Province not available</h5>
                 }
                 else
                 {
-                    <h5>State or Province: @favoriteStartUp.StateProvince</h5>
+                    <h5>State or Province: @favoriteStartUp.fields.StateProvince</h5>
                 }
-                @if (favoriteStartUp.Country == null)
+                @if (favoriteStartUp.fields.Country == null)
                 {
                     <h5>Country not available</h5>
                 }
                 else
                 {
-                    <h5>Country: @favoriteStartUp.Country</h5>
+                    <h5>Country: @favoriteStartUp.fields.Country</h5>
                 }
-                @if (favoriteStartUp.Themes == null)
+                @if (favoriteStartUp.fields.Themes == null)
                 {
                     <h5>Theme not available</h5>
                 }
                 else
                 {
-                    <h5>Theme: @favoriteStartUp.Themes</h5>
+                    <h5>Theme: @favoriteStartUp.fields.Themes</h5>
                 }
 
-                @if (favoriteStartUp.TechnologyAreas == null)
+                @if (favoriteStartUp.fields.TechnologyAreas == null)
                 {
                     <h5>Technology not available</h5>
                 }
                 else
                 {
-                    <h5>Technology: @favoriteStartUp.TechnologyAreas</h5>
+                    <h5>Technology: @favoriteStartUp.fields.TechnologyAreas</h5>
                 }
-                @if (favoriteStartUp.Landscape == null)
+                @if (favoriteStartUp.fields.Landscape == null)
                 {
                     <h5>Landscape not available</h5>
                 }
                 else
                 {
-                    <h5>Landscape: @favoriteStartUp.Landscape</h5>
+                    <h5>Landscape: @favoriteStartUp.fields.Landscape</h5>
                 }
 
-                <button onclick="document.location = '/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.ApiId">Remove this StartUp from the list</button>
+                <button onclick="document.location = '/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id'">Remove this StartUp from the list</button>
                 <div>Are you sure you want to remove this StartUp?</div>
             }
         }
@@ -111,5 +111,5 @@
         }*@
         <br><br><br><br>
     </div>
-    }
+    
 </div>
