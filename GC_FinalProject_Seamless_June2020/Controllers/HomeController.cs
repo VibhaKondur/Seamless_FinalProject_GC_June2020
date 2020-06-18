@@ -96,6 +96,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				AspNetUsers thisUser = _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
+				thisUser.Roles = u.UserType;
 				_context.Users.Add(u);
 				_context.SaveChanges();
 				return RedirectToAction("Index");

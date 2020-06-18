@@ -58,23 +58,23 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
 
             if (ModelState.IsValid)
-                {
-                    user.UserType = newtype;
-                    user.Theme = newtheme;
-                    user.Name = newname;
-                    user.Technology = newtech;
-                    user.Landscape = newlandscape;
-                    user.Industry = newindustry;
-                    user.PhoneNumber = newphone;
-                    user.EmailAddress = newemail;
-                    user.Website = newwebsite;
-                    user.City = newcity;
-                    user.StateProvince = newstate;
-                    user.Country = newcountry;
-                    user.ProfilePicture = newpic;
-                    await _context.SaveChangesAsync();
-                }
-            
+            {
+                user.UserType = newtype;
+                user.Theme = newtheme;
+                user.Name = newname;
+                user.Technology = newtech;
+                user.Landscape = newlandscape;
+                user.Industry = newindustry;
+                user.PhoneNumber = newphone;
+                user.EmailAddress = newemail;
+                user.Website = newwebsite;
+                user.City = newcity;
+                user.StateProvince = newstate;
+                user.Country = newcountry;
+                user.ProfilePicture = newpic;
+                await _context.SaveChangesAsync();
+            }
+
             return RedirectToAction("AdminView");
         }
 
@@ -96,13 +96,19 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         {
             if (id != "76b4ba6b-8a94-4fe9-9f64-6b2d386d50fd")
             {
-                var user = _context.AspNetUsers.Where(x => x.Id == id).First();
-                var user1 = _context.Users.Where(x => x.UserId == id).First();
-                var user2 = _context.Favorites.Where(x => x.UserId == id).First();
-                _context.AspNetUsers.Remove(user);
-                _context.Users.Remove(user1);
-                _context.Favorites.Remove(user2);
 
+                var user1 = _context.Users.Where(x => x.UserId == id).ToList();
+                var user2 = _context.Favorites.Where(x => x.UserId == id).ToList();
+                var user = _context.AspNetUsers.Where(x => x.Id == id).First();
+                _context.AspNetUsers.Remove(user);
+                if (user1.Count > 0)
+                {
+                    _context.Users.RemoveRange(user1);
+                }
+                if (user2.Count > 0)
+                {
+                    _context.Favorites.RemoveRange(user2);
+                }
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index");
@@ -114,13 +120,13 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             {
                 var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-             
+
                 var roleCheck = await RoleManager.RoleExistsAsync(usertype);
                 if (!roleCheck)
                 {
                     await RoleManager.CreateAsync(new IdentityRole(usertype));
                 }
-                
+
                 IdentityUser user = await UserManager.FindByIdAsync(id);
                 await UserManager.AddToRoleAsync(user, usertype);
                 if (usertype == "Admin")
@@ -130,6 +136,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     await _context.SaveChangesAsync();
                     await UserManager.RemoveFromRoleAsync(user, "Startup");
                     await UserManager.RemoveFromRoleAsync(user, "Partner");
+                    await UserManager.RemoveFromRoleAsync(user, "Seamless");
                 }
                 else if (usertype == "Startup")
                 {
@@ -138,6 +145,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     await _context.SaveChangesAsync();
                     await UserManager.RemoveFromRoleAsync(user, "Admin");
                     await UserManager.RemoveFromRoleAsync(user, "Partner");
+                    await UserManager.RemoveFromRoleAsync(user, "Seamless");
                     _ = await UserManager.UpdateSecurityStampAsync(user);
 
                 }
@@ -148,6 +156,18 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     await _context.SaveChangesAsync();
                     await UserManager.RemoveFromRoleAsync(user, "Admin");
                     await UserManager.RemoveFromRoleAsync(user, "Startup");
+                    await UserManager.RemoveFromRoleAsync(user, "Seamless");
+                    _ = await UserManager.UpdateSecurityStampAsync(user);
+
+                }
+                else if (usertype == "Seamless")
+                {
+                    var user1 = _context.AspNetUsers.Find(id);
+                    user1.Roles = "Seamless";
+                    await _context.SaveChangesAsync();
+                    await UserManager.RemoveFromRoleAsync(user, "Admin");
+                    await UserManager.RemoveFromRoleAsync(user, "Startup");
+                    await UserManager.RemoveFromRoleAsync(user, "Partner");
                     _ = await UserManager.UpdateSecurityStampAsync(user);
 
                 }
