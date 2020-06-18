@@ -75,11 +75,27 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Favorites()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            List<Favorites> f = _context.Favorites.Where(x => x.UserId == id).ToList();
+
+            List<Record> records = new List<Record>();
+
+            foreach(Favorites favorites in f)
+            {
+                Record record = await _seamedInDal.GetStartUpById(favorites.ApiId);
+
+                records.Add(record);
+            }
+
+            return View(records);
+        }
 
         //Adds a new favorite StartUp to the user's list of favorite StartUps
         [Authorize]
-        public IActionResult AddAFavoriteStartUpToList(int id)
+        public IActionResult AddAFavoriteStartUpToList(string id)
         {
 
             Favorites favorite = new Favorites
@@ -89,10 +105,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             };
 
 
-            if (_context.Favorites.Where(x => (x.ApiId == id) && (x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList().Count > 0)
-            {
-                return RedirectToAction("Favorites");
-            }
 
 
             if (ModelState.IsValid)
@@ -101,12 +113,17 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 _context.SaveChanges();
             }
 
+            if (_context.Favorites.Where(x => (x.ApiId == id) && (x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList().Count > 0)
+            {
+                return RedirectToAction("Favorites");
+            }
+
             return RedirectToAction("Favorites");
         }
 
         //Removes a new favorite StartUp from the user's list of favorite StartUps
         [Authorize]
-        public IActionResult RemoveAFavoriteStartUpFromList(int id)
+        public IActionResult RemoveAFavoriteStartUpFromList(string id)
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
@@ -137,7 +154,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         #endregion
 
         #region Search Result Methods
-        
+
         public async Task<SearchPageVM> GetStartUpColumnCategoryValues()
         {
             SearchPageVM searchPageVM = new SearchPageVM();
