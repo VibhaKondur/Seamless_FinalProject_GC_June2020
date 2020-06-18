@@ -72,7 +72,7 @@ namespace GC_FinalProject_Seamless_June2020
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-            //CreateRoles(services).Wait();
+            //CreateRoles(services,"example@example.com").Wait();
         }
         //private async Task CreateRoles(IServiceProvider serviceProvider, string email)
         //{

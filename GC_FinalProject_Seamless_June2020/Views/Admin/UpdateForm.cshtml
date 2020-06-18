@@ -5,9 +5,32 @@
         <input type="text" name="newname" value="@Model.Name" placeholder="Name" />
         <input type="text" name="newemail" value="@Model.EmailAddress" placeholder="Email" />
         <input type="text" name="newindustry" value="@Model.Industry" placeholder="Industry" />
-        <input type="text" name="newtech" value="@Model.Technology" placeholder="Technology" />
-        <input type="text" name="newlandscape" value="@Model.Landscape" placeholder="Landscape" />
-        <input type="text" name="newtheme" value="@Model.Theme" placeholder="Theme" />
+    <select name="newtech">
+        <option value="@Model.Technology" >@Model.Technology</option>
+        <option value="Software / AI">Software / AI</option>
+        <option value="Sensing">Sensing</option>
+        <option value="Robotics">Robotics</option>
+        <option value="Advanced Materials">Advanced Materials</option>
+        <option value="Business Process">Business Process</option>
+        <option value="Products">Products</option>
+    </select>        
+    <select name="newlandscape">
+        <option value="@Model.Landscape">@Model.Landscape</option>
+        <option value="">n/a</option>
+        <option value="Good Habits">Good Habits</option>
+        <option value="Personalized wellness">Personalized Wellness</option>
+        <option value="Automation and robotics">Automation and Robotics</option>
+        <option value="Safe shared spaces">Safe Shared Spaces</option>
+        <option value="Clinic in a box">Clinic in a Box</option>
+
+    </select>
+            
+        <select name="newtheme">
+            <option value="@Model.Theme" >@Model.Theme</option>
+            <option value="Health Beyond the Hospital">Health Beyond the Hospital</option>
+            <option value="The Good Life">The Good Life</option>
+            <option value="Robust Future">Robust Future</option>
+        </select>
         <input type="text" name="newphone" value="@Model.PhoneNumber" placeholder="Phone Number" />
         <input type="text" name="newwebsite" value="@Model.Website" placeholder="Website" />
         <input type="text" name="newcity" value="@Model.City" placeholder="City" />
@@ -15,8 +38,5 @@
         <input type="text" name="newcountry" value="@Model.Country" placeholder="Country" />
         <input type="submit" />
     </form>
-
-
-
 
 
