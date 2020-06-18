@@ -1,4 +1,4 @@
-﻿@model List<Users>
+﻿@model FavoritesListVM
 @{
     ViewData["Title"] = "Favorites";
 }
@@ -8,8 +8,6 @@
 <br>
 
 <div class="flex">
-    @foreach (Users favoriteStartUp in Model)
-    {
 
     <div class="flex-item">
 
@@ -18,67 +16,99 @@
         {
             //If favorites list is empty, direct user back to search index to search StartUps to add to Favorites List
             <p class="text-danger">Your list of favorite StartUps is empty. Please return to Search Index to search more Favorites to add to Favorites List.</p>
-            <button onclick="document.location = '/SeamedInDB/GetStartupsFromSelections?id=@favoriteStartUp.Id">Go to Search Index to search StartUps</button>
+            <button onclick="document.location = '/SeamedInDB/GetStartUpColumnCategoryValues">Go to Search Index to search StartUps</button>
         }
         else
         {
-            //Otherwise, displays list of User's Favorite StartUps
-            <h4>Name: @favoriteStartUp.Name</h4>
-            <h4>City: @favoriteStartUp.City</h4>
+            @foreach (FavoritesModel favoriteStartUp in Model.ListOfFavoriteStartUps)
+            {
+                //Otherwise, displays list of User's Favorite StartUps
+                <br>
+                @*error handling for displaying properties (if null)*@
+                @if (favoriteStartUp.CompanyName == null)
+                {
+                    <h5>Company Name not available</h5>
+                }
+                else
+                {
+                    <h5>Company Name: @favoriteStartUp.CompanyName</h5>
+                }
+                @if (favoriteStartUp.City == null)
+                {
+                    <h5>City not available</h5>
+                }
+                else
+                {
+                    <h5>City: @favoriteStartUp.City</h5>
+                }
+                @if (favoriteStartUp.StateProvince == null)
+                {
+                    <h5>State and/or Province not available</h5>
+                }
+                else
+                {
+                    <h5>State or Province: @favoriteStartUp.StateProvince</h5>
+                }
+                @if (favoriteStartUp.Country == null)
+                {
+                    <h5>Country not available</h5>
+                }
+                else
+                {
+                    <h5>Country: @favoriteStartUp.Country</h5>
+                }
+                @if (favoriteStartUp.Themes == null)
+                {
+                    <h5>Theme not available</h5>
+                }
+                else
+                {
+                    <h5>Theme: @favoriteStartUp.Themes</h5>
+                }
+
+                @if (favoriteStartUp.TechnologyAreas == null)
+                {
+                    <h5>Technology not available</h5>
+                }
+                else
+                {
+                    <h5>Technology: @favoriteStartUp.TechnologyAreas</h5>
+                }
+                @if (favoriteStartUp.Landscape == null)
+                {
+                    <h5>Landscape not available</h5>
+                }
+                else
+                {
+                    <h5>Landscape: @favoriteStartUp.Landscape</h5>
+                }
+
+                <button onclick="document.location = '/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.ApiId">Remove this StartUp from the list</button>
+                <div>Are you sure you want to remove this StartUp?</div>
+            }
+        }
+
+
+        @*@if (Model == new List<Record>)
+        {
+            //Displays user's current list of favorites
+            <h4>Name: @favoriteStartUp.Fields.CompanyName</h4>
+            <h4>City: @favoriteStartUp.Fields.City</h4>
             <h4>State or Province: @favoriteStartUp.StateProvince</h4>
             <h4>Country: @favoriteStartUp.Country</h4>
             <h4>Theme: @favoriteStartUp.Theme</h4>
-            <h4>Technology: @favoriteStartUp.Technology</h4>
+            <h4>Technology: @favoriteStartUp.TechnologyAreas</h4>
             <h4>Landscape: @favoriteStartUp.Landscape</h4>
             <h4>Summary: @favoriteStartUp.Summary</h4>
 
         }
-        <br>
-        @*error handling for displaying properties (if null)*@
-        @if (favoriteStartUp.StateProvince == null)
-        {
-            <h5>State and/or Province not available</h5>
-        }
         else
         {
-            <h5>State or Province: @favoriteStartUp.StateProvince</h5>
-        }
-        @if (favoriteStartUp.Theme == null)
-        {
-            <h5>Theme not available</h5>
-        }
-        else
-        {
-            <h5>Theme: @favoriteStartUp.Theme</h5>
-        }
+            //If user wants to update favorites list, take user to Update favorites method
+            <p class="text-danger">Update current list of Favorites?</p>
+            <button onclick="document.location = '/SeamedInDB/UpdateListOfFavoriteStartUps?id=@favoriteStartUp.id">Update your Favorites list</button>
 
-        @if (favoriteStartUp.Technology == null)
-        {
-            <h5>Technology not available</h5>
-        }
-        else
-        {
-            <h5>Technology: @favoriteStartUp.Technology</h5>
-        }
-        @if (favoriteStartUp.Landscape == null)
-        {
-            <h5>Landscape not available</h5>
-        }
-        else
-        {
-            <h5>Landscape: @favoriteStartUp.Landscape</h5>
-        }
-        @if (favoriteStartUp.Summary == null)
-        {
-            <h5>Summary not available</h5>
-        }
-        else
-        {
-            <h5>Summary: @favoriteStartUp.Summary</h5>
-        }
-
-        <button onclick="document.location = '/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.Id">Remove this StartUp from the list</button>
-        <div>Are you sure you want to remove this StartUp?</div>
+        }*@
         <br><br><br><br>
     </div>
     }
