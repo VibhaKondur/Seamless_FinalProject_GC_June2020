@@ -162,6 +162,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
                             innerString = innerString.Append(",");
                         }
                     }
+
                     string convertedString = $"OR({innerString})";
 
                     finalSelectionList.Add(convertedString);

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace GC_FinalProject_Seamless_June2020.Controllers
 {
@@ -36,20 +37,35 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View(startUp);
         }
 
-        public async Task<IActionResult> SearchResults()
+        public async Task<IActionResult> SearchResults(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
+            List<string> landscape, List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
         {
-            var s = await _seamedInDal.GetStartups();
+            List<List<string>> listOfLists = new List<List<string>>();
 
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            listOfLists.Add(source);
+            listOfLists.Add(scout);
+            listOfLists.Add(alignment);
+            listOfLists.Add(theme);
+            listOfLists.Add(technologyArea);
+            listOfLists.Add(landscape);
+            listOfLists.Add(country);
+            listOfLists.Add(state);
+            listOfLists.Add(city);
+            listOfLists.Add(stage);
 
-            Users thisUser = _context.Users.Where(x => x.UserId == id).First();
+            List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
+            Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
 
-            var rankedStartups = Ranking(s, thisUser);
+			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			Users thisUser = _context.Users.Where(x => x.UserId == id).First();
+
+			var rankedStartups = Ranking(foundStartups, thisUser);
 
 			return View(rankedStartups);
-        }
+		}
 
-		public async Task<IActionResult> StartupProfile(string name)
+        public async Task<IActionResult> StartupProfile(string name)
 		{
 			Record s = await _seamedInDal.GetStartUpByName(name);
 
@@ -77,8 +93,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			{
 				return View();
 			}
-
-			
 		}
 
         public IActionResult Privacy()

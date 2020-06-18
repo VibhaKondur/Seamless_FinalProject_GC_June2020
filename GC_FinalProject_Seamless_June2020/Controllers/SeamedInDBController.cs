@@ -118,28 +118,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         #endregion
 
         #region Search Result Methods
-        public async Task<Startups> GetStartupsFromSelections(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
-            List<string> landscape, List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
-        {
-            List<List<string>> listOfLists = new List<List<string>>();
-
-            listOfLists.Add(source);
-            listOfLists.Add(scout);
-            listOfLists.Add(alignment);
-            listOfLists.Add(theme);
-            listOfLists.Add(technologyArea);
-            listOfLists.Add(landscape);
-            listOfLists.Add(country);
-            listOfLists.Add(state);
-            listOfLists.Add(city);
-            listOfLists.Add(stage);
-
-            List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
-            Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
-
-            return foundStartups;
-        }
-
+        
         public async Task<SearchPageVM> GetStartUpColumnCategoryValues()
         {
             SearchPageVM searchPageVM = new SearchPageVM();
@@ -180,11 +159,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     List<String> splitStringList = checkedColumnValue.Split(",").ToList();
                     foreach(string splitString in splitStringList)
                     {
-                        if(respectiveColumnList.Any(a => a != splitString))
-                        {
-                            respectiveColumnList.Add(splitString);
-                        }
-              
+                        respectiveColumnList.Add(splitString);
                     }
                 }
                 else

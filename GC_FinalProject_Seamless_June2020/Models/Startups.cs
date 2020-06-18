@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace GC_FinalProject_Seamless_June2020.Models
 {
-
     public class Startups
     {
         public Record[] records { get; set; }
