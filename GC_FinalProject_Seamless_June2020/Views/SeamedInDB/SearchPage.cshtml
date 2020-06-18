@@ -17,7 +17,7 @@
             <select name="theme" id="theme" form="searchForm" multiple>
                 @foreach (string optionValue in Model.themesList)
                 {
-                    <option name="theme" value="{Theme(s)} = '@optionValue'">@optionValue</option>
+                    <option name="theme" value="FIND('@optionValue',{Theme(s)})">@optionValue</option>
                 }
             </select>
         </td>
@@ -25,7 +25,7 @@
             <select name="alignment" id="alignment_id" form="searchForm" multiple>
                 @foreach (string optionValue in Model.alignmentsList)
                 {
-                    <option name="alignment" value="{Alignment} = '@optionValue'">@optionValue</option>
+                    <option name="alignment" value="FIND('@optionValue',{Alignment})">@optionValue</option>
                 }
             </select>
         </td>
@@ -33,7 +33,7 @@
             <select name="technologyArea" id="technologyArea_id" form="searchForm" multiple>
                 @foreach (string optionValue in Model.technologyAreasList)
                 {
-                    <option name="technologyArea" value="{Technology Areas} = '@optionValue'">@optionValue</option>
+                    <option name="technologyArea" value="FIND('@optionValue',{Technology Areas})">@optionValue</option>
                 }
             </select>
         </td>

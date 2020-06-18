@@ -178,9 +178,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     List<String> splitStringList = checkedColumnValue.Split(",").ToList();
                     foreach (string splitString in splitStringList)
                     {
-                        if (respectiveColumnList.Any(a => a != splitString))
+                        if (!respectiveColumnList.Contains(splitString.Trim()))
                         {
-                            respectiveColumnList.Add(splitString);
+                            respectiveColumnList.Add(splitString.Trim());
                         }
                     }
                 }

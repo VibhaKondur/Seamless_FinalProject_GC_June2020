@@ -109,29 +109,37 @@ namespace GC_FinalProject_Seamless_June2020.Models
         }
 
         public string GetFilteredEndPointFromList(List<string> searchParameters)
-        { 
-            string finalFormula = "Master%20List?filterByFormula=AND(";
-            StringBuilder formulaSecondHalf = new StringBuilder();
+        {
 
-            int loopCount = 0;
-
-            foreach (string filterSelectionString in searchParameters)
+            if (!searchParameters.Any())
             {
-                loopCount++;
-                formulaSecondHalf.Append(filterSelectionString);
-                if (searchParameters.Count != loopCount)
-                {
-                    formulaSecondHalf = formulaSecondHalf.Append(",");
-                }
-                if (searchParameters.Count == loopCount)
-                {
-                    formulaSecondHalf = formulaSecondHalf.Append(")");
-                }
+                return $"Master%20List";
             }
-            string encoded2ndHalf = HttpUtility.UrlEncode(formulaSecondHalf.ToString());
-            finalFormula += encoded2ndHalf;
+            else
+            {
+                string finalFormula = "Master%20List?filterByFormula=AND(";
+                StringBuilder formulaSecondHalf = new StringBuilder();
 
-            return finalFormula;
+                int loopCount = 0;
+
+                foreach (string filterSelectionString in searchParameters)
+                {
+                    loopCount++;
+                    formulaSecondHalf.Append(filterSelectionString);
+                    if (searchParameters.Count != loopCount)
+                    {
+                        formulaSecondHalf = formulaSecondHalf.Append(",");
+                    }
+                    if (searchParameters.Count == loopCount)
+                    {
+                        formulaSecondHalf = formulaSecondHalf.Append(")");
+                    }
+                }
+                string encoded2ndHalf = HttpUtility.UrlEncode(formulaSecondHalf.ToString());
+                finalFormula += encoded2ndHalf;
+
+                return finalFormula;
+            }
         }
 
         public string GetFilterEndPointFromString(string searchParameters)
