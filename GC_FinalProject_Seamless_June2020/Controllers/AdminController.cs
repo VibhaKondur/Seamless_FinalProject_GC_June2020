@@ -97,8 +97,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             if (id != "76b4ba6b-8a94-4fe9-9f64-6b2d386d50fd")
             {
                 var user = _context.AspNetUsers.Where(x => x.Id == id).First();
-
+                var user1 = _context.Users.Where(x => x.UserId == id).First();
+                var user2 = _context.Favorites.Where(x => x.UserId == id).First();
                 _context.AspNetUsers.Remove(user);
+                _context.Users.Remove(user1);
+                _context.Favorites.Remove(user2);
 
                 await _context.SaveChangesAsync();
             }
