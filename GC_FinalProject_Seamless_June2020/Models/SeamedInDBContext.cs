@@ -28,6 +28,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Favorites> Favorites { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public object LoadTable { get; internal set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
