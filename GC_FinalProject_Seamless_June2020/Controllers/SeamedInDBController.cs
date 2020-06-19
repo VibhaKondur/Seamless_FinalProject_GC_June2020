@@ -10,6 +10,7 @@ using GC_FinalProject_Seamless_June2020.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Configuration;
@@ -76,6 +77,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View(model);
         }
 
+        //favorite action method to find list of user's favorites
         public async Task<IActionResult> Favorites()
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -84,7 +86,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
             List<Record> records = new List<Record>();
 
-            foreach(Favorites favorites in f)
+            foreach (Favorites favorites in f)
             {
                 Record record = await _seamedInDal.GetStartUpById(favorites.ApiId);
 
@@ -92,6 +94,24 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             }
 
             return View(records);
+        }
+
+        //error handling for user not being able to add duplicate startUps to their favorites list
+        private bool CheckIfEntryExists(string id)
+        {
+            var listOfFavorites = _context.Favorites.Where(x => x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+
+            bool exists = false;
+
+            foreach (Favorites favor in listOfFavorites)
+            {
+                if (favor.ApiId == id)
+                {
+                    return true;
+                }
+            }
+
+            return exists;
         }
 
         //Adds a new favorite StartUp to the user's list of favorite StartUps
@@ -104,17 +124,19 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 ApiId = id,
                 UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
             };
+            
+            var listOfFavorites = _context.Favorites.Where(x => x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
 
-
-
-
-            if (ModelState.IsValid)
+            if (!CheckIfEntryExists(id))
             {
-                _context.Favorites.Add(favorite);
-                _context.SaveChanges();
-            }
-
-            if (_context.Favorites.Where(x => (x.ApiId == id) && (x.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value)).ToList().Count > 0)
+                if (ModelState.IsValid)
+                {
+                    _context.Favorites.Add(favorite);
+                    _context.SaveChanges();
+                }
+            }      
+            
+            if (listOfFavorites.Count > 0)
             {
                 return RedirectToAction("Favorites");
             }
@@ -122,36 +144,25 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return RedirectToAction("Favorites");
         }
 
+
         //Removes a new favorite StartUp from the user's list of favorite StartUps
         [Authorize]
-        public IActionResult RemoveAFavoriteStartUpFromList(string id)
+        public IActionResult RemoveAFavoriteStartUpFromList(string id, string subject)
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
             if (found != null)
             {
+
                 _context.Favorites.Remove(found);
                 _context.SaveChanges();
+
 
             }
             return RedirectToAction("Favorites");
         }
 
-        //Updates the user's list of Favorite StartUps
-        [Authorize]
-        public async Task<ActionResult> UpdateListOfFavoriteStartUps(int id, Users updatedListOfFavoriteStartUps)
-        {
-            if (id != updatedListOfFavoriteStartUps.Id || !ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            else
-            {
-                _context.Entry(updatedListOfFavoriteStartUps).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return NoContent();
-            }
-        }
+
         #endregion
 
         #region Search Result Methods
@@ -217,7 +228,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 respectiveColumnList.Select(a => a.Replace(removedSpecialChars));
             }*/
         }
-
         #endregion
     }
 
