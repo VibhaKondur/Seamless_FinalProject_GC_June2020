@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -108,6 +109,16 @@ namespace GC_FinalProject_Seamless_June2020.Models
             return specificRecords;
         }
 
+        public async Task<Startups> GetFilteredStartUps(string searchParameters)
+        {
+            var client = GetClient();
+            string searchEndPoint = GetFilterEndPointFromString(searchParameters);
+
+            var response = await client.GetAsync(searchEndPoint); //The "%20" represents the space
+            Startups specificRecords = await response.Content.ReadAsAsync<Startups>();
+            return specificRecords;
+        }
+
         public string GetFilteredEndPointFromList(List<string> searchParameters)
         {
 
@@ -142,12 +153,18 @@ namespace GC_FinalProject_Seamless_June2020.Models
             }
         }
 
-        public string GetFilterEndPointFromString(string searchParameters)
+        public string GetFilterEndPointFromString(string searchTerm)
         {
-            StringBuilder finalParameter = new StringBuilder($"Master%20List?filterByFormula=");
+            string finalFormula = "Master%20List?filterByFormula=";
+            StringBuilder finalParameter = new StringBuilder();
 
-            finalParameter = finalParameter.Append(searchParameters);
-            return finalParameter.ToString();
+            finalParameter.Append($"AND(OR(FIND('{searchTerm}', {{Alignment}}), FIND('{searchTerm}', {{Technology Areas}}), FIND('{searchTerm}', {{Landscape}})," +
+                $" FIND('{searchTerm}', {{Company Name}}), FIND('{searchTerm}', {{Theme(s)}})))");
+
+            string encoded2ndHalf = HttpUtility.UrlEncode(finalParameter.ToString());
+            finalFormula += encoded2ndHalf;
+
+            return finalFormula;
         }
 
         public List<string> ConvertsListsOfFormSelection(List<List<string>> ListOfLists)

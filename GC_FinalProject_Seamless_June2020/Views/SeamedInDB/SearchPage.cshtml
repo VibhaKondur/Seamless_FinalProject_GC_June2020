@@ -1,116 +1,138 @@
 ﻿@model SearchPageVM
 
+    <link href="~/css/searchStyles.css" rel="stylesheet" />
 
-<h1>Search Page</h1>
+<h1>Search Startups</h1>
 
 
-<table>
-    <tr>
-        <th>Themes</th>
-        <th>Alignments</th>
-        <th>Technology Areas</th>
-        <th>Sources</th>
-        <th>Scouts</th>
-    </tr>
-    <tr>
-        <td>
-            <select name="theme" id="theme" form="searchForm" multiple>
-                @foreach (string optionValue in Model.themesList)
-                {
-                    <option name="theme" value="FIND('@optionValue',{Theme(s)})">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="alignment" id="alignment_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.alignmentsList)
-                {
-                    <option name="alignment" value="FIND('@optionValue',{Alignment})">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="technologyArea" id="technologyArea_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.technologyAreasList)
-                {
-                    <option name="technologyArea" value="FIND('@optionValue',{Technology Areas})">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="source" id="source" form="searchForm" multiple>
-                @foreach (string optionValue in Model.sourcesList)
-                {
-                    <option name="source" value="{Source} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="scout" id="scout" form="searchForm" multiple>
-                @foreach (string optionValue in Model.scoutsList)
-                {
-                    <option name="scout" value="{Scout} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-    </tr>
-
-    <tr>
-        <th>Landscapes</th>
-        <th>Countries</th>
-        <th>State/Province</th>
-        <th>Cities</th>
-        <th>Stages</th>
-    </tr>
-    <tr>
-        
-        <td>
-            <select name="landscape" id="landscape_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.landscapesList)
-                {
-                    <option name="landscape" value="{Landscape} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="country" id="country_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.countriesList)
-                {
-                    <option name="country" value="{Country} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="state" id="state_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.statesList)
-                {
-                    <option name="state" value="{State/Province} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="city" id="city_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.citiesList)
-                {
-                    <option name="city" value="{City} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-        <td>
-            <select name="stage" id="stage_id" form="searchForm" multiple>
-                @foreach (string optionValue in Model.stagesList)
-                {
-                    <option name="stage" value="{Stage} = '@optionValue'">@optionValue</option>
-                }
-            </select>
-        </td>
-    </tr>
-
-</table>
-
-<form action="/Home/SearchResults" id="searchForm">
+<form action="/Home/SearchResultsGlobal" id="searchTextBox">
+    <input type="text" name="globalSearch" />
     <input type="submit" />
 </form>
+
+<br />
+<br />
+
+<div class="flexContainer">
+    <button class="advancedSearchButton" data-toggle="collapse" data-target="#advancedSearch">
+        <h5>Show Advance Search Features</h5>
+    </button>
+</div>
+
+
+<div id="advancedSearch" class="collapse">
+    <table>
+        <tr>
+            <th>Themes</th>
+            <th>Alignments</th>
+            <th>Technology Areas</th>
+            <th>Sources</th>
+            <th>Scouts</th>
+        </tr>
+        <tr>
+            <td>
+                <select name="theme" id="theme" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.themesList)
+                    {
+                        <option name="theme" value="FIND('@optionValue',{Theme(s)})">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="alignment" id="alignment_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.alignmentsList)
+                    {
+                        <option name="alignment" value="FIND('@optionValue',{Alignment})">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="technologyArea" id="technologyArea_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.technologyAreasList)
+                    {
+                        <option name="technologyArea" value="FIND('@optionValue',{Technology Areas})">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="source" id="source" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.sourcesList)
+                    {
+                        <option name="source" value="{Source} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="scout" id="scout" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.scoutsList)
+                    {
+                        <option name="scout" value="{Scout} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Landscapes</th>
+            <th><input type="checkbox" name="country" id="radio1" checked="checked" onclick="enableSelectBox()">Countries</th>
+            <th><input type="checkbox" name="state" id="radio2" checked="checked" onclick="enableSelectBox()">State/Province</th>
+            <th><input type="checkbox" name="city" id="radio3" checked="checked" onclick="enableSelectBox()">Cities</th>
+            <th>Stages</th>
+        </tr>
+        <tr>
+
+            <td>
+                <select name="landscape" id="landscape_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.landscapesList)
+                    {
+                        <option name="landscape" value="{Landscape} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="country" id="country_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.countriesList)
+                    {
+                        <option name="country" value="{Country} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="state" id="state_id" form="searchForm" disabled="disabled" multiple>
+                    @foreach (string optionValue in Model.statesList)
+                    {
+                        <option name="state" value="{State/Province} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+
+            </td>
+            <td>
+                <select name="city" id="city_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.citiesList)
+                    {
+                        <option name="city" value="{City} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="stage" id="stage_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.stagesList)
+                    {
+                        <option name="stage" value="{Stage} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+        </tr>
+
+    </table>
+
+    
+
+    <form action="/Home/SearchResults" id="searchForm">
+        <input type="submit" />
+    </form>
+
+</div>
 
 
 

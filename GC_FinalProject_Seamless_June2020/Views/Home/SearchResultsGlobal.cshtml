@@ -1,0 +1,23 @@
+﻿@model List<Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record>>
+
+
+
+    <table>
+        <tr>
+            <th>Startup</th>
+            <th>Theme(s)</th>
+            <th>Tech</th>
+            <th>Country</th>
+        </tr>
+        @foreach (Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record> recordWithRank in Model)
+        {
+            <tr>
+                <td><a href="/Home/StartupProfile?name=@recordWithRank.Item2.fields.CompanyName">@recordWithRank.Item2.fields.CompanyName</a></td>
+                <td>@recordWithRank.Item2.fields.Themes</td>
+                <td>@recordWithRank.Item2.fields.TechnologyAreas</td>
+                <td>@recordWithRank.Item2.fields.Country</td>
+                <td><button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@recordWithRank.Item2.id'">Add to Favorites</button></td>
+
+            </tr>
+        }
+    </table>

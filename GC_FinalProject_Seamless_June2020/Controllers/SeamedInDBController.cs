@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GC_FinalProject_Seamless_June2020.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -174,6 +175,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 AddToRespectiveListMultiValue(startUp.fields.Themes, searchPageVM.themesList);
                 AddToRespectiveListMultiValue(startUp.fields.TechnologyAreas, searchPageVM.technologyAreasList);
             }
+
             return searchPageVM;
         }
 
@@ -182,6 +184,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             if (!(string.IsNullOrEmpty(checkedColumnValue)) && (!respectiveColumnList.Contains(checkedColumnValue)))
             {
                 respectiveColumnList.Add(checkedColumnValue);
+                respectiveColumnList.Sort();
             }
 
         }
@@ -206,7 +209,15 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     respectiveColumnList.Add(checkedColumnValue);
                 }
             }
+            respectiveColumnList.Sort();
+
+            /*foreach(string columnValues in respectiveColumnList)
+            {
+                string removedSpecialChars = Regex.Replace(columnValues, "[^A-Za-z0-9 -]", "");
+                respectiveColumnList.Select(a => a.Replace(removedSpecialChars));
+            }*/
         }
+
         #endregion
     }
 

@@ -1,36 +1,20 @@
-﻿body {
+﻿.advancedSearchButton {
+    border-radius: 8px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    transition-duration: 0.4s;
 }
 
-.multiselect {
-    width: 200px;
-}
-
-.selectBox {
-    position: relative;
-}
-
-    .selectBox select {
-        width: 100%;
-        font-weight: bold;
+    .advancedSearchButton:hover {
+        background-color: Green;
+        color: white;
     }
 
-.overSelect {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+.show {
+    display: block;
 }
 
-#checkboxes {
+.hide {
     display: none;
-    border: 1px #dadada solid;
 }
-
-    #checkboxes label {
-        display: block;
-    }
-
-        #checkboxes label:hover {
-            background-color: #1e90ff;
-        }

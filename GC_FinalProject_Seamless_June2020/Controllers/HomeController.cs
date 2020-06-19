@@ -42,38 +42,65 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			{
 				return RedirectToAction("RegisterUser");
 			}
-
-			
-
             return RedirectToAction("SearchPage", "SeamedInDB");
         }
 
-        public async Task<IActionResult> SearchResults(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,
-            List<string> landscape, List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd)
+
+		public async Task<IActionResult> SearchResultsGlobal( string globalSearch)
         {
-            List<List<string>> listOfLists = new List<List<string>>();
 
-            listOfLists.Add(source);
-            listOfLists.Add(scout);
-            listOfLists.Add(alignment);
-            listOfLists.Add(theme);
-            listOfLists.Add(technologyArea);
-            listOfLists.Add(landscape);
-            listOfLists.Add(country);
-            listOfLists.Add(state);
-            listOfLists.Add(city);
-            listOfLists.Add(stage);
+			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			Users thisUser = _context.Users.Where(x => x.UserId == id).First();
 
-            List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
-            Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
+			if (globalSearch != null)
+			{
+				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
+
+				var rankedStartups = RankingVersion2(foundStartups, thisUser);
+
+				return View(rankedStartups);
+			}
+			return View();
+		}
+
+
+		public async Task<IActionResult> SearchResults(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,List<string> landscape,
+			List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd, string globalSearch)
+        {
 
 			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 			Users thisUser = _context.Users.Where(x => x.UserId == id).First();
 
-			var rankedStartups = Ranking(foundStartups, thisUser);
+			if (globalSearch != null)
+			{
+				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
 
-			return View(rankedStartups);
+				var rankedStartups = Ranking(foundStartups, thisUser);
+			}
+			else
+			{
+				List<List<string>> listOfLists = new List<List<string>>();
+
+				listOfLists.Add(source);
+				listOfLists.Add(scout);
+				listOfLists.Add(alignment);
+				listOfLists.Add(theme);
+				listOfLists.Add(technologyArea);
+				listOfLists.Add(landscape);
+				listOfLists.Add(country);
+				listOfLists.Add(state);
+				listOfLists.Add(city);
+				listOfLists.Add(stage);
+
+				List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
+				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
+
+				var rankedStartups = Ranking(foundStartups, thisUser);
+
+				return View(rankedStartups);
+			}
+			return View();
 		}
 
         public async Task<IActionResult> StartupProfile(string name)
@@ -96,7 +123,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				AspNetUsers thisUser = _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
+				AspNetUsers thisUser =  _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
 				thisUser.Roles = u.UserType;
 				_context.Users.Add(u);
 				_context.SaveChanges();
@@ -167,6 +194,42 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			return sortedStartups;
 
 		}
+
+		public List<Tuple<int, Record>> RankingVersion2(Startups startups, Users user)
+        {
+			List<Tuple<int, Record>> RecordRankList = new List<Tuple<int, Record>>();
+
+			foreach (Record startup in startups.records)
+			{
+				int rank = 0;
+
+				if (startup.fields.Country != null && user.Country != null && (startup.fields.Country == user.Country))
+				{
+					rank += 1;
+				}
+				if (startup.fields.Alignment != null && user.Name != null && startup.fields.Alignment.Contains(user.Name))
+				{
+					rank += 5;
+				}
+				if (startup.fields.Themes != null && user.Theme != null && startup.fields.Themes.Contains(user.Theme))
+				{
+					rank += 3;
+				}
+				if (startup.fields.TechnologyAreas != null && user.Technology != null && startup.fields.TechnologyAreas.Contains(user.Technology))
+				{
+					rank += 3;
+				}
+				if (startup.fields.Landscape != null && user.Landscape != null && startup.fields.Landscape == user.Landscape)
+				{
+					rank += 4;
+				}
+				RecordRankList.Add(new Tuple<int, Record>(rank, startup));
+			}
+
+			RecordRankList = RecordRankList.OrderByDescending(t => t.Item1).ToList();
+
+			return RecordRankList;
+        }
 
 
 	}
