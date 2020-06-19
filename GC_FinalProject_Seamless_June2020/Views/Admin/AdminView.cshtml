@@ -1,14 +1,26 @@
 ﻿@model List<Users>
 
-@foreach(Users user in Model)
-{
-    <p>@user.Name</p>
-<form action="/Admin/UpdateForm" method="post">
-    <input type="hidden" name="id" value="@user.UserId" />
-    <input type="submit" value="Update Values" />
-</form>
-<form action="/Admin/Delete" method="post">
-    <input type="hidden" name="id" value="@user.UserId" />
-    <input type="submit" value="Delete" />
-</form>
-}
+
+
+    <table class="table-bordered">
+        <thead><tr><td>Company Name</td><td>Actions</td></tr></thead>
+        @foreach (Users user in Model)
+        {
+        <tr>
+            <td><p>@user.Name</p></td>
+            <td>
+                <form action="/Admin/UpdateForm" method="post">
+                    <input type="hidden" name="id" value="@user.UserId" />
+                    <input type="submit" value="Update Values" />
+                </form>
+                <form action="/Admin/Delete" method="post">
+                    <input type="hidden" name="id" value="@user.UserId" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </td>
+        </tr>
+        }
+
+            
+    </table>
+
