@@ -1,7 +1,8 @@
 ﻿@model Record
 
     <div class="sidenav">
-        <a> Welcome, @ViewBag.AspUser.Email</a>
+        <a> Welcome, </a>
+        <a>@ViewBag.AspUser.Email</a>
         <a href="/Home/UserProfile?name="@ViewBag.User.Id">Your Profile</a>
         <a href="/SeamedInDB/Favorites">Your Favorites</a>
         <a href="/SeamedInDB/SearchPage">Search Page</a>
