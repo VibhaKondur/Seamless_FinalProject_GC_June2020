@@ -51,6 +51,36 @@ input[type=text] {
     border-radius: 8px;
 }
 
-input[type=text]:focus {
-    background-color: lightgreen;
+    input[type=text]:focus {
+        border: 2px solid black;
+        border-radius: 4px;
+    }
+
+@media screen and (min-width: 425px) {
+
+    input[type=text] {
+        width: 200px;
+    }
 }
+
+@media screen and (min-width: 600px) {
+
+    input[type=text] {
+        width: 400px;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+
+    input[type=text] {
+        width: 700px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+
+    
+}
+
+
+
