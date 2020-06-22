@@ -80,6 +80,22 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         //favorite action method to find list of user's favorites
         public async Task<IActionResult> Favorites()
         {
+            string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+            Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+            ViewBag.AspUser = thisAspUser;
+
+            ViewBag.User = thisUser;
+
+            Startups startups = await _seamedInDal.GetStartups();
+
+            var rankedStartups = Ranking(startups, thisUser).ToList();
+
+            ViewBag.Startups = rankedStartups;
+
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             List<Favorites> f = _context.Favorites.Where(x => x.UserId == id).ToList();
@@ -239,6 +255,55 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             }*/
         }
         #endregion
+
+        public IEnumerable<StartupRank> Ranking(Startups startups, Users user)
+        {
+            List<StartupRank> rankedList = new List<StartupRank>();
+
+            //do algorithm and add to rankedList accordingly
+
+            foreach (Record startup in startups.records)
+            {
+                int rank = 0;
+                //if statements
+
+                if (startup.fields.Country != null && user.Country != null && (startup.fields.Country == user.Country))
+                {
+                    rank += 1;
+                }
+
+                if (startup.fields.Alignment != null && user.Name != null && startup.fields.Alignment.Contains(user.Name))
+                {
+                    rank += 5;
+                }
+
+                if (startup.fields.Themes != null && user.Theme != null && startup.fields.Themes.Contains(user.Theme))
+                {
+                    rank += 3;
+                }
+
+                if (startup.fields.TechnologyAreas != null && user.Technology != null && startup.fields.TechnologyAreas.Contains(user.Technology))
+                {
+                    rank += 3;
+                }
+
+                if (startup.fields.Landscape != null && user.Landscape != null && startup.fields.Landscape == user.Landscape)
+                {
+                    rank += 4;
+                }
+
+                StartupRank s = new StartupRank(startup, rank);
+                rankedList.Add(s);
+            }
+
+            IEnumerable<StartupRank> sortedStartups =
+                from startup in rankedList
+                orderby startup.Rank descending
+                select startup;
+
+            return sortedStartups;
+
+        }
     }
 
 
