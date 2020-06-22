@@ -10,6 +10,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
             <div class="container">
                 <a href="@Url.Action( "Index", "Home")"><img src="~/images/SeamedInLogo_10percent.png" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -21,7 +22,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                                              
+                        </li>
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">

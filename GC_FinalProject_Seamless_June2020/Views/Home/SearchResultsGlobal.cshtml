@@ -1,6 +1,7 @@
 ﻿@model List<Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record>>
 
-<div class="sidenav">
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a> Welcome, </a>
     <a>@ViewBag.AspUser.Email</a>
     <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a>
@@ -12,6 +13,8 @@
         <a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a>
     }
 </div>
+
+
 
 <div class="main">
     <table>

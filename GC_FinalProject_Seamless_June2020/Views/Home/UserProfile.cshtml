@@ -1,7 +1,9 @@
 ﻿@model Users
 
-<div class="sidenav">
-    <a> Welcome, @ViewBag.AspUser.Email</a>
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a> Welcome, </a>
+    <a>@ViewBag.AspUser.Email</a>
     <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a>
     <a href="/SeamedInDB/Favorites">Your Favorites</a>
     <a href="/SeamedInDB/SearchPage">Search Page</a>
@@ -11,6 +13,8 @@
         <a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a>
     }
 </div>
+
+
 
 <div class="main">
     <h1>@ViewBag.AspUser.Email</h1>
@@ -39,7 +43,7 @@
     <div>
         <h4>Profile Summary</h4>
         <p>@Model.Summary</p>
-        
+
     </div>
 
 </div>

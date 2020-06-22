@@ -39,6 +39,21 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
         public async Task<IActionResult> SearchPage()
         {
+            string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+            Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+            ViewBag.AspUser = thisAspUser;
+
+            ViewBag.User = thisUser;
+
+            Startups startups = await _seamedInDal.GetStartups();
+
+            var rankedStartups = Ranking(startups, thisUser).ToList();
+
+            ViewBag.Startups = rankedStartups;
             SearchPageVM searchPageVM = await GetStartUpColumnCategoryValues();
 
             return View(searchPageVM);
@@ -259,6 +274,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         public IEnumerable<StartupRank> Ranking(Startups startups, Users user)
         {
             List<StartupRank> rankedList = new List<StartupRank>();
+
+
 
             //do algorithm and add to rankedList accordingly
 
