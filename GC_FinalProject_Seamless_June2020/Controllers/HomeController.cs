@@ -48,17 +48,32 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
 		public async Task<IActionResult> SearchResultsGlobal( string globalSearch)
         {
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+			ViewBag.AspUser = thisAspUser;
+
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+
+			ViewBag.Startups = rankedStartups;
 
 			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			Users thisUser = _context.Users.Where(x => x.UserId == id).First();
+			
 
 			if (globalSearch != null)
 			{
 				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
 
-				var rankedStartups = RankingVersion2(foundStartups, thisUser);
+				var mainStartups = RankingVersion2(foundStartups, thisUser);
 
-				return View(rankedStartups);
+				return View(mainStartups);
 			}
 			return View();
 		}
