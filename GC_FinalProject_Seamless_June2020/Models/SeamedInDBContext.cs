@@ -19,6 +19,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
 
         private readonly IConfiguration _configuration;
 
+
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -28,14 +29,13 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Favorites> Favorites { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public object LoadTable { get; internal set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DBContext"));
+                optionsBuilder.UseSqlServer("DBContext");
             }
         }
 
@@ -146,6 +146,8 @@ namespace GC_FinalProject_Seamless_June2020.Models
                 entity.Property(e => e.ApiId)
                     .HasColumnName("API-Id")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.CommentSection).HasMaxLength(450);
 
                 entity.Property(e => e.UserId).HasMaxLength(450);
 

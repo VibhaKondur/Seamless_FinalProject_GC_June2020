@@ -16,6 +16,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public string id { get; set; }
         public Fields fields { get; set; }
         public DateTime createdTime { get; set; }
+
     }
 
     public class Fields
