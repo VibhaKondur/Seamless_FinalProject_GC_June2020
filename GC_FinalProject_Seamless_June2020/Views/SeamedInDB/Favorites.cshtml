@@ -1,4 +1,5 @@
 ﻿@model List<Record>
+
 @{
     ViewData["Title"] = "Favorites";
 }
@@ -25,7 +26,7 @@
 
                 //If favorites list is empty, direct user back to search page to search StartUps to add to Favorites List
                 <p class="text-danger">Your list of favorite StartUps is empty. Please return to Search Page to search StartUps</p>
-                <button onclick= "document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for StartUps</button>
+                <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for StartUps</button>
             }
 
             @*error handling for displaying properties (if null)*@
@@ -94,22 +95,51 @@
                 <i class="fas fa-trash-alt text-white"></i>Remove StartUp from Favorites List
             </a>
 
+            <div class="comment">
+            <textarea id="title" type="text " rows="8" cols="35" onkeyup="Allow()" placeholder="Add a comment"></textarea>
+                <form input type="submit" value="Post" onclick="insert()" style="width:100px; height: 200px"></form>
+            </div>
+            <div id="display"></div>
+            <script type="text/javascript">
+                var titles = [];
+                var titleInput = document.getElementById("title");
+                var messageBox = document.getElementById("display");
+                function Allow() {
+                    if (!user.title.value.match(/[a-zA-Z]$/) && user.title.value != "") {
+                        user.title.value = "";
+                        alert("Please limit 400 characters");
+                    }
+                    window.location.reload()
+                }
+                function insert() {
+                    titles.push(titleInput.value);
+                    clearAndShow();
+                }
+                function clearAndShow() {
+                    titleInput.value = "";
+                    messageBox.innerHTML = "";
+                    messageBox.innerHTML += " " + titles.join("<br/> ") + "<br/>";
+                }
+            </script>
+           
         }
+
+
 
 
         @*@if (Model == new List<Record>)
-        {
-            //Displays user's current list of favorites
-            <h4>Name: @favoriteStartUp.Fields.CompanyName</h4>
-            <h4>City: @favoriteStartUp.Fields.City</h4>
-            <h4>State or Province: @favoriteStartUp.StateProvince</h4>
-            <h4>Country: @favoriteStartUp.Country</h4>
-            <h4>Theme: @favoriteStartUp.Theme</h4>
-            <h4>Technology: @favoriteStartUp.TechnologyAreas</h4>
-            <h4>Landscape: @favoriteStartUp.Landscape</h4>
-            <h4>Summary: @favoriteStartUp.Summary</h4>
+            {
+                //Displays user's current list of favorites
+                <h4>Name: @favoriteStartUp.Fields.CompanyName</h4>
+                <h4>City: @favoriteStartUp.Fields.City</h4>
+                <h4>State or Province: @favoriteStartUp.StateProvince</h4>
+                <h4>Country: @favoriteStartUp.Country</h4>
+                <h4>Theme: @favoriteStartUp.Theme</h4>
+                <h4>Technology: @favoriteStartUp.TechnologyAreas</h4>
+                <h4>Landscape: @favoriteStartUp.Landscape</h4>
+                <h4>Summary: @favoriteStartUp.Summary</h4>
 
-        }
+            }
 
         *@
         <br><br><br><br>

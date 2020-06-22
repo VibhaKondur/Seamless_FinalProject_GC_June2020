@@ -20,5 +20,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
     public class FavoritesListVM
     {
         public List<FavoritesModel> ListOfFavoriteStartUps { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

@@ -120,6 +120,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         {
 
             Favorites favorite = new Favorites
+ 
             {
                 ApiId = id,
                 UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value
@@ -133,6 +134,15 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 {
                     _context.Favorites.Add(favorite);
                     _context.SaveChanges();
+                }
+
+                else
+                {
+
+                    FavoritesListVM fVM = new FavoritesListVM();
+                    fVM.ErrorMessage = "Duplicate found. Please return to search results to add another favorite";
+                    return View(fVM);
+                    
                 }
             }      
             
