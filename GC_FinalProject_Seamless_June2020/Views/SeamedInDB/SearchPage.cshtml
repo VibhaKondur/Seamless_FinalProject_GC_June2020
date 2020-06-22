@@ -1,27 +1,36 @@
 ﻿@model SearchPageVM
 
-    <link href="~/css/searchStyles.css" rel="stylesheet" />
-
-<h1>Search Startups</h1>
+<link href="~/css/searchPageStyles.css" rel="stylesheet" />
 
 
-<form action="/Home/SearchResultsGlobal" id="searchTextBox">
-    <input type="text" name="globalSearch" />
-    <input type="submit" />
-</form>
+<div class="flexContainer">
+    <picture>
+        <source srcset="~/images/SeamedInLogo_15percent.png" media="(max-width: 425px)">
+        <source srcset="~/images/SeamedInLogo_35percent.png" media="(max-width: 600px)">
+        <source srcset="~/images/SeamedInLogo_50percent.png" media="(max-width: 1000px)">
+        <source srcset="~/images/SeamedInLogo_75percent.png" media="(max-width: 1400px)">
+        <img src="~/images/SeamedInLogo.png" />
+    </picture>
+</div>
+
+<div class="flexContainer">
+    <form action="/Home/SearchResultsGlobal" id="searchTextBox">
+        <input type="text" name="globalSearch" placeholder="Search" />
+        <input type="submit" hidden />
+    </form>
+</div>
 
 <br />
 <br />
 
 <div class="flexContainer">
-    <button class="advancedSearchButton" data-toggle="collapse" data-target="#advancedSearch">
-        <h5>Show Advance Search Features</h5>
-    </button>
+    <a href="#advancedSearchTarget" data-toggle="collapse" data-target="#advancedSearch">Advanced Filter Search</a>
 </div>
 
+<br />
 
 <div id="advancedSearch" class="collapse">
-    <table>
+    <a id="advanceSearchTarget"><table class="flexTableStyle">
         <tr>
             <th>Themes</th>
             <th>Alignments</th>
@@ -74,10 +83,10 @@
 
         <tr>
             <th>Landscapes</th>
-            <th><input type="checkbox" name="country" id="radio1" checked="checked" onclick="enableSelectBox()">Countries</th>
-            <th><input type="checkbox" name="state" id="radio2" checked="checked" onclick="enableSelectBox()">State/Province</th>
-            <th><input type="checkbox" name="city" id="radio3" checked="checked" onclick="enableSelectBox()">Cities</th>
             <th>Stages</th>
+            <th><input type="checkbox" name="country" id="radio1" checked="checked" onclick="enableSelectBox()"> Countries</th>
+            <th><input type="checkbox" name="state" id="radio2" checked="checked" onclick="enableSelectBox()"> State/Province</th>
+            <th><input type="checkbox" name="city" id="radio3" checked="checked" onclick="enableSelectBox()"> Cities</th>
         </tr>
         <tr>
 
@@ -86,6 +95,14 @@
                     @foreach (string optionValue in Model.landscapesList)
                     {
                         <option name="landscape" value="{Landscape} = '@optionValue'">@optionValue</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <select name="stage" id="stage_id" form="searchForm" multiple>
+                    @foreach (string optionValue in Model.stagesList)
+                    {
+                        <option name="stage" value="{Stage} = '@optionValue'">@optionValue</option>
                     }
                 </select>
             </td>
@@ -114,23 +131,19 @@
                     }
                 </select>
             </td>
-            <td>
-                <select name="stage" id="stage_id" form="searchForm" multiple>
-                    @foreach (string optionValue in Model.stagesList)
-                    {
-                        <option name="stage" value="{Stage} = '@optionValue'">@optionValue</option>
-                    }
-                </select>
-            </td>
         </tr>
 
     </table>
+    </a>
 
-    
+    <br />
+    <br />
 
-    <form action="/Home/SearchResults" id="searchForm">
-        <input type="submit" />
-    </form>
+    <div class="flexContainer">
+        <form action="/Home/SearchResults" id="searchForm">
+            <input type="submit" />
+        </form>
+    </div>
 
 </div>
 
