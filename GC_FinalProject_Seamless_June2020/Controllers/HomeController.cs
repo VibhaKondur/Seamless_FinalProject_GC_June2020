@@ -175,6 +175,45 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			}
 		}
 
+		public async Task<IActionResult> UpdateUserForm(int i)
+		{
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+			ViewBag.AspUser = thisAspUser;
+
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+
+			ViewBag.Startups = rankedStartups;
+
+			
+
+			return View(thisUser);
+		}
+
+		public async Task<IActionResult> UpdateUser(Users u)
+		{
+			if (ModelState.IsValid)
+			{
+				AspNetUsers thisUser = _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
+				thisUser.Roles = u.UserType;
+				_context.Users.Update(u);
+				_context.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				return View();
+			}
+		}
+
         public IActionResult Privacy()
         {
             return View();
