@@ -20,12 +20,12 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
     {
         private readonly SeamedInDal _seamedInDal;
         private readonly SeamedInDBContext _context;
+		private readonly IServiceProvider serviceProvider;
 
-
-        public HomeController(IConfiguration configuration, SeamedInDBContext context)
+		public HomeController(IConfiguration configuration, SeamedInDBContext context, IServiceProvider serviceProvider)
         {
-
-            _seamedInDal = new SeamedInDal(configuration);
+			this.serviceProvider = serviceProvider;
+			_seamedInDal = new SeamedInDal(configuration);
 
             _context = context;
         }
@@ -45,53 +45,29 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return RedirectToAction("SearchPage", "SeamedInDB");
         }
 
-
-		public async Task<IActionResult> SearchResultsGlobal( string globalSearch)
-        {
-			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
-
-			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
-
-			ViewBag.AspUser = thisAspUser;
-
-			ViewBag.User = thisUser;
-
-			Startups startups = await _seamedInDal.GetStartups();
-
-			var rankedStartups = Ranking(startups, thisUser).ToList();
-
-			ViewBag.Startups = rankedStartups;
-
-			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			
-
-			if (globalSearch != null)
-			{
-				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
-
-				var mainStartups = RankingVersion2(foundStartups, thisUser);
-
-				return View(mainStartups);
-			}
-			return View();
-		}
-
-
-		public async Task<IActionResult> SearchResults(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,List<string> landscape,
+		public async Task<IActionResult> SearchResultsGlobal(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,List<string> landscape,
 			List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd, string globalSearch)
         {
 
-			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			//----------------------------------------------------------------------
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
 
-			Users thisUser = _context.Users.Where(x => x.UserId == id).First();
+			ViewBag.AspUser = thisAspUser;
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+			ViewBag.Startups = rankedStartups;
 
 			if (globalSearch != null)
 			{
 				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
 
-				var rankedStartups = Ranking(foundStartups, thisUser);
+				var rankedStartupsFromGlobal = RankingVersion2(foundStartups, thisUser);
+
+				return View(rankedStartupsFromGlobal);
 			}
 			else
 			{
@@ -111,11 +87,10 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 				List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
 				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
 
-				var rankedStartups = Ranking(foundStartups, thisUser);
+				var rankedStartupsFromFilter = RankingVersion2(foundStartups, thisUser);
 
-				return View(rankedStartups);
+				return View(rankedStartupsFromFilter);
 			}
-			return View();
 		}
 
         public async Task<IActionResult> StartupProfile(string name)
@@ -176,8 +151,60 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			if (ModelState.IsValid)
 			{
 				AspNetUsers thisUser =  _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
+
+				var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+				var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+				var roleCheck = await RoleManager.RoleExistsAsync(u.UserType);
+				if (!roleCheck)
+				{
+					await RoleManager.CreateAsync(new IdentityRole(u.UserType));
+				}
+
+				IdentityUser user = await UserManager.FindByIdAsync(u.UserId);
+				await UserManager.AddToRoleAsync(user, u.UserType);
+
 				thisUser.Roles = u.UserType;
 				_context.Users.Add(u);
+				_context.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				return View();
+			}
+		}
+
+		public async Task<IActionResult> UpdateUserForm(int i)
+		{
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+			ViewBag.AspUser = thisAspUser;
+
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+
+			ViewBag.Startups = rankedStartups;
+
+			
+
+			return View(thisUser);
+		}
+
+		public async Task<IActionResult> UpdateUser(Users u)
+		{
+			if (ModelState.IsValid)
+			{
+				AspNetUsers thisUser = _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
+				thisUser.Roles = u.UserType;
+				_context.Users.Update(u);
 				_context.SaveChanges();
 				return RedirectToAction("Index");
 			}
@@ -247,35 +274,36 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
 		}
 
-		public List<Tuple<int, Record>> RankingVersion2(Startups startups, Users user)
+		public List<Tuple<int, Record>> RankingVersion2(Startups startups, Users userObject)
         {
 			List<Tuple<int, Record>> RecordRankList = new List<Tuple<int, Record>>();
 
 			foreach (Record startup in startups.records)
 			{
 				int rank = 0;
-
-				if (startup.fields.Country != null && user.Country != null && (startup.fields.Country == user.Country))
+                #region Ranking Conditions
+                if (startup.fields.Country != null && userObject.Country != null && (startup.fields.Country == userObject.Country))
 				{
 					rank += 1;
 				}
-				if (startup.fields.Alignment != null && user.Name != null && startup.fields.Alignment.Contains(user.Name))
+				if (startup.fields.Alignment != null && userObject.Name != null && startup.fields.Alignment.Contains(userObject.Name))
 				{
 					rank += 5;
 				}
-				if (startup.fields.Themes != null && user.Theme != null && startup.fields.Themes.Contains(user.Theme))
+				if (startup.fields.Themes != null && userObject.Theme != null && startup.fields.Themes.Contains(userObject.Theme))
 				{
 					rank += 3;
 				}
-				if (startup.fields.TechnologyAreas != null && user.Technology != null && startup.fields.TechnologyAreas.Contains(user.Technology))
+				if (startup.fields.TechnologyAreas != null && userObject.Technology != null && startup.fields.TechnologyAreas.Contains(userObject.Technology))
 				{
 					rank += 3;
 				}
-				if (startup.fields.Landscape != null && user.Landscape != null && startup.fields.Landscape == user.Landscape)
+				if (startup.fields.Landscape != null && userObject.Landscape != null && startup.fields.Landscape == userObject.Landscape)
 				{
 					rank += 4;
 				}
-				RecordRankList.Add(new Tuple<int, Record>(rank, startup));
+                #endregion
+                RecordRankList.Add(new Tuple<int, Record>(rank, startup));
 			}
 
 			RecordRankList = RecordRankList.OrderByDescending(t => t.Item1).ToList();

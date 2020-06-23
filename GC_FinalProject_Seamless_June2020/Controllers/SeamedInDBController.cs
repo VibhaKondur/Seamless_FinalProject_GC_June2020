@@ -278,7 +278,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     {
                         if (!respectiveColumnList.Contains(splitString.Trim()))
                         {
-                            respectiveColumnList.Add(splitString.Trim());
+                            respectiveColumnList.Add(splitString.Trim().Replace("\"", ""));
                         }
                     }
                 }
@@ -288,12 +288,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 }
             }
             respectiveColumnList.Sort();
-
-            /*foreach(string columnValues in respectiveColumnList)
-            {
-                string removedSpecialChars = Regex.Replace(columnValues, "[^A-Za-z0-9 -]", "");
-                respectiveColumnList.Select(a => a.Replace(removedSpecialChars));
-            }*/
         }
         #endregion
 
@@ -334,7 +328,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                 {
                     rank += 4;
                 }
-
                 StartupRank s = new StartupRank(startup, rank);
                 rankedList.Add(s);
             }

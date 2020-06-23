@@ -49,12 +49,21 @@ th, td {
 
 input[type=text] {
     border-radius: 8px;
+    padding-left: 10px;
 }
 
     input[type=text]:focus {
-        border: 2px solid black;
+        border: 4px solid black;
         border-radius: 4px;
     }
+
+select option:hover {
+    background-color: #8BC440;
+}
+
+select option:focus {
+    outline: 1px solid #8BC440;
+}
 
 @media screen and (min-width: 425px) {
 
@@ -77,10 +86,26 @@ input[type=text] {
     }
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (max-width: 1000px) {
 
-    
+    .advancedSearchButton {
+        text-align: center;
+    }
+
+    #searchTable {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        #searchTable td, th {
+            display: inline-block;
+        }
 }
+
+
+
+
 
 
 
