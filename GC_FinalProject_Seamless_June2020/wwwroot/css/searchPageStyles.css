@@ -77,10 +77,30 @@ input[type=text] {
     }
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (max-width: 1000px) {
 
-    
+    .advancedSearchButton {
+        text-align: center;
+    }
+
+    #searchTable {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        #searchTable td, th {
+            display: inline-block;
+        }
+
+    /*.flexTableStyle {
+        flex-wrap: wrap;
+    }*/
 }
+
+
+
+
 
 
 

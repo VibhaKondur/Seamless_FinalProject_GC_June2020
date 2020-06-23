@@ -1,5 +1,7 @@
 ﻿@model List<Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record>>
 
+    <link href="~/css/searchResults.css" rel="stylesheet" />
+
 <div class="sidenav">
     <a> Welcome, </a>
     <a>@ViewBag.AspUser.Email</a>
@@ -7,6 +9,8 @@
     <a href="/SeamedInDB/Favorites">Your Favorites</a>
     <a href="/SeamedInDB/SearchPage">Search Page</a>
     <a>Recommended Startups:</a>
+
+
     @for (int i = 0; i < 3; i++)
     {
         <a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a>
@@ -15,22 +19,50 @@
 
 <div class="main">
     <table>
-        <tr>
-            <th>Startup</th>
-            <th>Theme(s)</th>
-            <th>Tech</th>
-            <th>Country</th>
-        </tr>
-        @foreach (Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record> recordWithRank in Model)
-        {
-            <tr>
-                <td><a href="/Home/StartupProfile?name=@recordWithRank.Item2.fields.CompanyName">@recordWithRank.Item2.fields.CompanyName</a></td>
-                <td>@recordWithRank.Item2.fields.Themes</td>
-                <td>@recordWithRank.Item2.fields.TechnologyAreas</td>
-                <td>@recordWithRank.Item2.fields.Country</td>
-                <td><button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@recordWithRank.Item2.id'">Add to Favorites</button></td>
+        @{
+            int recordCount = 0;
+            int listPosition = 0;
 
-            </tr>
+            while (recordCount != Model.Count)
+            {
+                recordCount++;
+                int cellCountInRow = 0;
+                int loopCounter = 0;
+                <tr>
+
+                    @foreach (Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record> recordWithRank in Model)
+                    {
+
+                        if (cellCountInRow < 3 && loopCounter == listPosition)
+                        {
+                            <td>
+                                <ul>
+                                    <li>
+                                        <a href="/Home/StartupProfile?name=@recordWithRank.Item2.fields.CompanyName">@recordWithRank.Item2.fields.CompanyName</a>
+                                    </li>
+                                    <li>
+                                        Theme: @recordWithRank.Item2.fields.Themes
+                                    </li>
+                                    <li>
+                                        Technology Area: @recordWithRank.Item2.fields.TechnologyAreas
+                                    </li>
+                                    <li>
+                                        Coutnry: @recordWithRank.Item2.fields.Country
+                                    </li>
+                                    <li>
+                                        <button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@recordWithRank.Item2.id'">Add to Favorites</button>
+                                    </li>
+                                </ul>
+                            </td>
+                            listPosition++;
+                            cellCountInRow++;
+                        }
+                        loopCounter++;
+                    }
+
+                </tr>
+            }
         }
+
     </table>
 </div>
