@@ -1,6 +1,7 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -9,7 +10,7 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-    color: #28a745;
+    color: #0366d6;
 }
 
 .btn-primary {
@@ -73,41 +74,74 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.sidenav {
+/*Josh's Styles begin here------------------------------------------------*/
+
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidebar {
+    height: 100%;
+    width: 0;
     position: fixed;
     z-index: 1;
-    top: 85px;
-    left: 20px;
-    background: #adb5bd;
+    top: 0;
+    left: 0;
+    background-color: #111;
     overflow-x: hidden;
-    padding: 8px 0;
+    transition: 0.5s;
+    padding-top: 60px;
 }
 
-    .sidenav a {
-        padding: 6px 8px 6px 16px;
+    .sidebar a {
+        padding: 8px 8px 8px 32px;
         text-decoration: none;
         font-size: 25px;
-        color: #28a745;
+        color: #8BC440;
         display: block;
+        transition: 0.3s;
     }
 
-        .sidenav a:hover {
-            color: #064579;
+        .sidebar a:hover {
+            color: #8BC440;
         }
 
-.main {
-    margin-left: 100px; /* Same width as the sidebar + left position in px */
-    font-size: 28px; /* Increased text to enable scrolling */
-    padding: 0px 10px;
+    .sidebar .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+.openbtn {
+    position: fixed;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
 }
 
+    .openbtn:hover {
+        background-color: #444;
+    }
 
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-    .sidenav {
+    .sidebar {
         padding-top: 15px;
     }
 
-        .sidenav a {
+        .sidebar a {
             font-size: 18px;
         }
 }
+
+
