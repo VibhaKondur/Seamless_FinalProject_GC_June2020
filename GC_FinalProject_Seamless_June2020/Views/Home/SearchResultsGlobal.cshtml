@@ -40,20 +40,20 @@
                         if (cellCountInRow < 3 && loopCounter == listPosition)
                         {
                             <td>
-                                <ul>
-                                    <li>
-                                        <a href="/Home/StartupProfile?name=@recordWithRank.Item2.fields.CompanyName">@recordWithRank.Item2.fields.CompanyName</a>
+                                <ul class="startUpResultsList">
+                                    <li class="stylesForLi">
+                                        <a href="/Home/StartupProfile?name=@recordWithRank.Item2.fields.CompanyName"><h4>@recordWithRank.Item2.fields.CompanyName</h4></a>
                                     </li>
-                                    <li>
-                                        Theme: @recordWithRank.Item2.fields.Themes
-                                    </li>
-                                    <li>
+                                    <li class="stylesForLi">
                                         Technology Area: @recordWithRank.Item2.fields.TechnologyAreas
                                     </li>
-                                    <li>
-                                        Coutnry: @recordWithRank.Item2.fields.Country
+                                    <li class="stylesForLi">
+                                        Summary: @recordWithRank.Item2.fields.TwoLineCompanySummary
                                     </li>
-                                    <li>
+                                    <li class="stylesForLi">
+                                        Country: @recordWithRank.Item2.fields.Country
+                                    </li>
+                                    <li class="stylesForLi">
                                         <button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@recordWithRank.Item2.id'">Add to Favorites</button>
                                     </li>
                                 </ul>
