@@ -17,7 +17,9 @@
         <option value="Robust Future">Robust Future</option>
     </select>
 
-    <input type="text" name="Name" placeholder="Company Name" />
+
+    <input type="text" name="Name" maxlength="75" placeholder="Company Name" />
+
 
     <label for="Technology">Technology</label>
     <select id="Technology" name="Technology">
@@ -40,21 +42,21 @@
 
     </select>
 
-    <input type="text" name="Summary" placeholder="Summary(400 Characters)" />
+    <input type="text" name="Summary" maxlength="400" placeholder="Summary(400 Characters)" />
 
-    <input type="text" name="Industry" placeholder="Industry" />
+    <input type="text" name="Industry" maxlength="50" placeholder="Industry" />
 
-    <input type="text" name="PhoneNumber" placeholder="Phone Number" />
+    <input type="text" name="PhoneNumber" maxlength="12" placeholder="Phone Number" />
 
-    <input type="text" name="EmailAddress" placeholder="Email Address" />
+    <input type="text" name="EmailAddress" maxlength="30" placeholder="Email Address" />
 
-    <input type="text" name="Website" placeholder="Website" />
+    <input type="text" name="Website" maxlength="30" placeholder="Website" />
 
-    <input type="text" name="City" placeholder="City" />
+    <input type="text" name="City" maxlength="25" placeholder="City" />
 
-    <input type="text" name="StateProvince" placeholder="State/Province" />
+    <input type="text" name="StateProvince" maxlength="40" placeholder="State/Province" />
 
-    <input type="text" name="Country" placeholder="Country" />
+    <input type="text" name="Country" maxlength="50" placeholder="Country" />
 
     <input type="hidden" name="UserId" value="@Model.Id" />
 

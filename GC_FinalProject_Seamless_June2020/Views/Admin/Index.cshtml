@@ -1,5 +1,20 @@
 ﻿@model List<AspNetUsers>
 
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a> Welcome, </a>
+        <a>@ViewBag.AspUser.Email</a>
+        <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a>
+        <a href="/SeamedInDB/Favorites">Your Favorites</a>
+        <a href="/SeamedInDB/SearchPage">Search Page</a>
+        <a>Recommended Startups:</a>
+        @for (int i = 0; i < 3; i++)
+        {
+            <a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a>
+        }
+    </div>
+
 <table class="table table-bordered">
     <thead><tr><td>User email</td><td>Current User Role</td><td>Change User Role</td></tr></thead>
             @foreach (AspNetUsers user in Model)

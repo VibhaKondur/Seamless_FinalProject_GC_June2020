@@ -1,5 +1,8 @@
 ﻿@model List<Record>
 
+<h1 style="text-align:center">Favorites</h1>
+<br>
+<br>
 <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a> Welcome, </a>
@@ -26,18 +29,18 @@
     }
     else
     {
-
-        <h1 style="text-align:center">Favorites</h1>
-        <br>
-        <br>
         <h5 style="text-align: center">
             <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for more StartUps</button>
             <br>
             <button onclick="document.location = '/Home/SearchResults?id=@Model'">Back to Search Results</button>
         </h5>
         <br>
-    }
 
+        <a href="~/SeamedInDB/ClearFavoritesView?id=@Model" id="deleteBtn" class="btn bg-danger mr-1"
+           onclick="return confirm('Are you sure you want to remove all StartUps from your Favorites List?');">
+            <i class="fas fa-trash-alt text-white"></i>Clear Favorites List
+        </a>
+    }
 
 
     <div class="flex">
@@ -47,9 +50,19 @@
             @foreach (Record favoriteStartUp in Model)
             {
 
+                @if(ViewBag.id == true)
+                {
+           
+                <div class="alert alert-warning alert-dismissible">
+                    <a href="~/SeamedInDB/AddAFavoriteStartUpToList?id=@favoriteStartUp.id" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Duplicate detected!</strong>This StartUp has already been added to your Favorites List. Please return to search more StartUps.
+                </div>
 
-                @*error handling for displaying properties (if null)*@
+                }
+                else
+                {
 
+               
                 @if (favoriteStartUp.fields.CompanyName == null)
                 {
                     <h5>Company Name not available</h5>
@@ -109,61 +122,25 @@
                 }
 
 
-                <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"
-                   onclick="return confirm('Are you sure you want to remove this StartUp from your Favorites?');">
-                    <i class="fas fa-trash-alt text-white"></i>Remove StartUp from Favorites List
-                </a>
-
-                <div class="comment">
-                    <textarea id="title" type="text " rows="8" cols="35" onkeyup="Allow()" placeholder="Add a comment"></textarea>
-                    <form input type="submit" value="Post" onclick="insert()" style="width:100px; height: 200px"></form>
+                <div class="form-group">
+                    <label for="comment">Add a Comment</label>
+                    <textarea class="form-control" rows="5" id="comment"></textarea>
+                    <button type="submit" class="btn btn-default">Submit</button>
                 </div>
-                <div id="display"></div>
-                <script type="text/javascript">
-                    var titles = [];
-                    var titleInput = document.getElementById("title");
-                    var messageBox = document.getElementById("display");
-                    function Allow() {
-                        if (!user.title.value.match(/[a-zA-Z]$/) && user.title.value != "") {
-                            user.title.value = "";
-                            alert("Please limit 400 characters");
-                        }
-                        window.location.reload()
-                    }
-                    function insert() {
-                        titles.push(titleInput.value);
-                        clearAndShow();
-                    }
-                    function clearAndShow() {
-                        titleInput.value = "";
-                        messageBox.innerHTML = "";
-                        messageBox.innerHTML += " " + titles.join("<br/> ") + "<br/>";
-                    }
-                </script>
 
-            }
-
-
-
-
-            @*@if (Model == new List<Record>)
-                {
-                    //Displays user's current list of favorites
-                    <h4>Name: @favoriteStartUp.Fields.CompanyName</h4>
-                    <h4>City: @favoriteStartUp.Fields.City</h4>
-                    <h4>State or Province: @favoriteStartUp.StateProvince</h4>
-                    <h4>Country: @favoriteStartUp.Country</h4>
-                    <h4>Theme: @favoriteStartUp.Theme</h4>
-                    <h4>Technology: @favoriteStartUp.TechnologyAreas</h4>
-                    <h4>Landscape: @favoriteStartUp.Landscape</h4>
-                    <h4>Summary: @favoriteStartUp.Summary</h4>
+                <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"
+                   onclick="return confirm('Are you sure you want to remove this StartUp from your Favorites List?');">
+                    <i class="fas fa-trash-alt text-white"></i>Remove StartUp from Favorites List
+                </a>            
 
                 }
 
-            *@
+            }
+
             <br><br><br><br>
         </div>
 
     </div>
 
 </div>
+

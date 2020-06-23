@@ -134,6 +134,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
             bool exists = false;
 
+            ViewBag.id = exists;
+
             foreach (Favorites favor in listOfFavorites)
             {
                 if (favor.ApiId == id)
@@ -167,14 +169,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     _context.SaveChanges();
                 }
 
-                else
-                {
-
-                    FavoritesListVM fVM = new FavoritesListVM();
-                    fVM.ErrorMessage = "Duplicate found. Please return to search results to add another favorite";
-                    return View(fVM);
-                    
-                }
             }      
             
             if (listOfFavorites.Count > 0)
@@ -186,12 +180,13 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         }
 
 
-        //Removes a new favorite StartUp from the user's list of favorite StartUps
+        //Removes a favorite StartUp from the user's list of favorite StartUps
         [Authorize]
         public IActionResult RemoveAFavoriteStartUpFromList(string id, string subject)
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
+
             if (found != null)
             {
 
@@ -203,6 +198,37 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return RedirectToAction("Favorites");
         }
 
+        //Clears all favorites view if user needs
+        [Authorize]
+        public IActionResult ClearFavoritesView()
+        {
+            string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<Favorites> clearFavorites = _context.Favorites.Where(x => x.UserId == uid).ToList();
+
+            if(clearFavorites != null)
+            {
+                _context.Favorites.RemoveRange(clearFavorites);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("SearchPage");
+        }
+
+        //Adds / edits comments
+        [Authorize]
+        public IActionResult AddComment(string id, string comment)
+        {
+            string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
+            var foundIt = _context.Favorites.Find(id);
+            
+            foundIt.CommentSection = comment;
+
+            _context.Entry(foundIt).State = EntityState.Modified;
+            _context.Update(foundIt);
+            _context.SaveChanges();
+
+            return RedirectToAction("Favorites");
+        }
 
         #endregion
 
