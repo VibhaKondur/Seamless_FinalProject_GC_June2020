@@ -20,12 +20,12 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
     {
         private readonly SeamedInDal _seamedInDal;
         private readonly SeamedInDBContext _context;
+		private readonly IServiceProvider serviceProvider;
 
-
-        public HomeController(IConfiguration configuration, SeamedInDBContext context)
+		public HomeController(IConfiguration configuration, SeamedInDBContext context, IServiceProvider serviceProvider)
         {
-
-            _seamedInDal = new SeamedInDal(configuration);
+			this.serviceProvider = serviceProvider;
+			_seamedInDal = new SeamedInDal(configuration);
 
             _context = context;
         }
@@ -176,6 +176,19 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			if (ModelState.IsValid)
 			{
 				AspNetUsers thisUser =  _context.AspNetUsers.Where(x => x.Id == u.UserId).First();
+
+				var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+				var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+				var roleCheck = await RoleManager.RoleExistsAsync(u.UserType);
+				if (!roleCheck)
+				{
+					await RoleManager.CreateAsync(new IdentityRole(u.UserType));
+				}
+
+				IdentityUser user = await UserManager.FindByIdAsync(u.UserId);
+				await UserManager.AddToRoleAsync(user, u.UserType);
+
 				thisUser.Roles = u.UserType;
 				_context.Users.Add(u);
 				_context.SaveChanges();

@@ -8,4 +8,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAymaR4JvV00uINDBuDy1WhgAAAAACAAAAAAAQZgAAAAEAACAAAAAP4/7ADfrWb8zcnSA4iHUurUxbl63ZubcvdeDGvbkrrQAAAAAOgAAAAAIAACAAAAB7rVRn1ACr+FL8GFMXxRFhc9gNG7TiTdBRUSnnP/ckBIAAAACeeSJkkW6Ms/HhDLaEhYaKdMwFZ365R+diXz+T/isYVb9VC6owMhn4spo9vNpPKBqpbXBSkkPai/7SIuqfnzsZXN86qb/1sUFcHSzB3D5T22DeCc3iQK5tWNgAjb/dN13D7Oqxpls4g+HLBsw2JG18pVkmKyxM5CQq/k5E2u+Rm0AAAAB5cqdI76h1Qy/4owDUw+bLy9kiFZZeo1rbpzC60mhpUU30VttaVXsSK81VUBvUSxKQW5qTJc2vPR5G1TvwJJq+</EncryptedPassword>
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:seamedin.database.windows.net,1433%3bInitial Catalog=SeamedInDB%3bUser Id=SeamedInAdmin%40seamedin%3bPassword=GcSeamLess2020</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>
