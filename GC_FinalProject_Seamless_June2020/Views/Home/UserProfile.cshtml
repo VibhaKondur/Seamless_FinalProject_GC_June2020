@@ -24,13 +24,26 @@
         <div class="main">
             <h1>@ViewBag.AspUser.Email</h1>
 
-            <h2>@Model.Name</h2>
+            <div class="mid">
 
-            <h2>@Model.Country</h2>
-            <h3>@Model.StateProvince</h3>
-            <h3>@Model.City</h3>
+                <h2>@Model.Name</h2>
 
-            <div>
+                <h2>@Model.Country</h2>
+
+                @if (Model.StateProvince != null && Model.City != null)
+                {
+                    <h3>@Model.City, @Model.StateProvince</h3>
+                }
+                else
+                {
+                    <h3>@Model.StateProvince</h3>
+                    <h3>@Model.City</h3>
+
+                }
+            </div>
+
+
+            <div class="mid">
                 @if (Model.Theme != null)
                 {
                     <h4>Theme(s): @Model.Theme</h4>
@@ -45,7 +58,7 @@
                 }
             </div>
 
-            <div>
+            <div class="mid">
                 @if (Model.Summary != null)
                 {
                     <h4>Profile Summary</h4>
@@ -56,5 +69,14 @@
 
             </div>
             <button onclick="document.location = '/Home/UpdateUserForm'">Update Profile</button>
+
+            <p></p>
+            <div>
+                <h3>Contact:</h3>
+                <div class="contact">
+                    <h4>@Model.EmailAddress</h4>
+                    <h4>@Model.Website</h4>
+                </div>
+            </div>
         </div>
     </div>

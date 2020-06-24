@@ -22,34 +22,63 @@
 
 <div class="profile">
 
-<div class="main">
+    <div class="main">
 
-    <h1>@Model.fields.CompanyName</h1>
+        <h1>@Model.fields.CompanyName</h1>
 
-    <h2>@Model.fields.Country</h2>
-    <h3>@Model.fields.StateProvince</h3>
-    <h3>@Model.fields.City</h3>
+        <div class="mid">
 
-    <div>
-        @if (Model.fields.Themes != null)
-        {
-            <h4>Theme(s): @Model.fields.Themes</h4>
-        }
-        @if (Model.fields.TechnologyAreas != null)
-        {
-            <h4>Tech: @Model.fields.TechnologyAreas</h4>
-        }
-        @if (Model.fields.Landscape != null)
-        {
-            <h4>Landscape: @Model.fields.Landscape</h4>
-        }
+            <h2>@Model.fields.Country</h2>
+
+            @if (Model.fields.StateProvince != null && Model.fields.City != null)
+            {
+                <h3>@Model.fields.City, @Model.fields.StateProvince</h3>
+            }
+            else
+            {
+                <h3>@Model.fields.StateProvince</h3>
+                <h3>@Model.fields.City</h3>
+
+            }
+        </div>
+        <div class="mid">
+            @if (Model.fields.Themes != null)
+            {
+                <h4>Theme(s): @Model.fields.Themes</h4>
+            }
+            @if (Model.fields.TechnologyAreas != null)
+            {
+                <h4>Tech: @Model.fields.TechnologyAreas</h4>
+            }
+            @if (Model.fields.Landscape != null)
+            {
+                <h4>Landscape: @Model.fields.Landscape</h4>
+            }
+            @if(Model.fields.Team != null)
+            {
+                <h4>Team Size: @Model.fields.Team</h4>
+            }
+            @if(Model.fields.Raised != null && Model.fields.Raised != "Undisclosed")
+            {
+                <h4>Amount Raised: $@Model.fields.Raised</h4>
+            }
+            @if(Model.fields.Stage != null)
+            {
+                <h4>Stage: @Model.fields.Stage</h4>
+            }
+        </div>
+
+        <div class="mid">
+            <h4>Startup Summary</h4>
+            <p>@Model.fields.TwoLineCompanySummary</p>
+            <button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@Model.id'">Add to Favorites</button>
+        </div>
+        <p></p>
+        <div>
+            <h3>Contact:</h3>
+            <div class="contact">
+                <h4>@Model.fields.CompanyWebsite</h4>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <h4>Startup Summary</h4>
-        <p>@Model.fields.TwoLineCompanySummary</p>
-        <button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@Model.id'">Add to Favorites</button>
-    </div>
-
-</div>
 </div>
