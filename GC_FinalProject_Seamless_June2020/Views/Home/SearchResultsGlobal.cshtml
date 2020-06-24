@@ -1,25 +1,25 @@
 ﻿@model SearchResultsVM
 
 
-    <link href="~/css/searchResults.css" rel="stylesheet" />
+<link href="~/css/searchResultsStyles.css" rel="stylesheet" />
 
-    <div id="mySidebar" class="sidebar ">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a> Welcome, </a>
-        <a>@ViewBag.AspUser.Email</a>
-        <ul>
-            <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
-            <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
-            <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
-        </ul>
-        <a>Recommended Startups:</a>
-        <ul>
-            @for (int i = 0; i < 3; i++)
-            {
-                <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
-            }
-        </ul>
-    </div>
+<div id="mySidebar" class="sidebar ">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a> Welcome, </a>
+    <a>@ViewBag.AspUser.Email</a>
+    <ul>
+        <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
+        <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
+        <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
+    </ul>
+    <a>Recommended Startups:</a>
+    <ul>
+        @for (int i = 0; i < 3; i++)
+        {
+            <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
+        }
+    </ul>
+</div>
 
 
 <div class="flexContainer">
@@ -30,7 +30,7 @@
         <br />
 
         <div class="flexContainer">
-            <input type="submit" value="SeamedIn Search"/>
+            <input type="submit" value="SeamedIn Search" />
         </div>
     </form>
 </div>
@@ -38,8 +38,12 @@
 <br />
 <br />
 
+<div>
+    <button href="#startUpResults" data-toggle="collapse" data-target="#startUpResults" onclick="" class="toggleStartupResults">Display StartUps Results</button>
+    <button href="#partnerResults" data-toggle="collapse" data-target="#partnerResults" onclick="" class="togglePartnerResults">Display Partner Results</button>
+</div>
 
-<div class="main">
+<div class="startUpResults collapse" id="startUpResults">
     <table>
         @{
             int recordCount = 0;
@@ -88,3 +92,56 @@
 
     </table>
 </div>
+
+<div class="partnerResults collapse" id="partnerResults">
+    <table>
+        @{
+
+
+@* See if you can reuse the object created earlier*@
+
+            int partnerCount = 0;
+            int listPositionPartners = 0;
+
+            while (partnerCount != Model.UsersList.Count)
+            {
+                partnerCount++;
+                int cellCountInRowPartners = 0;
+                int loopCounterPartners = 0;
+                <tr>
+
+                    @foreach (Users user in Model.UsersList)
+                    {
+
+                        if (cellCountInRowPartners < 3 && loopCounterPartners == listPositionPartners)
+                        {
+                            <td>
+                                <ul class="startUpResultsList">
+                                    <li class="stylesForLi">
+                                        <a href="/Home/StartupProfile?name=@user.Name"><h4>@user.Name</h4></a>
+                                    </li>
+                                    <li class="stylesForLi">
+                                        Technology Area: @user.Technology
+                                    </li>
+                                    <li class="stylesForLi">
+                                        Theme: @user.Theme
+                                    </li>
+                                    <li class="stylesForLi">
+                                        Country: @user.Country
+                                    </li>
+                                    <li class="stylesForLi">
+                                        <button @*onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@user.id'*@ class="buttonStyles">Add to Favorites</button>
+                                    </li>
+                                </ul>
+                            </td>
+                            listPositionPartners++;
+                            cellCountInRowPartners++;
+                        }
+                        loopCounterPartners++;
+                    }
+
+                </tr>
+            }
+        }
+    </table>
+</div class="partnerResults">

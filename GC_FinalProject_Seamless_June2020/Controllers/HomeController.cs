@@ -66,7 +66,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
 			if (globalSearch != null)
 			{
-				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
+				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch.ToLower());
 				List<Tuple<int, Record>> rankedStartupsFromGlobal = RankingVersion2(foundStartups, thisUser);
 
 				searchResultsVM.ResultsList = rankedStartupsFromGlobal;

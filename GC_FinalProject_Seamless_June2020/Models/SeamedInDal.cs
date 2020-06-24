@@ -158,9 +158,9 @@ namespace GC_FinalProject_Seamless_June2020.Models
             string finalFormula = "Master%20List?filterByFormula=";
             StringBuilder finalParameter = new StringBuilder();
 
-            finalParameter.Append($"AND(OR(FIND('{searchTerm}', {{Alignment}}), FIND('{searchTerm}', {{Technology Areas}}), FIND('{searchTerm}', {{Landscape}})," +
-                $" FIND('{searchTerm}', {{Company Name}}), FIND('{searchTerm}', {{Two Line Company Summary}}), FIND('{searchTerm}', {{Theme(s)}}),FIND('{searchTerm}', " +
-                $"{{Country}}), FIND('{searchTerm}', {{State/Province}}), FIND('{searchTerm}', {{City}}), FIND('{searchTerm}', {{Scout}})))");
+            finalParameter.Append($"AND(OR(FIND('{searchTerm}', LOWER({{Alignment}})), FIND('{searchTerm}', LOWER({{Technology Areas}})), FIND('{searchTerm}', LOWER({{Landscape}}))," +
+                $" FIND('{searchTerm}', LOWER({{Company Name}})), FIND('{searchTerm}', LOWER({{Two Line Company Summary}})), FIND('{searchTerm}', LOWER({{Theme(s)}})),FIND('{searchTerm}', " +
+                $"LOWER({{Country}})), FIND('{searchTerm}', LOWER({{State/Province}})), FIND('{searchTerm}', LOWER({{City}})), FIND('{searchTerm}', LOWER({{Scout}}))))");
 
             string encoded2ndHalf = HttpUtility.UrlEncode(finalParameter.ToString());
             finalFormula += encoded2ndHalf;

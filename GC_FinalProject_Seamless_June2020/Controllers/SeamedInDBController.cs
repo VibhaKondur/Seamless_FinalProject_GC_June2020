@@ -59,6 +59,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return View(searchPageVM);
         }
 
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
         #endregion
 
 
