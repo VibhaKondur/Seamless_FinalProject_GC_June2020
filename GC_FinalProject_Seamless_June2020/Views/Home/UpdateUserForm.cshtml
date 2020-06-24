@@ -1,18 +1,22 @@
 ﻿@model Users
 
-<div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a> Welcome, </a>
-    <a>@ViewBag.AspUser.Email</a>
-    <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a>
-    <a href="/SeamedInDB/Favorites">Your Favorites</a>
-    <a href="/SeamedInDB/SearchPage">Search Page</a>
-    <a>Recommended Startups:</a>
-    @for (int i = 0; i < 3; i++)
-    {
-        <a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a>
-    }
-</div>
+    <div id="mySidebar" class="sidebar ">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a> Welcome, </a>
+        <a>@ViewBag.AspUser.Email</a>
+        <ul>
+            <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
+            <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
+            <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
+        </ul>
+        <a>Recommended Startups:</a>
+        <ul>
+            @for (int i = 0; i < 3; i++)
+            {
+                <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
+            }
+        </ul>
+    </div>
 
 <div class="main">
     <form action="/Home/UpdateUser" method="post">
