@@ -1,0 +1,26 @@
+﻿.profile {
+    text-align: center;
+    background-color: lightgrey;
+    width: fit-content;
+    padding: 10px;
+    word-wrap: break-word;
+    box-shadow: 3px 3px 5px #888888;
+    margin: auto;
+    border-radius: 40px 5px 40px 0px;
+}
+
+.contact {
+    background-color: #8BC440;
+    border-radius: 40px 5px 40px 0px;
+}
+h1 {
+    background-color: #8BC440;
+    border-radius: 40px 5px 40px 0px;
+}
+
+.mid {
+    background-color: #dee2e6;
+    border: 5px;
+    padding 5px;
+    width: auto;
+}
