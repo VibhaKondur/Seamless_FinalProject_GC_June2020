@@ -71,7 +71,7 @@
 
                     <div class="alert alert-warning alert-dismissible">
                         <a href="~/SeamedInDB/AddAFavoriteStartUpToList?id=@favoriteStartUp.id" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Duplicate detected!</strong>This Startup has already been added to your Favorites List. Please return to search more Startups.
+                        <strong>Duplicate Startup detected!</strong>This Startup has already been added to your Favorites List. Please return to search more Startups.
                     </div>
 
                 }
@@ -81,11 +81,14 @@
 
                     @if (favoriteStartUp.fields.CompanyName == null)
                     {
-                        <h5>Company Name not available</h5>
+                        <h5>Startup Name not available</h5>
                     }
                     else
                     {
-                        <h5>Company Name: @favoriteStartUp.fields.CompanyName</h5>
+                        @*<h5>Company: ><a href="/Home/StartupProfile?name=@favoriteStartUp.fields.CompanyName"></a></h5>*@
+                        <h5>
+                            <a href="@Url.Action("StartUpProfile", "Home", new {name = @favoriteStartUp.fields.CompanyName})">@favoriteStartUp.fields.CompanyName</a>
+                        </h5>
                     }
                     @if (favoriteStartUp.fields.City == null)
                     {
@@ -111,32 +114,6 @@
                     {
                         <h5>Country: @favoriteStartUp.fields.Country</h5>
                     }
-                    @if (favoriteStartUp.fields.Themes == null)
-                    {
-                        <h5>Theme not available</h5>
-                    }
-                    else
-                    {
-                        <h5>Theme: @favoriteStartUp.fields.Themes</h5>
-                    }
-
-                    @if (favoriteStartUp.fields.TechnologyAreas == null)
-                    {
-                        <h5>Technology not available</h5>
-                    }
-                    else
-                    {
-                        <h5>Technology: @favoriteStartUp.fields.TechnologyAreas</h5>
-                    }
-                    @if (favoriteStartUp.fields.Landscape == null)
-                    {
-                        <h5>Landscape not available</h5>
-                    }
-                    else
-                    {
-                        <h5>Landscape: @favoriteStartUp.fields.Landscape</h5>
-                    }
-
 
                     <div class="form-group">
                         <label for="comment">Add a Comment</label>
@@ -151,7 +128,7 @@
 
                 }
 
-            }
+             }
 
             <br><br><br><br>
         </div>
