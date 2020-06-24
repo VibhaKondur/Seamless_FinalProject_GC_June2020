@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace GC_FinalProject_Seamless_June2020.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Seamless")]
     public class AdminController : Controller
     {
         private readonly IServiceProvider serviceProvider;
@@ -220,8 +220,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
                     _ = await UserManager.UpdateSecurityStampAsync(user);
 
                 }
-            }
         }
+    }
 
         public IEnumerable<StartupRank> Ranking(Startups startups, Users user)
         {

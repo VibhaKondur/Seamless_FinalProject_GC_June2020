@@ -1,0 +1,38 @@
+﻿@font-face {
+    font-family: 'Alegreya Sans Sc Medium';
+    src: url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff2') format('woff2'), url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff2') format('woff2'), url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+}
+
+/*.flexContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}*/
+
+a {
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Timees New Roman','Segoe UI', 'sans-serif';
+}
+
+.mainHeaderStyle {
+    text-align: center;
+}

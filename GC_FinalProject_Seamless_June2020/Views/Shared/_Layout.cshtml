@@ -24,7 +24,7 @@
                 {
                     <button class="openbtn" onclick="openNav()">&#9776;</button>
                 }
-                if (User.IsInRole("Seamleess"))
+                if (User.IsInRole("Seamless"))
                 {
                     <button class="openbtn" onclick="openNav()">&#9776;</button>
                 }
@@ -45,13 +45,26 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">User Roles</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">User Accounts</a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminView">Companies</a>
                             </li>
                         }
+                        @if (User.IsInRole("Seamless"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">User Accounts</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminView">Companies</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SeamedInDB" asp-action="AboutUs">About Us</a>
+                        </li>
                     </ul>
                 </div>
             </div>
