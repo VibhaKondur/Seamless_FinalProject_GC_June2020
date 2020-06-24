@@ -1,6 +1,8 @@
 ﻿@model List<Record>
 
-<h1 style="text-align:center">Favorites</h1>
+<link href="~/css/favorites.css" rel="stylesheet" />
+
+<h1 style=" text-align:center">Favorites</h1>
 <br>
 <br>
 <div id="mySidebar" class="sidebar">
@@ -24,24 +26,34 @@
     {
 
         //If favorites list is empty, direct user back to search page to search StartUps to add to Favorites List
-        <p class="text-danger">Your list of favorite StartUps is empty. Please return to Search Page to search StartUps</p>
-        <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for StartUps</button>
+        <h5 style="text-align: center">
+            <p class="text-danger">Your list of favorite StartUps is empty. Please return to Search Page to search StartUps</p>
+        </h5>
+        <h5 style="text-align: center">
+            <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for Startups</button>
+        </h5>
     }
+
     else
     {
         <h5 style="text-align: center">
-            <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for more StartUps</button>
-            <br>
-            <button onclick="document.location = '/Home/SearchResults?id=@Model'">Back to Search Results</button>
+            <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for more Startups</button>
         </h5>
         <br>
+        <br>
+        <h5 style="text-align: center">
+            <button onclick="document.location = '/Home/SearchResultsGlobal?id=@Model'">Back to Search Results</button>
+        </h5>
+        <br>
+        <br>
+        <h5 style="text-align: center">
+            <a href="~/SeamedInDB/ClearFavoritesView?id=@Model" id="deleteBtn" class="btn bg-danger mr-1"
+               onclick="return confirm('Are you sure you want to remove all StartUps from your Favorites List?');">
+                <i class="fas fa-trash-alt text-white"></i>Clear Favorites List
+            </a>
+        </h5>
 
-        <a href="~/SeamedInDB/ClearFavoritesView?id=@Model" id="deleteBtn" class="btn bg-danger mr-1"
-           onclick="return confirm('Are you sure you want to remove all StartUps from your Favorites List?');">
-            <i class="fas fa-trash-alt text-white"></i>Clear Favorites List
-        </a>
     }
-
 
     <div class="flex">
 
@@ -50,88 +62,88 @@
             @foreach (Record favoriteStartUp in Model)
             {
 
-                @if(ViewBag.id == true)
+                @if (ViewBag.id == true)
                 {
-           
-                <div class="alert alert-warning alert-dismissible">
-                    <a href="~/SeamedInDB/AddAFavoriteStartUpToList?id=@favoriteStartUp.id" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Duplicate detected!</strong>This StartUp has already been added to your Favorites List. Please return to search more StartUps.
-                </div>
+
+                    <div class="alert alert-warning alert-dismissible">
+                        <a href="~/SeamedInDB/AddAFavoriteStartUpToList?id=@favoriteStartUp.id" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Duplicate detected!</strong>This Startup has already been added to your Favorites List. Please return to search more Startups.
+                    </div>
 
                 }
                 else
                 {
 
-               
-                @if (favoriteStartUp.fields.CompanyName == null)
-                {
-                    <h5>Company Name not available</h5>
-                }
-                else
-                {
-                    <h5>Company Name: @favoriteStartUp.fields.CompanyName</h5>
-                }
-                @if (favoriteStartUp.fields.City == null)
-                {
-                    <h5>City not available</h5>
-                }
-                else
-                {
-                    <h5>City: @favoriteStartUp.fields.City</h5>
-                }
-                @if (favoriteStartUp.fields.StateProvince == null)
-                {
-                    <h5>State and/or Province not available</h5>
-                }
-                else
-                {
-                    <h5>State or Province: @favoriteStartUp.fields.StateProvince</h5>
-                }
-                @if (favoriteStartUp.fields.Country == null)
-                {
-                    <h5>Country not available</h5>
-                }
-                else
-                {
-                    <h5>Country: @favoriteStartUp.fields.Country</h5>
-                }
-                @if (favoriteStartUp.fields.Themes == null)
-                {
-                    <h5>Theme not available</h5>
-                }
-                else
-                {
-                    <h5>Theme: @favoriteStartUp.fields.Themes</h5>
-                }
 
-                @if (favoriteStartUp.fields.TechnologyAreas == null)
-                {
-                    <h5>Technology not available</h5>
-                }
-                else
-                {
-                    <h5>Technology: @favoriteStartUp.fields.TechnologyAreas</h5>
-                }
-                @if (favoriteStartUp.fields.Landscape == null)
-                {
-                    <h5>Landscape not available</h5>
-                }
-                else
-                {
-                    <h5>Landscape: @favoriteStartUp.fields.Landscape</h5>
-                }
+                    @if (favoriteStartUp.fields.CompanyName == null)
+                    {
+                        <h5>Company Name not available</h5>
+                    }
+                    else
+                    {
+                        <h5>Company Name: @favoriteStartUp.fields.CompanyName</h5>
+                    }
+                    @if (favoriteStartUp.fields.City == null)
+                    {
+                        <h5>City not available</h5>
+                    }
+                    else
+                    {
+                        <h5>City: @favoriteStartUp.fields.City</h5>
+                    }
+                    @if (favoriteStartUp.fields.StateProvince == null)
+                    {
+                        <h5>State and/or Province not available</h5>
+                    }
+                    else
+                    {
+                        <h5>State or Province: @favoriteStartUp.fields.StateProvince</h5>
+                    }
+                    @if (favoriteStartUp.fields.Country == null)
+                    {
+                        <h5>Country not available</h5>
+                    }
+                    else
+                    {
+                        <h5>Country: @favoriteStartUp.fields.Country</h5>
+                    }
+                    @if (favoriteStartUp.fields.Themes == null)
+                    {
+                        <h5>Theme not available</h5>
+                    }
+                    else
+                    {
+                        <h5>Theme: @favoriteStartUp.fields.Themes</h5>
+                    }
+
+                    @if (favoriteStartUp.fields.TechnologyAreas == null)
+                    {
+                        <h5>Technology not available</h5>
+                    }
+                    else
+                    {
+                        <h5>Technology: @favoriteStartUp.fields.TechnologyAreas</h5>
+                    }
+                    @if (favoriteStartUp.fields.Landscape == null)
+                    {
+                        <h5>Landscape not available</h5>
+                    }
+                    else
+                    {
+                        <h5>Landscape: @favoriteStartUp.fields.Landscape</h5>
+                    }
 
 
-                <div class="form-group">
-                    <label for="comment">Add a Comment</label>
-                    <textarea class="form-control" rows="5" id="comment"></textarea>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </div>
+                    <div class="form-group">
+                        <label for="comment">Add a Comment</label>
+                        <textarea class="form-control" rows="5" id="comment"></textarea>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
 
-                <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"
-                   onclick="return confirm('Are you sure you want to remove this StartUp from your Favorites List?');">
-                    <i class="fas fa-trash-alt text-white"></i>Remove StartUp from Favorites List
-                </a>            
+                    <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"
+                       onclick="return confirm('Are you sure you want to remove this Startup from your Favorites List?');">
+                        <i class="fas fa-trash-alt text-white"></i>Remove Startup from Favorites List
+                    </a>
 
                 }
 
