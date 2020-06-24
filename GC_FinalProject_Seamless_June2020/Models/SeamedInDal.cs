@@ -160,7 +160,7 @@ namespace GC_FinalProject_Seamless_June2020.Models
 
             finalParameter.Append($"AND(OR(FIND('{searchTerm}', {{Alignment}}), FIND('{searchTerm}', {{Technology Areas}}), FIND('{searchTerm}', {{Landscape}})," +
                 $" FIND('{searchTerm}', {{Company Name}}), FIND('{searchTerm}', {{Two Line Company Summary}}), FIND('{searchTerm}', {{Theme(s)}}),FIND('{searchTerm}', " +
-                $"{{Country}}), FIND('{searchTerm}', {{State/Province}}), FIND('{searchTerm}', {{City}})))");
+                $"{{Country}}), FIND('{searchTerm}', {{State/Province}}), FIND('{searchTerm}', {{City}}), FIND('{searchTerm}', {{Scout}})))");
 
             string encoded2ndHalf = HttpUtility.UrlEncode(finalParameter.ToString());
             finalFormula += encoded2ndHalf;

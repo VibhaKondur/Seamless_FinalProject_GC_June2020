@@ -91,10 +91,27 @@ body {
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
+    color: #bdbdbd;
 }
 
+    .sidebar li {
+        margin-left: 20px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #8BC440;
+        transition: 0.3s;
+    }
+
+    .sidebar a1 {
+        margin-left: 20px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #bdbdbd;
+        display: block;
+        transition: 0.3s;
+    }
+
     .sidebar a {
-        padding: 8px 8px 8px 32px;
         text-decoration: none;
         font-size: 25px;
         color: #8BC440;
@@ -143,5 +160,23 @@ body {
             font-size: 18px;
         }
 }
+
+/* DeShawn adding custom fonts*/
+
+@font-face {
+    font-family: 'Alegreya Sans Sc Medium';
+    src: url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff2') format('woff2'), url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff2') format('woff2'), url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 
