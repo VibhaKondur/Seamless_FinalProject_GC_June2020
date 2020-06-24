@@ -1,4 +1,4 @@
-﻿@model List<Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record>>
+﻿@model SearchResultsVM
 
 
     <link href="~/css/searchResults.css" rel="stylesheet" />
@@ -20,6 +20,22 @@
 </div>
 
 
+<div class="flexContainer">
+    <form action="/Home/SearchResultsGlobal" id="searchTextBox">
+        <input type="text" name="globalSearch" placeholder="Search" />
+
+        <br />
+        <br />
+
+        <div class="flexContainer">
+            <input type="submit" value="SeamedIn Search"/>
+        </div>
+    </form>
+</div>
+
+<br />
+<br />
+
 
 <div class="main">
     <table>
@@ -27,14 +43,14 @@
             int recordCount = 0;
             int listPosition = 0;
 
-            while (recordCount != Model.Count)
+            while (recordCount != Model.ResultsList.Count)
             {
                 recordCount++;
                 int cellCountInRow = 0;
                 int loopCounter = 0;
                 <tr>
 
-                    @foreach (Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record> recordWithRank in Model)
+                    @foreach (Tuple<int, GC_FinalProject_Seamless_June2020.Models.Record> recordWithRank in Model.ResultsList)
                     {
 
                         if (cellCountInRow < 3 && loopCounter == listPosition)
@@ -48,13 +64,13 @@
                                         Technology Area: @recordWithRank.Item2.fields.TechnologyAreas
                                     </li>
                                     <li class="stylesForLi">
-                                        Summary: @recordWithRank.Item2.fields.TwoLineCompanySummary
+                                        Theme: @recordWithRank.Item2.fields.Themes
                                     </li>
                                     <li class="stylesForLi">
                                         Country: @recordWithRank.Item2.fields.Country
                                     </li>
                                     <li class="stylesForLi">
-                                        <button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@recordWithRank.Item2.id'">Add to Favorites</button>
+                                        <button onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@recordWithRank.Item2.id'" class="buttonStyles">Add to Favorites</button>
                                     </li>
                                 </ul>
                             </td>

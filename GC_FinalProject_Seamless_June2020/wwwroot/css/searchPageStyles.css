@@ -1,4 +1,19 @@
-﻿.advancedSearchButton {
+﻿@font-face {
+    font-family: 'Alegreya Sans Sc Medium';
+    src: url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff2') format('woff2'), url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff2') format('woff2'), url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+.advancedSearchButton {
     border-radius: 8px;
     background-color: white;
     color: black;
@@ -105,9 +120,19 @@ select option:focus {
         align-items: center;
     }
 
-        #searchTable td, th {
+    /*The following code is the start of making the Search Page Responsive*/
+
+    /*#searchTable td, th {
             display: inline-block;
-        }
+        }*/
+}
+
+.customHeaderFont {
+    font-family: 'Alegreya Sans Sc Medium','Segoe UI', 'sans-serif';
+}
+
+.customContentFont {
+    font-family: 'Source Sans Pro'
 }
 
 

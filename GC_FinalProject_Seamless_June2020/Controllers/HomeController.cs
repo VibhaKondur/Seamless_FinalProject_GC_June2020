@@ -48,6 +48,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 		public async Task<IActionResult> SearchResultsGlobal(List<string> source, List<string> scout, List<string> alignment, List<string> theme, List<string> technologyArea,List<string> landscape,
 			List<string> country, List<string> state, List<string> city, List<string> stage, string dateAdded1st, string dateAdded2nd, string dateReviewed1st, string dateReviewed2nd, string globalSearch)
         {
+			SearchResultsVM searchResultsVM = new SearchResultsVM();
+
+			searchResultsVM.UsersList = GetListOfUsers(globalSearch);
 
 			//----------------------------------------------------------------------
 			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -64,10 +67,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			if (globalSearch != null)
 			{
 				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(globalSearch);
+				List<Tuple<int, Record>> rankedStartupsFromGlobal = RankingVersion2(foundStartups, thisUser);
 
-				var rankedStartupsFromGlobal = RankingVersion2(foundStartups, thisUser);
+				searchResultsVM.ResultsList = rankedStartupsFromGlobal;
 
-				return View(rankedStartupsFromGlobal);
+				return View(searchResultsVM);
 			}
 			else
 			{
@@ -87,9 +91,11 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 				List<string> convertedList = _seamedInDal.ConvertsListsOfFormSelection(listOfLists);
 				Startups foundStartups = await _seamedInDal.GetFilteredStartUps(convertedList);
 
-				var rankedStartupsFromFilter = RankingVersion2(foundStartups, thisUser);
+				List<Tuple<int, Record>> rankedStartupsFromFilter = RankingVersion2(foundStartups, thisUser);
 
-				return View(rankedStartupsFromFilter);
+				searchResultsVM.ResultsList = rankedStartupsFromFilter;
+
+				return View(searchResultsVM);
 			}
 		}
 
@@ -310,6 +316,25 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
 			return RecordRankList;
         }
+
+		public List<Users> GetListOfUsers (string searchString)
+        {
+			List<Users> usersList = new List<Users>();
+
+			usersList = _context.Users.Where(x => x.Name.Contains(searchString) ||
+			x.Name.Contains(searchString) ||
+			x.Country.Contains(searchString) ||
+			x.StateProvince.Contains(searchString) ||
+			x.City.Contains(searchString) ||
+			x.Summary.Contains(searchString) ||
+			x.Technology.Contains(searchString) ||
+			x.Industry.Contains(searchString) ||
+			x.Landscape.Contains(searchString) ||
+			x.Theme.Contains(searchString)).ToList();
+
+			return usersList;
+
+		}
 
 
 	}

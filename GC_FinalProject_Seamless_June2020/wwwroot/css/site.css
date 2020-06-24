@@ -144,4 +144,22 @@ body {
         }
 }
 
+/* DeShawn adding custom fonts*/
+
+@font-face {
+    font-family: 'Alegreya Sans Sc Medium';
+    src: url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff2') format('woff2'), url('/fonts/AlegreyaSansSCwebfontkit/alegreyasanssc-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff2') format('woff2'), url('/fonts/SourceSansProwebfontkit/SourceSansPro-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 

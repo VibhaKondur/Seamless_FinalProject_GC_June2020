@@ -9,7 +9,6 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public string UserId { get; set; }
         public string ApiId { get; set; }
         public string CommentSection { get; set; }
-
         public virtual AspNetUsers User { get; set; }
     }
 }

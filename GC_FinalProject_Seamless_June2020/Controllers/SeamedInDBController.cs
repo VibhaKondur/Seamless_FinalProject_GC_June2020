@@ -291,6 +291,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         }
         #endregion
 
+
+        #region Ranking Method From HomeController
         public IEnumerable<StartupRank> Ranking(Startups startups, Users user)
         {
             List<StartupRank> rankedList = new List<StartupRank>();
@@ -340,6 +342,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
             return sortedStartups;
 
         }
+        #endregion
     }
 
 
