@@ -1,0 +1,12 @@
+﻿.profile {
+    text-align: center;
+    background-color: lightgrey;
+    width: max-content;
+    padding: 10px;
+    word-wrap: break-word;
+    box-shadow: 4px 4px 5px #888888;
+}
+
+h1 {
+    background-color: #8BC440;
+}
