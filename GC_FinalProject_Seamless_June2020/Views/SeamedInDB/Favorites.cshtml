@@ -111,7 +111,7 @@
                         <form action="/SeamedInDB/AddComment" input type="submit" value="Post" onclick="insert()" style="width:20px;">
                             <input type="hidden" value="@favoriteStartUp.id" name="id" />
                             @*<input id="title" type="text" rows="1" onkeyup="Allow()" placeholder="write a comment..." name="comment" />*@
-                            <input type="text" placeholder="write a comment..." name="comment" pattern="[a-zA-Z]"/>
+                            <input type="text" placeholder="write a comment..." name="comment" pattern="(^[a-zA-z ]{1,450}$)"/>
                             <h5 style="text-align: center; display: inline-block;">
                                 <button type="submit" class="btn btn-default">Submit</button>
                             </h5>

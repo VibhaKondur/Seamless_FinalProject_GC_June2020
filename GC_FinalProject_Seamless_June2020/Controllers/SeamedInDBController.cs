@@ -234,12 +234,10 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         public IActionResult AddComment(string id, string comment)
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
-            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            var foundIt = _context.Favorites.Find(id);
-            foundIt.CommentSection = comment;
-            _context.Entry(foundIt).State = EntityState.Modified;
-            _context.Update(foundIt);
+            Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
+            found.CommentSection = comment;
+            _context.Entry(found).State = EntityState.Modified;
+            _context.Update(found);
             _context.SaveChanges();
 
             return RedirectToAction("Favorites");
