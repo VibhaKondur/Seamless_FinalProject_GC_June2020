@@ -62,9 +62,25 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AdminView">Companies</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SeamedInDB" asp-action="AboutUs">About Us</a>
-                        </li>
+                       
+                    <li class="nav-item">
+                        @if (User.IsInRole("Admin"))
+                        {
+                        <a class="nav-link text-dark" asp-area="" asp-controller="SeamedInDB" asp-action="AboutUs">About Us</a>
+                        }
+                        @if (User.IsInRole("Startup"))
+                        {
+                        <a class="nav-link text-dark" asp-area="" asp-controller="SeamedInDB" asp-action="AboutUs">About Us</a>
+                        }
+                        @if (User.IsInRole("Partner"))
+                        {
+                        <a class="nav-link text-dark" asp-area="" asp-controller="SeamedInDB" asp-action="AboutUs">About Us</a>
+                        }
+                        @if (User.IsInRole("Seamless"))
+                        {
+                        <a class="nav-link text-dark" asp-area="" asp-controller="SeamedInDB" asp-action="AboutUs">About Us</a>
+                        }
+                    </li>
                     </ul>
                 </div>
             </div>

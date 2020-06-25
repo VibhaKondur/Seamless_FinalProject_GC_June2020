@@ -32,7 +32,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public async Task<IActionResult> SearchPage()
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
