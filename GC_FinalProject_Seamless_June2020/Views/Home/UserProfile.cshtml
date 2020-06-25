@@ -1,82 +1,93 @@
 ﻿@model Users
 
-    <div id="mySidebar" class="sidebar ">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a1> Welcome, </a1>
-        <a1>@ViewBag.AspUser.Email</a1>
-        <ul>
-            <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
-            <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
-            <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
-        </ul>
-        <a1>Recommended Startups:</a1>
-        <ul>
-            @for (int i = 0; i < 3; i++)
-            {
-                <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
-            }
-        </ul>
-    </div>
+<div id="mySidebar" class="sidebar ">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a1> Welcome, </a1>
+    <a1>@ViewBag.AspUser.Email</a1>
+    <ul>
+        <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
+        <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
+        <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
+    </ul>
+    <a1>Recommended Startups:</a1>
+    <ul>
+        @for (int i = 0; i < 3; i++)
+        {
+            <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
+        }
+    </ul>
+</div>
 
-    <link href="~/css/profile.css" rel="stylesheet" type="text/css" />
-
-    <div class="profile">
-        <div class="main">
-            <h1>@ViewBag.AspUser.Email</h1>
-
-            <div class="mid">
-
-                <h2>@Model.Name</h2>
-
-                <h2>@Model.Country</h2>
-
-                @if (Model.StateProvince != null && Model.City != null)
-                {
-                    <h3>@Model.City, @Model.StateProvince</h3>
-                }
-                else
-                {
-                    <h3>@Model.StateProvince</h3>
-                    <h3>@Model.City</h3>
-
-                }
-            </div>
+<link href="~/css/companyProfileStyles.css" rel="stylesheet" />
 
 
-            <div class="mid">
-                @if (Model.Theme != null)
-                {
-                    <h4>Theme(s): @Model.Theme</h4>
-                }
-                @if (Model.Technology != null)
-                {
-                    <h4>Tech: @Model.Technology</h4>
-                }
-                @if (Model.Landscape != null)
-                {
-                    <h4>Landscape: @Model.Landscape</h4>
-                }
-            </div>
 
-            <div class="mid">
-                @if (Model.Summary != null)
-                {
-                    <h4>Profile Summary</h4>
-                    <p>@Model.Summary</p>
+<h2 class="companyNameHeader">@Model.Name</h2>
 
-                }
+<h6 class="companyOtherHeader">@Model.UserType Company</h6>
 
+<div class="flexContainer">
+    @if (Model.City == null && Model.StateProvince == null)
+    {
+        <p>@Model.Country</p>
+    }
+    else if (Model.City == null && Model.StateProvince != null)
+    {
+        <p>@Model.StateProvince, @Model.Country</p>
+    }
+    else if (Model.StateProvince == null && Model.City != null)
+    {
+        <p>@Model.City, @Model.Country</p>
+    }
+    else
+    {
+        <p>@Model.City, @Model.StateProvince, @Model.Country</p>
+    }
+</div>
 
-            </div>
-            <button onclick="document.location = '/Home/UpdateUserForm'">Update Profile</button>
+<br />
+<br />
 
-            <p></p>
-            <div>
-                <h3>Contact:</h3>
-                <div class="contact">
-                    <h4>@Model.EmailAddress</h4>
-                    <h4>@Model.Website</h4>
-                </div>
-            </div>
-        </div>
-    </div>
+<h5 class="companyOtherHeader">Summary:</h5>
+
+<div class="flexContainer">
+    <p class="companySummaryStyles">@Model.Summary</p>
+</div>
+
+<br />
+
+<div>
+    <table class="companyTable">
+        <thead>
+            <tr>
+                <th>Theme</th>
+                <th>Technology</th>
+                <th>Industry</th>
+                <th>Landscape</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Theme</td>
+                <td>@Model.Technology</td>
+                <td>@Model.Industry</td>
+                <td>@Model.Landscape</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<h5 class="companyOtherHeader">Contact Information:</h5>
+
+<div class="flexContainer">
+    <ul class="companyListStyles">
+        <li>Web - @Model.Website</li>
+        <li>Email - @Model.EmailAddress</li>
+        <li>Phone - @Model.PhoneNumber</li>
+    </ul>
+</div>
+<button onclick="document.location = '/Home/UpdateUserForm'">Update Profile</button>
+
