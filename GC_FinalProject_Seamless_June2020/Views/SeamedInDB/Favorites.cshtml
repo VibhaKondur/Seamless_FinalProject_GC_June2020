@@ -1,4 +1,4 @@
-﻿@model List<Record>
+﻿@model FavoritesListVM
 
 <link href="~/css/favorites.css" rel="stylesheet" />
 
@@ -26,7 +26,7 @@
 
 <div class="main">
 
-    @if (Model.Count == 0)
+    @if (Model.ListofRecords.Count == 0)
     {
 
         //If favorites list is empty, direct user back to search page to search StartUps to add to Favorites List
@@ -34,25 +34,25 @@
             <p class="text-danger">Your list of favorite StartUps is empty. Please return to Search Page to search StartUps</p>
         </h5>
         <h5 style="text-align: center">
-            <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for Startups</button>
+            <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model.ListofRecords'">Search for Startups</button>
         </h5>
     }
 
     else
     {
         <h5 style="text-align: center; display: inline-block;">
-            <button class="btn" onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for more Startups</button>
+            <button class="btn" onclick="document.location = '/SeamedInDB/SearchPage?id=@Model.ListofRecords'">Search for more Startups</button>
         </h5>
 
         <h5 style="text-align: center; display: inline-block;">
-            <a href="~/SeamedInDB/ClearFavoritesView?id=@Model" id="deleteBtn" class="btn bg-danger mr-1"
+            <a href="~/SeamedInDB/ClearFavoritesView?id=@Model.ListofRecords" id="deleteBtn" class="btn bg-danger mr-1"
                onclick="return confirm('Are you sure you want to remove all StartUps from your Favorites List?');">
                 <i class="fas fa-trash-alt text-white"></i>Clear Favorites List
             </a>
         </h5>
 
         <h5 style="text-align: center; display: inline-block;">
-            <button class="btn" onclick="document.location = '/Home/SearchResultsGlobal?id=@Model'">Back to Search Results</button>
+            <button class="btn" onclick="document.location = '/Home/SearchResultsGlobal?id=@Model.ListofRecords'">Back to Search Results</button>
         </h5>
 
 
@@ -60,8 +60,8 @@
 
 
     <table class="table table-striped">
-        <thead><tr><th>Startup</th><th>City</th><th>State/Province</th><th>Country</th><th>Comments</th><th></th><th></th></tr></thead>
-        @foreach (Record favoriteStartUp in Model)
+        <thead><tr><th>Startup</th><th>City</th><th>State/Province</th><th>Country</th><th></th><th></th></tr></thead>
+        @foreach (Record favoriteStartUp in Model.ListofRecords)
         {
             <tr>
                 <td>
@@ -113,7 +113,7 @@
                             @*<input id="title" type="text" rows="1" onkeyup="Allow()" placeholder="write a comment..." name="comment" />*@
                             <input type="text" placeholder="write a comment..." name="comment" pattern="(^[a-zA-z ]{1,450}$)"/>
                             <h5 style="text-align: center; display: inline-block;">
-                                <button type="submit" class="btn btn-default">Submit</button>
+                                <button hidden type="submit" class="btn btn-default">Submit</button>
                             </h5>
                         </form>
                     </div>
@@ -140,6 +140,9 @@
                         }                        
                     </script>
                     @*<textarea class="form-control" rows="1" id="comment">.</textarea>*@
+                <p>@if (Model.ListOfFavoriteStartUps != null) {
+                    Model.ListOfFavoriteStartUps.Where(x => x.ApiId == favoriteStartUp.id);
+                }</p>
                 </td>
                 <td>
                     <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"

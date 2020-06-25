@@ -53,7 +53,6 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			searchResultsVM.UsersList = GetListOfUsers(globalSearch);
 			searchResultsVM.SearchString = globalSearch;
 
-			//----------------------------------------------------------------------
 			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
 			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
@@ -100,9 +99,23 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			}
 		}
 
-		public IActionResult CompanyProfile(string name)
+		public async Task<IActionResult> CompanyProfile(string name)
         {
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+			ViewBag.AspUser = thisAspUser;
+
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+
+			ViewBag.Startups = rankedStartups;
 			Users foundUser = _context.Users.Where(x => x.Name == name).First();
 			return View(foundUser);
         }
@@ -149,6 +162,29 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			ViewBag.Startups = rankedStartups;
 
 			return View(thisUser);
+		}
+
+		public async Task<IActionResult> TestProfile(string name)
+		{
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+			ViewBag.AspUser = thisAspUser;
+
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+
+			ViewBag.Startups = rankedStartups;
+
+			Record s = await _seamedInDal.GetStartUpByName(name);
+
+			return View(s);
 		}
 
 		public IActionResult RegisterUser()
