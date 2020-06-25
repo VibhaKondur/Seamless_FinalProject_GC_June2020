@@ -60,7 +60,7 @@
 
 
     <table class="table table-striped">
-        <thead><tr><th>Startup</th><th>City</th><th>State/Province</th><th>Country</th><th>Comments</th><th></th><th></th></tr></thead>
+        <thead><tr><th>Startup</th><th>City</th><th>State/Province</th><th>Country</th><th></th><th></th></tr></thead>
         @foreach (Record favoriteStartUp in Model.ListofRecords)
         {
             <tr>
@@ -111,9 +111,9 @@
                         <form action="/SeamedInDB/AddComment" input type="submit" value="Post" onclick="insert()" style="width:20px;">
                             <input type="hidden" value="@favoriteStartUp.id" name="id" />
                             @*<input id="title" type="text" rows="1" onkeyup="Allow()" placeholder="write a comment..." name="comment" />*@
-                            <input type="text" placeholder="write a comment..." name="comment" pattern="[a-zA-Z]"/>
+                            <input type="text" hidden placeholder="write a comment..." name="comment" pattern="[a-zA-Z]"/>
                             <h5 style="text-align: center; display: inline-block;">
-                                <button type="submit" class="btn btn-default">Submit</button>
+                                <button hidden type="submit" class="btn btn-default">Submit</button>
                             </h5>
                         </form>
                     </div>
