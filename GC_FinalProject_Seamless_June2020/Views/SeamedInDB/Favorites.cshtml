@@ -140,9 +140,7 @@
                         }                        
                     </script>
                     @*<textarea class="form-control" rows="1" id="comment">.</textarea>*@
-                <p>@if (Model.ListOfFavoriteStartUps != null) {
-                    Model.ListOfFavoriteStartUps.Where(x => x.ApiId == favoriteStartUp.id);
-                }</p>
+                
                 </td>
                 <td>
                     <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"
