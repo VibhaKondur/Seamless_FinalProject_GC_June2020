@@ -25,7 +25,22 @@
 <h6 class="companyOtherHeader">@Model.UserType Company</h6>
 
 <div class="flexContainer">
-    <p>@Model.City, @Model.StateProvince, @Model.Country</p>
+    @if (Model.City == null && Model.StateProvince == null)
+    {
+        <p>@Model.Country</p>
+    }
+    else if (Model.City == null && Model.StateProvince != null)
+    {
+        <p>@Model.StateProvince, @Model.Country</p>
+    }
+    else if (Model.StateProvince == null && Model.City != null)
+    {
+        <p>@Model.City, @Model.Country</p>
+    }
+    else
+    {
+        <p>@Model.City, @Model.StateProvince, @Model.Country</p>
+    }
 </div>
 
 <br />
