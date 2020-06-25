@@ -80,36 +80,36 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
         #region CRUD Functions
         //Displays list of User's favorite StartUps
-        [Authorize]
-        public async Task<IActionResult> DisplayListOfFavoriteStartUps()
-        {
-            var model = new FavoritesListVM();
+        //[Authorize]
+        //public async Task<IActionResult> DisplayListOfFavoriteStartUps()
+        //{
+        //    var model = new FavoritesListVM();
 
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var favoritesOfUser = await _context.Favorites.Where(x => x.UserId == id).ToListAsync();
+        //    string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var favoritesOfUser = await _context.Favorites.Where(x => x.UserId == id).ToListAsync();
 
-            foreach (Favorites favorites in favoritesOfUser)
-            {
-                var favorite = await _seamedInDal.GetStartUpById(favorites.ApiId.ToString());
+        //    foreach (Favorites favorites in favoritesOfUser)
+        //    {
+        //        var favorite = await _seamedInDal.GetStartUpById(favorites.ApiId.ToString());
 
-                FavoritesModel favoriteModel = new FavoritesModel();
-                favoriteModel.ApiId = int.Parse(favorite.id);
-                favoriteModel.CompanyName = favorite.fields.CompanyName;
-                favoriteModel.City = favorite.fields.City;
-                favoriteModel.Country = favorite.fields.Country;
-                favoriteModel.Themes = favorite.fields.Themes;
-                favoriteModel.TechnologyAreas = favorite.fields.TechnologyAreas;
-                favoriteModel.Landscape = favorite.fields.Landscape;
-                favoriteModel.StateProvince = favorite.fields.StateProvince;
+        //        FavoritesModel favoriteModel = new FavoritesModel();
+        //        favoriteModel.ApiId = int.Parse(favorite.id);
+        //        favoriteModel.CompanyName = favorite.fields.CompanyName;
+        //        favoriteModel.City = favorite.fields.City;
+        //        favoriteModel.Country = favorite.fields.Country;
+        //        favoriteModel.Themes = favorite.fields.Themes;
+        //        favoriteModel.TechnologyAreas = favorite.fields.TechnologyAreas;
+        //        favoriteModel.Landscape = favorite.fields.Landscape;
+        //        favoriteModel.StateProvince = favorite.fields.StateProvince;
 
-                model.ListOfFavoriteStartUps.Add(favoriteModel);
-            }
+        //        model.ListOfFavoriteStartUps.Add(favoriteModel);
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         //favorite action method to find list of user's favorites
-        public async Task<IActionResult> Favorites()
+        public async Task<IActionResult> Favorites(FavoritesListVM favoritesListVM)
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -139,8 +139,8 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 
                 records.Add(record);
             }
-
-            return View(records);
+            favoritesListVM.ListofRecords = records;
+            return View(favoritesListVM);
         }
 
         //error handling for user not being able to add duplicate startUps to their favorites list
@@ -234,22 +234,20 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         public IActionResult AddComment(string id, string comment)
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
-            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
-            var foundIt = _context.Favorites.Find(id);
-            foundIt.CommentSection = comment;
-            _context.Entry(foundIt).State = EntityState.Modified;
-            _context.Update(foundIt);
+            Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
+            found.CommentSection = comment;
+            FavoritesListVM favoritesListVM = new FavoritesListVM();
+            favoritesListVM.ListOfFavoriteStartUps.Add(found);
+            _context.Entry(found).State = EntityState.Modified;
+            _context.Update(found);
             _context.SaveChanges();
-
-            return RedirectToAction("Favorites");
+            return RedirectToAction("Favorites", favoritesListVM);
         }
+            #endregion
 
-        #endregion
+            #region Search Result Methods
 
-        #region Search Result Methods
-
-        public async Task<SearchPageVM> GetStartUpColumnCategoryValues()
+            public async Task<SearchPageVM> GetStartUpColumnCategoryValues()
         {
             SearchPageVM searchPageVM = new SearchPageVM();
             Startups currentApiData = await _seamedInDal.GetStartups();

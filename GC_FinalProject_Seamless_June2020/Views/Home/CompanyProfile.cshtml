@@ -2,7 +2,23 @@
 
 <link href="~/css/companyProfileStyles.css" rel="stylesheet" />
 
-
+<div id="mySidebar" class="sidebar ">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a1> Welcome, </a1>
+    <a1>@ViewBag.AspUser.Email</a1>
+    <ul>
+        <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
+        <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
+        <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
+    </ul>
+    <a1>Recommended Startups:</a1>
+    <ul>
+        @for (int i = 0; i < 3; i++)
+        {
+            <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
+        }
+    </ul>
+</div>
 
 <h2 class="companyNameHeader">@Model.Name</h2>
 
