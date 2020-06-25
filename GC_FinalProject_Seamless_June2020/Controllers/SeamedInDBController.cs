@@ -19,6 +19,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         private readonly SeamedInDal _seamedInDal;
         private readonly SeamedInDBContext _context;
         private readonly string _apiKey;
+        private object _userManager;
 
         public SeamedInDBController(SeamedInDBContext context, IConfiguration configuration)
         {
@@ -234,10 +235,9 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         {
             string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //Favorites found = _context.Favorites.FirstOrDefault(x => (x.ApiId == id) && (x.UserId == uid));
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             var foundIt = _context.Favorites.Find(id);
-            
             foundIt.CommentSection = comment;
-
             _context.Entry(foundIt).State = EntityState.Modified;
             _context.Update(foundIt);
             _context.SaveChanges();
