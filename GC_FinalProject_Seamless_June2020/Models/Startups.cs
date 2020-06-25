@@ -63,6 +63,8 @@ namespace GC_FinalProject_Seamless_June2020.Models
 
         [JsonProperty(PropertyName = "State/Province")]
         public string StateProvince { get; set; }
+
+        public string CommentSection { get; set; }
     }
 
 }

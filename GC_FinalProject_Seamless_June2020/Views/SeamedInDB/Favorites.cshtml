@@ -40,100 +40,123 @@
 
     else
     {
-        <h5 style="text-align: center">
-            <button onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for more Startups</button>
+        <h5 style="text-align: center; display: inline-block;">
+            <button class="btn" onclick="document.location = '/SeamedInDB/SearchPage?id=@Model'">Search for more Startups</button>
         </h5>
-        <br>
-        <br>
-        <h5 style="text-align: center">
-            <button onclick="document.location = '/Home/SearchResultsGlobal?id=@Model'">Back to Search Results</button>
-        </h5>
-        <br>
-        <br>
-        <h5 style="text-align: center">
+
+        <h5 style="text-align: center; display: inline-block;">
             <a href="~/SeamedInDB/ClearFavoritesView?id=@Model" id="deleteBtn" class="btn bg-danger mr-1"
                onclick="return confirm('Are you sure you want to remove all StartUps from your Favorites List?');">
                 <i class="fas fa-trash-alt text-white"></i>Clear Favorites List
             </a>
         </h5>
 
+        <h5 style="text-align: center; display: inline-block;">
+            <button class="btn" onclick="document.location = '/Home/SearchResultsGlobal?id=@Model'">Back to Search Results</button>
+        </h5>
+
+
     }
 
-    <div class="flex">
 
-        <div class="flex-item">
-
-            @foreach (Record favoriteStartUp in Model)
-            {
-
-                @if (ViewBag.id == true)
-                {
-
-                    <div class="alert alert-warning alert-dismissible">
-                        <a href="~/SeamedInDB/AddAFavoriteStartUpToList?id=@favoriteStartUp.id" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>Duplicate Startup detected!</strong>This Startup has already been added to your Favorites List. Please return to search more Startups.
-                    </div>
-
-                }
-                else
-                {
-
-
+    <table class="table table-striped">
+        <thead><tr><th>Startup</th><th>City</th><th>State/Province</th><th>Country</th><th>Comments</th><th></th><th></th></tr></thead>
+        @foreach (Record favoriteStartUp in Model)
+        {
+            <tr>
+                <td>
                     @if (favoriteStartUp.fields.CompanyName == null)
                     {
                         <h5>Startup Name not available</h5>
                     }
                     else
                     {
-                        @*<h5>Company: ><a href="/Home/StartupProfile?name=@favoriteStartUp.fields.CompanyName"></a></h5>*@
                         <h5>
                             <a href="@Url.Action("StartUpProfile", "Home", new {name = @favoriteStartUp.fields.CompanyName})">@favoriteStartUp.fields.CompanyName</a>
                         </h5>
                     }
+                </td>
+                <td>
                     @if (favoriteStartUp.fields.City == null)
                     {
-                        <h5>City not available</h5>
+                        <h5>N/A</h5>
                     }
                     else
                     {
-                        <h5>City: @favoriteStartUp.fields.City</h5>
+                        <h5>@favoriteStartUp.fields.City</h5>
                     }
+                </td>
+                <td>
                     @if (favoriteStartUp.fields.StateProvince == null)
                     {
-                        <h5>State and/or Province not available</h5>
+                        <h5>N/A</h5>
                     }
                     else
                     {
-                        <h5>State or Province: @favoriteStartUp.fields.StateProvince</h5>
+                        <h5>@favoriteStartUp.fields.StateProvince</h5>
                     }
+                </td>
+                <td>
                     @if (favoriteStartUp.fields.Country == null)
                     {
-                        <h5>Country not available</h5>
+                        <h5>N/A</h5>
                     }
                     else
                     {
-                        <h5>Country: @favoriteStartUp.fields.Country</h5>
+                        <h5>@favoriteStartUp.fields.Country</h5>
                     }
-
-                    <div class="form-group">
-                        <label for="comment">Add a Comment</label>
-                        <textarea class="form-control" rows="5" id="comment"></textarea>
-                        <button type="submit" class="btn btn-default">Submit</button>
+                </td>
+                <td>
+                    <div class="comment">                       
+                        <form action="/SeamedInDB/AddComment" input type="submit" value="Post" onclick="insert()" style="width:20px;">
+                            <input type="hidden" value="@favoriteStartUp.id" name="id" />
+                            @*<input id="title" type="text" rows="1" onkeyup="Allow()" placeholder="write a comment..." name="comment" />*@
+                            <input type="text" placeholder="write a comment..." name="comment" pattern="[a-zA-Z]"/>
+                            <h5 style="text-align: center; display: inline-block;">
+                                <button type="submit" class="btn btn-default">Submit</button>
+                            </h5>
+                        </form>
                     </div>
-
+                    <div id="display"></div>
+                    <script type="text/javascript">
+                        var titles = [];
+                        var titleInput = document.getElementById("title");
+                        var messageBox = document.getElementById("display");
+                        function Allow() {
+                            if (!user.title.value.match(/[a-zA-Z]$/) && user.title.value != "") {
+                                user.title.value = "";
+                                alert("Please Enter only alphabets");
+                            }
+                            window.location.reload()
+                        }
+                        function insert() {
+                            titles.push(titleInput.value);
+                            clearAndShow();
+                        }
+                        function clearAndShow() {
+                            titleInput.value = "";
+                            messageBox.innerHTML = "";
+                            messageBox.innerHTML += " " + titles.join("<br/> ") + "<br/>";
+                        }                        
+                    </script>
+                    @*<textarea class="form-control" rows="1" id="comment">.</textarea>*@
+                </td>
+                <td>
                     <a href="~/SeamedInDB/RemoveAFavoriteStartUpFromList?id=@favoriteStartUp.id" id="deleteBtn" class="btn bg-danger mr-1"
                        onclick="return confirm('Are you sure you want to remove this Startup from your Favorites List?');">
                         <i class="fas fa-trash-alt text-white"></i>Remove Startup from Favorites List
                     </a>
+                </td>
+            </tr>
 
-                }
+        }
 
-             }
-
-            <br><br><br><br>
-        </div>
-
-    </div>
-
+    </table>
 </div>
+
+
+
+
+
+
 
