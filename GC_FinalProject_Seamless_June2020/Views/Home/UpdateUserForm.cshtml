@@ -18,137 +18,147 @@
         </ul>
     </div>
 
-<div class="main">
-    <form action="/Home/UpdateUser" method="post">
+    <link href="~/css/userFormsStyles.css" rel="stylesheet" type="text/css" />
 
-        <input type="hidden" name="Id" value="@Model.Id" />
+    <div>
 
-        <label for="UserType">User Type</label>
-        <select id="UserType" name="UserType">
-            <option value="Startup">Startup</option>
-            <option value="Partner">Partner</option>
-            <option value="Seamless">Seamless</option>
-        </select>
+        <div class="main">
 
-        <label for="Theme">Theme</label>
-        <select id="Theme" name="Theme">
-            <option value="Health Beyond the Hospital">Health Beyond the Hospital</option>
-            <option value="The Good Life">The Good Life</option>
-            <option value="Robust Future">Robust Future</option>
-        </select>
+            <h1>Update User</h1>
 
-        @if (Model.Name != null)
-        {
-            <input type="text" name="Name" maxlength="75" value="@Model.Name" placeholder="@Model.Name" />
-        }
-        else
-        {
-            <input type="text" name="Name" maxlength="75" placeholder="Company Name" />
-        }
+            <form action="/Home/UpdateUser" method="post" class="user">
 
-        <label for="Technology">Technology</label>
-        <select id="Technology" name="Technology">
-            <option value="Software / AI">Software / AI</option>
-            <option value="Sensing">Sensing</option>
-            <option value="Robotics">Robotics</option>
-            <option value="Advanced Materials">Advanced Materials</option>
-            <option value="Business Process">Business Process</option>
-            <option value="Products">Products</option>
-        </select>
+                <input type="hidden" name="Id" value="@Model.Id" />
 
-        <label for="Landscapes">Landscapes</label>
-        <select id="Landscape" name="Landscape">
-            <option value="">n/a</option>
-            <option value="Good Habits">Good Habits</option>
-            <option value="Personalized wellness">Personalized Wellness</option>
-            <option value="Automation and robotics">Automation and Robotics</option>
-            <option value="Safe shared spaces">Safe Shared Spaces</option>
-            <option value="Clinic in a box">Clinic in a Box</option>
+                <label for="UserType">User Type:</label>
+                <select id="UserType" name="UserType">
+                    <option value="Startup">Startup</option>
+                    <option value="Partner">Partner</option>
+                    <option value="Seamless">Seamless</option>
+                </select>
 
-        </select>
+                <label for="Theme">Theme:</label>
+                <select id="Theme" name="Theme">
+                    <option value="Health Beyond the Hospital">Health Beyond the Hospital</option>
+                    <option value="The Good Life">The Good Life</option>
+                    <option value="Robust Future">Robust Future</option>
+                </select>
 
-        @if (Model.Summary != null)
-        {
-            <input type="text" name="Summary" maxlength="400" value="@Model.Summary" placeholder="@Model.Summary" />
-        }
-        else
-        {
-            <input type="text" name="Summary" maxlength="400" placeholder="Summary(400 Characters)" />
-        }
+                <label for="Name">Company Name:</label>
+                @if (Model.Name != null)
+                {
+                    <input type="text" name="Name" maxlength="75" value="@Model.Name" placeholder="@Model.Name" />
+                }
+                else
+                {
+                    <input type="text" name="Name" maxlength="75" placeholder="Company Name" />
+                }
 
-        @if (Model.Industry != null)
-        {
-            <input type="text" name="Industry" maxlength="50" value="@Model.Industry" placeholder="@Model.Industry" />
-        }
-        else
-        {
-            <input type="text" name="Industry" maxlength="50" placeholder="Industry" />
-        }
+                <label for="Technology">Technology:</label>
+                <select id="Technology" name="Technology">
+                    <option value="Software / AI">Software / AI</option>
+                    <option value="Sensing">Sensing</option>
+                    <option value="Robotics">Robotics</option>
+                    <option value="Advanced Materials">Advanced Materials</option>
+                    <option value="Business Process">Business Process</option>
+                    <option value="Products">Products</option>
+                </select>
 
-        @if (Model.PhoneNumber != null)
-        {
-            <input type="text" name="PhoneNumber" maxlength="12" value="@Model.PhoneNumber" placeholder="@Model.PhoneNumber" />
-        }
-        else
-        {
-            <input type="text" name="PhoneNumber" maxlength="12" placeholder="Phone Number" />
-        }
+                <label for="Landscapes">Landscapes:</label>
+                <select id="Landscape" name="Landscape">
+                    <option value="">n/a</option>
+                    <option value="Good Habits">Good Habits</option>
+                    <option value="Personalized wellness">Personalized Wellness</option>
+                    <option value="Automation and robotics">Automation and Robotics</option>
+                    <option value="Safe shared spaces">Safe Shared Spaces</option>
+                    <option value="Clinic in a box">Clinic in a Box</option>
 
-        @if (Model.EmailAddress != null)
-        {
-            <input type="text" name="EmailAddress" maxlength="30" value="@Model.EmailAddress" placeholder="@Model.EmailAddress" />
-        }
-        else
-        {
-            <input type="text" name="EmailAddress" maxlength="30" placeholder="Email Address" />
-        }
+                </select>
 
-        @if (Model.Website != null)
-        {
-            <input type="text" name="Website" maxlength="30" value="@Model.Website" placeholder="@Model.Website" />
-        }
-        else
-        {
-            <input type="text" name="Website" maxlength="30" placeholder="Website" />
-        }
+                <label for="Summary">Profile Summary:</label>
+                @if (Model.Summary != null)
+                {
+                    <input type="text" name="Summary" maxlength="400" value="@Model.Summary" placeholder="@Model.Summary" />
+                }
+                else
+                {
+                    <input type="text" name="Summary" maxlength="400" placeholder="Summary(400 Characters)" />
+                }
+                <label for="Industry">Industry:</label>
+                @if (Model.Industry != null)
+                {
+                    <input type="text" name="Industry" maxlength="50" value="@Model.Industry" placeholder="@Model.Industry" />
+                }
+                else
+                {
+                    <input type="text" name="Industry" maxlength="50" placeholder="Industry" />
+                }
+                <label for="PhoneNumber">Phone Number:</label>
+                @if (Model.PhoneNumber != null)
+                {
+                    <input type="text" name="PhoneNumber" maxlength="12" value="@Model.PhoneNumber" placeholder="@Model.PhoneNumber" />
+                }
+                else
+                {
+                    <input type="text" name="PhoneNumber" maxlength="12" placeholder="Phone Number" />
+                }
+                <label for="EmailAddress">Email Address</label>
+                @if (Model.EmailAddress != null)
+                {
+                    <input type="text" name="EmailAddress" maxlength="30" value="@Model.EmailAddress" placeholder="@Model.EmailAddress" />
+                }
+                else
+                {
+                    <input type="text" name="EmailAddress" maxlength="30" placeholder="Email Address" />
+                }
+                <label for="Website">Website:</label>
+                @if (Model.Website != null)
+                {
+                    <input type="text" name="Website" maxlength="30" value="@Model.Website" placeholder="@Model.Website" />
+                }
+                else
+                {
+                    <input type="text" name="Website" maxlength="30" placeholder="Website" />
+                }
+                <label for="City">City:</label>
+                @if (Model.City != null)
+                {
+                    <input type="text" name="City" maxlength="25" value="@Model.City" placeholder="@Model.City" />
+                }
+                else
+                {
+                    <input type="text" name="City" maxlength="25" placeholder="City" />
+                }
+                <label for="StateProvince">State/Province</label>
+                @if (Model.StateProvince != null)
+                {
+                    <input type="text" name="StateProvince" maxlength="40" value="@Model.StateProvince" placeholder="@Model.StateProvince" />
+                }
+                else
+                {
+                    <input type="text" name="StateProvince" maxlength="40" placeholder="State/Province" />
+                }
+                <label for="Country">Country:</label>
+                @if (Model.Country != null)
+                {
+                    <input type="text" name="Country" maxlength="50" value="@Model.Country" placeholder="@Model.Country" />
+                }
+                else
+                {
+                    <input type="text" name="Country" maxlength="50" placeholder="Country" />
+                }
 
-        @if (Model.City != null)
-        {
-            <input type="text" name="City" maxlength="25" value="@Model.City" placeholder="@Model.City" />
-        }
-        else
-        {
-            <input type="text" name="City" maxlength="25" placeholder="City" />
-        }
+                <input type="hidden" name="UserId" value="@Model.UserId" />
 
-        @if (Model.StateProvince != null)
-        {
-            <input type="text" name="StateProvince" maxlength="40" value="@Model.StateProvince" placeholder="@Model.StateProvince" />
-        }
-        else
-        {
-            <input type="text" name="StateProvince" maxlength="40" placeholder="State/Province" />
-        }
+                <input type="hidden" name="Roles" value="@Model.Roles" />
 
-        @if (Model.Country != null)
-        {
-            <input type="text" name="Country" maxlength="50" value="@Model.Country" placeholder="@Model.Country" />
-        }
-        else
-        {
-            <input type="text" name="Country" maxlength="50" placeholder="Country" />
-        }
-
-        <input type="hidden" name="UserId" value="@Model.UserId" />
-
-        <input type="hidden" name="Roles" value="@Model.Roles" />
-
-        <input type="submit" value="Submit" />
+                <input type="submit" value="Submit" />
 
 
-    </form>
+            </form>
 
-</div>
+        </div>
+    </div>
 
 @Html.ValidationSummary()
 

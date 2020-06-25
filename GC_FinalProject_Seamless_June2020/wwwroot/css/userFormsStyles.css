@@ -1,0 +1,38 @@
+﻿input, textarea, select, label {
+    width: 150px;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.user {
+    position: relative;
+    margin: auto;
+    padding: 2em;
+    box-sizing: border-box;
+    display: grid;
+    grid-gap: 2px;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.user {
+    text-align: center;
+    background-color: lightgrey;
+    width: fit-content;
+    padding: 10px;
+    word-wrap: break-word;
+    box-shadow: 3px 3px 5px #888888;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 40px 5px 40px 0px;
+}
+
+h1 {
+    text-align: center;
+    background-color: #8BC440;
+    border-radius: 40px 5px 40px 0px;
+    width: 325px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 3px 3px 5px #888888;
+}

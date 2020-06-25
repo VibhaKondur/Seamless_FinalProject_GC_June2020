@@ -1,27 +1,29 @@
 ﻿@model AspNetUsers
 
+    <link href="~/css/userFormsStyles.css" rel="stylesheet" type="text/css" />
+
 <h1>Register User</h1>
 
-<form action="/Home/AddUser" method="post">
-    <label for="UserType">User Type</label>
+<form action="/Home/AddUser" method="post" class="user">
+    <label for="UserType">User Type:</label>
     <select id="UserType" name="UserType">
         <option value="Startup">Startup</option>
         <option value="Partner">Partner</option>
         <option value="Seamless">Seamless</option>
     </select>
 
-    <label for="Theme">Theme</label>
+    <label for="Theme">Theme:</label>
     <select id="Theme" name="Theme">
         <option value="Health Beyond the Hospital">Health Beyond the Hospital</option>
         <option value="The Good Life">The Good Life</option>
         <option value="Robust Future">Robust Future</option>
     </select>
 
-
+    <label for="Name">Company Name:</label>
     <input type="text" name="Name" maxlength="75" placeholder="Company Name" />
 
 
-    <label for="Technology">Technology</label>
+    <label for="Technology">Technology:</label>
     <select id="Technology" name="Technology">
         <option value="Software / AI">Software / AI</option>
         <option value="Sensing">Sensing</option>
@@ -31,7 +33,7 @@
         <option value="Products">Products</option>
     </select>
 
-    <label for="Landscapes">Landscapes</label>
+    <label for="Landscape">Landscape:</label>
     <select id="Landscape" name="Landscape">
         <option value="">n/a</option>
         <option value="Good Habits">Good Habits</option>
@@ -42,20 +44,28 @@
 
     </select>
 
+    <label for="Summary">Profile Summary:</label>
     <input type="text" name="Summary" maxlength="400" placeholder="Summary(400 Characters)" />
 
+    <label for="Industry">Industry:</label>
     <input type="text" name="Industry" maxlength="50" placeholder="Industry" />
 
+    <label for="PhoneNumber">Phone Number:</label>
     <input type="text" name="PhoneNumber" maxlength="12" placeholder="Phone Number" />
 
+    <label for="EmailAddress">Email Address</label>
     <input type="text" name="EmailAddress" maxlength="30" placeholder="Email Address" />
 
+    <label for="Website">Website:</label>
     <input type="text" name="Website" maxlength="30" placeholder="Website" />
 
+    <label for="City">City:</label>
     <input type="text" name="City" maxlength="25" placeholder="City" />
 
+    <label for="StateProvince">State/Province</label>
     <input type="text" name="StateProvince" maxlength="40" placeholder="State/Province" />
 
+    <label for="Country">Country:</label>
     <input type="text" name="Country" maxlength="50" placeholder="Country" />
 
     <input type="hidden" name="UserId" value="@Model.Id" />
