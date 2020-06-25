@@ -14,6 +14,14 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'Source Sans Pro Light Italic';
+    src: url('SourceSansPro-LightItalic.woff2') format('woff2'), url('SourceSansPro-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
 .startUpResultsList {
     list-style-type: none;
     align-content: center;
@@ -26,7 +34,6 @@ table, th, td {
 
 td {
     border: 5px solid #527524;
-    /*border: none;*/
     border-radius: 40px 5px 40px 0px;
     border-spacing: 200px;
 }
@@ -37,11 +44,28 @@ td {
     align-items: center;
 }
 
+.searchResultsTable {
+    display: table;
+    width: 1100px;
+    table-layout: fixed
+}
+
+
+.table_cell {
+    display: table-cell;
+    width: 366px;
+}
+
+.queryString {
+    font-family: 'Source Sans Pro Light Italic';
+    font-style: italic;
+}
+
 /*--------------------------------------------------------------------------------------*/
 
 .stylesForLi {
-    display: flex;
-    justify-content: center;
+    /*display: flex;
+    justify-content: center;*/
     text-align: center;
     padding: 5px 15px 5px 15px;
     border-bottom: 1px solid #ccc;
@@ -49,7 +73,6 @@ td {
 }
 
     .stylesForLi:nth-child(1) {
-        /*background-color: #c4e19d;*/
         background-color: #8BC440;
         border: none;
         border-radius: 40px 0px 0px 0px;
@@ -57,25 +80,21 @@ td {
     }
 
     .stylesForLi:nth-child(2) {
-        /*background-color: #c4e19d;*/
         background-color: lightgray;
         font-family: 'Source Sans Pro';
     }
 
     .stylesForLi:nth-child(3) {
-        /*background-color: #c4e19d;*/
         background-color: lightgray;
         font-family: 'Source Sans Pro';
     }
 
     .stylesForLi:nth-child(4) {
-        /*background-color: #c4e19d;*/
         background-color: lightgray;
         font-family: 'Source Sans Pro';
     }
 
     .stylesForLi:nth-child(5) {
-        /*background-color: #c4e19d;*/
         background-color: lightgray;
         border: none;
         border-radius: 0px 0px 40px 0px;
@@ -100,9 +119,9 @@ h4 {
 input[type=text] {
     border-radius: 8px;
     padding-left: 45px;
-    padding-top: 15px;
+    padding-top: 10px;
     padding-right: 45px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
     background-image: url('/images/SearchIcon_5percent.png');
     background-repeat: no-repeat;
     background-position: left center;
@@ -146,3 +165,5 @@ input[type=text] {
         align-items: center;
     }
 }
+
+/*-----------------------------------------------------*/

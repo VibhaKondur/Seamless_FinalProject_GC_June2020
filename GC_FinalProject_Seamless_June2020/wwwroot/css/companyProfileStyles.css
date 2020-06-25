@@ -1,0 +1,47 @@
+﻿.flexContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
+
+}
+
+.companyTable {
+    align-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.companyNameHeader {
+    text-align: center;
+    font-family: 'Alegreya Sans Sc Medium','Segoe UI', 'sans-serif';
+    font-size: 60px;
+}
+
+.companyOtherHeader {
+    text-align: center;
+    font-family: 'Source Sans Pro';
+    font-size: 20px;
+}
+
+.companyListStyles {
+    list-style-type: none;
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+}
+
+.companySummaryStyles {
+    font-family: 'Source Sans Pro';
+    font-style: italic;
+    font-size: 20px;
+}
+
+th {
+    font-family: 'Alegreya Sans Sc Medium','Segoe UI', 'sans-serif';
+    font-size: 20px;
+}

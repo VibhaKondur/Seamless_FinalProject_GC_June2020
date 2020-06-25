@@ -1,0 +1,58 @@
+﻿@model Users
+
+<link href="~/css/companyProfileStyles.css" rel="stylesheet" />
+
+
+
+<h2 class="companyNameHeader">@Model.Name</h2>
+
+<h6 class="companyOtherHeader">@Model.UserType Company</h6>
+
+<div class="flexContainer">
+    <p>@Model.City, @Model.StateProvince, @Model.Country</p>
+</div>
+
+<br />
+<br />
+
+<h5 class="companyOtherHeader">Summary:</h5>
+
+<div class="flexContainer">
+    <p class="companySummaryStyles">@Model.Summary</p>
+</div>
+
+<br />
+
+<div>
+    <table class="companyTable">
+        <thead>
+            <tr>
+                <th>Theme</th>
+                <th>Technology</th>
+                <th>Industry</th>
+                <th>Landscape</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Theme</td>
+                <td>@Model.Technology</td>
+                <td>@Model.Industry</td>
+                <td>@Model.Landscape</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<h5 class="companyOtherHeader">Contact Information:</h5>
+
+<div class="flexContainer">
+    <ul class="companyListStyles">
+        <li>Web - @Model.Website</li>
+        <li>Email - @Model.EmailAddress</li>
+        <li>Phone - @Model.PhoneNumber</li>
+    </ul>
+</div>

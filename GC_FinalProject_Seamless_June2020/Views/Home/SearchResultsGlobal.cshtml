@@ -1,26 +1,26 @@
 ﻿@model SearchResultsVM
 
 
+<link href="~/css/searchResultsStyles.css" rel="stylesheet" />
+<script src="~/js/searchResults.js"></script>
 
-    <link href="~/css/searchResults.css" rel="stylesheet" />
-
-    <div id="mySidebar" class="sidebar ">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a1> Welcome, </a1>
-        <a1>@ViewBag.AspUser.Email</a1>
-        <ul>
-            <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
-            <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
-            <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
-        </ul>
-        <a1>Recommended Startups:</a1>
-        <ul>
-            @for (int i = 0; i < 3; i++)
-            {
-                <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
-            }
-        </ul>
-    </div>
+<div id="mySidebar" class="sidebar ">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a1> Welcome, </a1>
+    <a1>@ViewBag.AspUser.Email</a1>
+    <ul>
+        <li> <a href="/Home/UserProfile?name=" @ViewBag.User.Id ">Your Profile</a></li>
+        <li><a href="/SeamedInDB/Favorites">Your Favorites</a></li>
+        <li> <a href="/SeamedInDB/SearchPage">Search Page</a></li>
+    </ul>
+    <a1>Recommended Startups:</a1>
+    <ul>
+        @for (int i = 0; i < 3; i++)
+        {
+            <li><a href="/Home/StartupProfile?name=@ViewBag.Startups[i].Startup.fields.CompanyName">@ViewBag.Startups[i].Startup.fields.CompanyName</a></li>
+        }
+    </ul>
+</div>
 
 
 
@@ -38,15 +38,20 @@
 </div>
 
 <br />
+
+<div>
+    <p class="queryString">Returned results for: @Model.SearchString</p>
+</div>
+
 <br />
 
 <div>
-    <button href="#startUpResults" data-toggle="collapse" data-target="#startUpResults" onclick="" class="toggleStartupResults">Display StartUps Results</button>
-    <button href="#partnerResults" data-toggle="collapse" data-target="#partnerResults" onclick="" class="togglePartnerResults">Display Partner Results</button>
+    <button onclick="showStartups();" class="toggleStartupResults" id="toggleStartupResults">Display StartUps Results</button>
+    <button onclick="showPartners();" class="togglePartnerResults" id="togglePartnerResults">Display Partner Results</button>
 </div>
 
-<div class="startUpResults collapse" id="startUpResults">
-    <table>
+<div class="startUpResults" id="startUpResults" style="display:initial;">
+    <table class="searchResultsTable">
         @{
             int recordCount = 0;
             int listPosition = 0;
@@ -95,12 +100,12 @@
     </table>
 </div>
 
-<div class="partnerResults collapse" id="partnerResults">
-    <table>
+<div class="partnerResults" id="partnerResults" style="display:none;">
+    <table class="searchResultsTable">
         @{
 
 
-@* See if you can reuse the object created earlier*@
+            @* See if you can reuse the object created earlier*@
 
             int partnerCount = 0;
             int listPositionPartners = 0;
@@ -120,7 +125,7 @@
                             <td>
                                 <ul class="startUpResultsList">
                                     <li class="stylesForLi">
-                                        <a href="/Home/StartupProfile?name=@user.Name"><h4>@user.Name</h4></a>
+                                        <a href="/Home/CompanyProfile?name=@user.Name"><h4>@user.Name</h4></a>
                                     </li>
                                     <li class="stylesForLi">
                                         Technology Area: @user.Technology
@@ -132,7 +137,7 @@
                                         Country: @user.Country
                                     </li>
                                     <li class="stylesForLi">
-                                        <button @*onclick="document.location = '/SeamedInDB/AddAFavoriteStartUpToList?id=@user.id'*@ class="buttonStyles">Add to Favorites</button>
+                                        Industry: @user.Industry
                                     </li>
                                 </ul>
                             </td>
@@ -146,4 +151,4 @@
             }
         }
     </table>
-</div class="partnerResults">
+</div>

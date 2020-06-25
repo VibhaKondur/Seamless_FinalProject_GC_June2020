@@ -51,6 +51,7 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			SearchResultsVM searchResultsVM = new SearchResultsVM();
 
 			searchResultsVM.UsersList = GetListOfUsers(globalSearch);
+			searchResultsVM.SearchString = globalSearch;
 
 			//----------------------------------------------------------------------
 			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -98,6 +99,13 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 				return View(searchResultsVM);
 			}
 		}
+
+		public IActionResult CompanyProfile(string name)
+        {
+
+			Users foundUser = _context.Users.Where(x => x.Name == name).First();
+			return View(foundUser);
+        }
 
         public async Task<IActionResult> StartupProfile(string name)
 		{
@@ -321,16 +329,23 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
         {
 			List<Users> usersList = new List<Users>();
 
-			usersList = _context.Users.Where(x => x.Name.Contains(searchString) ||
-			x.Name.Contains(searchString) ||
-			x.Country.Contains(searchString) ||
-			x.StateProvince.Contains(searchString) ||
-			x.City.Contains(searchString) ||
-			x.Summary.Contains(searchString) ||
-			x.Technology.Contains(searchString) ||
-			x.Industry.Contains(searchString) ||
-			x.Landscape.Contains(searchString) ||
-			x.Theme.Contains(searchString)).ToList();
+			if(searchString == null) 
+			{
+				usersList = _context.Users.Where(x => x.Name != null).ToList();
+			}
+			else
+            {
+				usersList = _context.Users.Where(x => x.Name.Contains(searchString) ||
+				x.Name.Contains(searchString) ||
+				x.Country.Contains(searchString) ||
+				x.StateProvince.Contains(searchString) ||
+				x.City.Contains(searchString) ||
+				x.Summary.Contains(searchString) ||
+				x.Technology.Contains(searchString) ||
+				x.Industry.Contains(searchString) ||
+				x.Landscape.Contains(searchString) ||
+				x.Theme.Contains(searchString)).ToList();
+            }
 
 			return usersList;
 

@@ -1,12 +1,14 @@
 ﻿
 
-function testingFunction() {
+function showStartups() {
 
-    document.getElementById("radio1").checked = true;
-    document.getElementById("radio2").checked = false;
-    document.getElementById("radio3").checked = false;
+    document.getElementById("startUpResults").style.display = "initial";
+    document.getElementById("partnerResults").style.display = "none";
+}
 
-    document.getElementById("country_id").disabled = false;
-    document.getElementById("state_id").disabled = true;
-    document.getElementById("city_id").disabled = true;
+
+function showPartners() {
+
+    document.getElementById("startUpResults").style.display = "none";
+    document.getElementById("partnerResults").style.display = "initial";
 }
