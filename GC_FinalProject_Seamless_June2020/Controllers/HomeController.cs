@@ -164,6 +164,29 @@ namespace GC_FinalProject_Seamless_June2020.Controllers
 			return View(thisUser);
 		}
 
+		public async Task<IActionResult> TestProfile(string name)
+		{
+			string uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			AspNetUsers thisAspUser = _context.AspNetUsers.Where(x => x.Id == uid).First();
+
+			Users thisUser = _context.Users.Where(x => x.UserId == uid).First();
+
+			ViewBag.AspUser = thisAspUser;
+
+			ViewBag.User = thisUser;
+
+			Startups startups = await _seamedInDal.GetStartups();
+
+			var rankedStartups = Ranking(startups, thisUser).ToList();
+
+			ViewBag.Startups = rankedStartups;
+
+			Record s = await _seamedInDal.GetStartUpByName(name);
+
+			return View(s);
+		}
+
 		public IActionResult RegisterUser()
 		{
 			string id = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -22,5 +22,6 @@ namespace GC_FinalProject_Seamless_June2020.Models
         public List<Favorites> ListOfFavoriteStartUps { get; set; } = new List<Favorites>();
 
         public List<Record> ListofRecords { get; set; }
+
     }
 }
